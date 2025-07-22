@@ -43,9 +43,10 @@ jobs:
       run: cargo test --verbose
 
     - name: Run deterministic test
+      shell: bash
       run: |
         if [ "$RUNNER_OS" = "Windows" ]; then
-          .\ci_deterministic_test.ps1
+          cargo run -- selftest
         else
           cargo run -- selftest
         fi
@@ -89,6 +90,7 @@ jobs:
       run: cargo build --release
 
     - name: Test release binary
+      shell: bash
       run: |
         if [ "$RUNNER_OS" = "Windows" ]; then
           .\target\release\mmh.exe --version
