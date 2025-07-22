@@ -200,4 +200,4 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for details.
 - **ORCID:** 0009-0008-4352-6842
 - **Email:** Screwball7605@aol.com
 
-**Precision Compression Engine for the AI Era.**
+**Precision Compression Engine for the AI Era.** 
