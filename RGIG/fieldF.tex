@@ -1,0 +1,37 @@
+%=========================================================
+%  fieldF.tex — Recursive Visual Test (Field F) V3.5 (Stub)
+%=========================================================
+\section{Field F — Recursive Visual Test (Visual-Recursive Stability)}
+\label{sec:fieldF}
+
+\subsection*{Objective}
+Assess a model's ability to reason about, generate, and self-audit recursive or ambiguous visual patterns, detecting semantic stack overflows, recursion collapse, and abstraction drift. This field is the first AGI benchmark component with a built-in recursion collapse detector.
+
+\subsection*{Dynamic Prompt Sequence (P1–P6)}
+\emph{(Full prompt sequence and task details will be released in V4.0. For V3.5, this field is a placeholder and research stub.)}
+
+\begin{itemize}
+  \item P1: Present ambiguous/recursive image or pattern.
+  \item P2: Model describes depth, recursion, and possible collapse points.
+  \item P3: Model flags or halts on abstraction drift or stack overflow.
+  \item P4: Model emits YAML/JSON audit of its reasoning chain.
+  \item P5: Peer/auto-validation of recursion stability.
+  \item P6: (Optional) Model proposes a fix or self-halt.
+\end{itemize}
+
+\subsection*{Scoring Rubric (Draft)}
+\begin{itemize}
+  \item \textbf{Semantic Depth:} How well does the model track and explain recursion layers?
+  \item \textbf{Stability:} Can the model detect and halt on recursion collapse or abstraction drift?
+  \item \textbf{Audit Quality:} Clarity and completeness of the YAML/JSON reasoning chain.
+  \item \textbf{Hallucination Avoidance:} Does the model avoid spurious or infinite recursion?
+\end{itemize}
+
+\subsection*{Failure Modes Captured}
+\begin{itemize}
+  \item \textbf{Stack Overflow:} Model fails to halt or recognize recursion collapse.
+  \item \textbf{Abstraction Drift:} Model loses semantic coherence in deep recursion.
+  \item \textbf{Audit Omission:} Incomplete or missing reasoning chain.
+\end{itemize}
+
+\textbf{Note:} Full implementation and scoring will be finalized in RGIG V4.0. This stub signals the direction for future AGI recursion/visual reasoning benchmarks. 

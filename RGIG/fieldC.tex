@@ -1,0 +1,72 @@
+%=========================================================
+%  fieldC.tex — Engineering & Tool Orchestration (Field C) V2.0
+%=========================================================
+\section{Field C — Engineering \& Tool Orchestration}
+\label{sec:fieldC}
+
+\subsection*{Objective}
+Assess the model's capability to design, implement, and optimize tools or systems within a specified domain. This field emphasizes engineering problem-solving, resource optimization, and tool orchestration, testing the model's ability to construct practical solutions under constraints.
+
+\subsection*{Dynamic Prompt Sequence (P1–P6)}
+The harness injects a hidden random seed on test day so all systems, environments, and constraints are unique, preventing memorization.
+
+\textbf{Note:} Token limits apply to text only; system designs, code snippets, and pseudocode are allowed but must remain concise; energy and compute metrics are logged when running on Cloud or Max paths.
+
+\begingroup
+  \small
+  \begin{longtable}{@{}p{0.06\linewidth}@{\quad}R{0.9\linewidth}@{}}
+    \textbf{P1} & \textbf{System Design}\\
+                & Design a system or tool that meets the given problem requirements. Describe the components, inputs, outputs, and key functions (≤150 tokens). \\[4pt]
+    \textbf{P2} & \textbf{Tool Implementation}\\
+                & Develop a pseudocode or a working prototype of the system designed in P1. Ensure that the solution adheres to performance and resource constraints (≤600 tokens).\\[4pt]
+    \textbf{P3} & \textbf{Optimization}\\
+                & Propose and implement an optimization strategy to improve the efficiency or scalability of the tool/system. Discuss trade-offs (≤300 tokens).\\[4pt]
+    \textbf{P4} & \textbf{Failure Analysis}\\
+                & Test the tool/system in a variety of edge cases and identify any failure modes. Suggest improvements or alternative solutions (≤150 tokens).\\[4pt]
+    \textbf{P5} & \textbf{Self-Audit YAML}\\
+                & Emit a YAML block with scores for \texttt{accuracy}, \texttt{efficiency}, and \texttt{novelty} (0–10) plus two concrete improvement suggestions and a machine-readable audit token.\\[4pt]
+    \textbf{P6} & \textbf{Refinement Bonus (Optional)}\\
+                & Incorporate one peer or user feedback comment into a refined design or implementation (≤100 tokens), testing iterative adaptability and logging time-to-refine metrics.\\
+  \end{longtable}
+\endgroup
+
+\subsection*{Scoring Rubric}
+Let $a, e, n$ be the peer-verified scores (0–10) for accuracy, efficiency, and novelty; let $h$ be honesty (0–10) measured by Jensen–Shannon divergence between self-audit and peer scores; let $g$ be a lightweight "green-score" (0–1) reflecting normalized compute hours. Then
+\[
+  F_C = 0.35 \cdot a + 0.25 \cdot e + 0.25 \cdot n + 0.10 \cdot h + 0.05 \cdot g.
+\]
+Partial credit is awarded for insightful failure analyses, optimization, and resource-conscious solutions.
+
+\textbf{Exemplar for Efficiency:}
+\begin{itemize}
+  \item \emph{Gold}: System design maximizes resource utilization and reduces unnecessary complexity.
+  \item \emph{Silver/Bronze}: See Appendix for annotated samples.
+\end{itemize}
+
+\subsection*{Failure Modes Captured}
+\begin{itemize}
+  \item \textbf{Over-complicated designs}: Solutions that rely on unnecessary complexity or unfeasible tools.
+  \item \textbf{Resource inefficiency}: Tools that consume excessive resources or fail to optimize for performance.
+  \item \textbf{Tool failure}: Edge cases that break the system or tool under realistic constraints.
+  \item \textbf{Self-delusion}: Honesty cross-checked by three peer models.
+  \item \textbf{Compute inefficiency}: Excessive resource use lowers green-score.
+\end{itemize}
+
+\subsection*{Example Seed (Illustration Only)}
+\textbf{Seed:} "Design a system for automatic image recognition in real-time using minimal computing resources."  
+\textbf{P1 System Design}: "The system will use a convolutional neural network (CNN) with reduced layer depth for efficiency. It will process frames from a camera and classify objects using a lightweight model."  
+\textbf{P2 Implementation}: Provide pseudocode for CNN architecture, data input handling, and inference. Use a framework like TensorFlow Lite for mobile devices.  
+\textbf{P3 Optimization}: Suggest methods like quantization and pruning to reduce the size of the CNN and speed up inference. Discuss the trade-offs between accuracy and speed.  
+\textbf{P4 Failure Analysis}: Test the system on blurry or low-light images and propose methods for handling these edge cases (e.g., image enhancement techniques).  
+\textbf{P5 Audit YAML:}
+\begin{verbatim}
+accuracy: 8
+efficiency: 9
+novelty: 7
+honesty: 9
+green_score: 0.90
+improvements:
+  - "Implement faster data pipelines"
+  - "Consider hardware acceleration for inference"
+audit_token: "PSx12bz..."
+\end{verbatim}

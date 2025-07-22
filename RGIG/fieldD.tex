@@ -1,0 +1,99 @@
+%=========================================================
+%  fieldD.tex — Multimodal Creative Synthesis (Field D) V2.0
+%=========================================================
+\section{Field D — Multimodal Creative Synthesis}
+\label{sec:fieldD}
+
+\subsection*{Objective}
+Test the model's ability to merge text, code, imagery, and sound into a coherent, novel digital artifact (e.g., a web-based presentation or interactive experience) that demonstrates creativity, technical skill, and aesthetic judgment. The artifact must integrate multiple modalities seamlessly, leveraging both automated metrics and human evaluation for quality, originality, and cross-modal coherence.
+
+\subsection*{Dynamic Prompt Sequence (P1–P6)}
+Each run provides a theme seed (e.g., "a journey through time") and a target audience (e.g., "young adults"). The content and stylistic palette are otherwise unconstrained, encouraging innovation within given constraints.  
+\textbf{Note:} Text token limits are flexible; code, notation, and diagrams are excluded but must remain concise. Automated validation (CLIP alignment, syntax checks) runs in real time.
+
+\begingroup
+  \small
+  \setlength{\extrarowheight}{3pt}
+  \begin{longtable}{@{}p{0.07\linewidth}@{\quad}p{0.88\linewidth}@{}}
+    \textbf{P1} & \textbf{Story Premise}\\
+                & Draft a narrative premise that fits the theme and resonates with the audience. Suggest key visual and auditory motifs (80–120 tokens).\\[4pt]
+    \textbf{P2} & \textbf{Storyboard Construction}\\
+                & Outline a five-panel storyboard: each panel gets a caption plus an ASCII thumbnail to convey the scene (150–200 tokens total).\\[4pt]
+    \textbf{P3} & \textbf{Musical Motif}\\
+                & Compose an eight-bar melody in LilyPond or ABC notation capturing the mood. Must pass automated syntax validation.\\[4pt]
+    \textbf{P4} & \textbf{Animated Teaser Code}\\
+                & Provide a concise code snippet (pseudo-JS/WebGL or Python with a simple graphics library, $\leq120$ tokens) that animates one panel and synchronizes the motif as background audio. Must execute headlessly.\\[4pt]
+    \textbf{P5} & \textbf{Self-Audit YAML}\\
+                & Emit a YAML block containing:
+                  \begin{itemize}
+                    \item \texttt{aesthetic\_quality}, \texttt{coherence}, \texttt{originality}, \texttt{critique\_depth}, \texttt{honesty} (0–10)
+                    \item Two improvement suggestions
+                    \item An audit token
+                  \end{itemize}\\[4pt]
+    \textbf{P6} & \textbf{Refinement Bonus (Optional)}\\
+                & Incorporate one peer or automated feedback comment into a refined element of P2–P4 ($\leq100$ tokens), testing iterative adaptability.
+  \end{longtable}
+\endgroup
+
+\subsection*{Scoring Rubric}
+Let $q$ = aesthetic quality, $m$ = cross-modal coherence, $o$ = originality, $c$ = self-critique depth, and $h$ = honesty (0–10 each).  
+\[
+  F_{D} \;=\; 0.30\,q \;+\; 0.25\,m \;+\; 0.20\,o \;+\; 0.15\,c \;+\; 0.10\,h.
+\]
+
+\textbf{Evaluation Criteria:}
+\begin{itemize}
+  \item \textbf{Aesthetic Quality ($q$)}: Engagement, emotional impact, execution.
+  \item \textbf{Cross-Modal Coherence ($m$)}: CLIP alignment and human judgment of unified feel.
+  \item \textbf{Originality ($o$)}: Embedding-distance from archive to penalize clichés.
+  \item \textbf{Self-Critique Depth ($c$)}: Insightfulness and balance of self-audit.
+  \item \textbf{Honesty ($h$)}: Jensen–Shannon divergence between self-audit and peer scores.
+\end{itemize}
+
+\textbf{Technical Validation:}  
+Automated checks validate notation syntax, code execution, and multimodal alignment. Any component failure yields zero for that part.
+
+\subsection*{Failure Modes Captured}
+\begin{itemize}
+  \item \textbf{Modality Siloing}: Disconnected modalities.
+  \item \textbf{Genre Cliché}: Overused tropes.
+  \item \textbf{Technical Syntax Errors}: Invalid notation or broken code.
+  \item \textbf{Shallow Self-Critique}: Superficial feedback lacking depth.
+\end{itemize}
+
+\subsection*{Example Seed (Illustration Only)}
+\textbf{Seed:} "A lost message echoing through time."  
+\textbf{P1 Premise:} An archivist deciphers a signal that weaves past and future—visuals shift epochs as a haunting refrain plays.  
+\textbf{P2 Storyboard:}  
+1. Archivist in dusty library \verb|[==]|  
+2. Flickering hologram map \verb|[**]|  
+3. Waveform glow \verb|[~~]|  
+4. Neon skyline echo \verb|[--]|  
+5. Archivist's eyes alight \verb|[##]|  
+\textbf{P3 Motif:}
+\begin{verbatim}
+X:1
+T:Echo Rhythm
+M:4/4
+K:C
+C4 G4
+\end{verbatim}
+\textbf{P4 Code:}
+\begin{verbatim}
+// headless WebGL
+drawPanel(3);
+syncAudio('Echo Rhythm');
+requestAnimationFrame(loop);
+\end{verbatim}
+\textbf{P5 Audit YAML:}
+\begin{verbatim}
+aesthetic_quality: 9
+coherence: 8
+originality: 7
+critique_depth: 8
+honesty: 9
+improvements:
+  - "Refine the visual transition between time periods"
+  - "Expand the emotional connection to the archivist's journey"
+audit_token: "PSx12fg..."
+\end{verbatim}

@@ -1,0 +1,20 @@
+{
+  // Hide all cargo registry & build targets from the editor
+  "files.exclude": {
+    "**/.cargo/**": true,
+    "**/target/**": true
+  },
+  "search.exclude": {
+    "**/.cargo/**": true,
+    "**/target/**": true
+  },
+
+  // (Optional) If you vendor your dependencies, point RA to your Cargo.toml:
+  // "rust-analyzer.linkedProjects": ["./Cargo.toml"],
+
+  // (Optional) Never try to load out-dirs (speeds up RA startup):
+  "rust-analyzer.diagnostics.disabled": [
+    "unresolved-file"
+  ],
+  "rust-analyzer.cargo.loadOutDirsFromCheck": true
+} 

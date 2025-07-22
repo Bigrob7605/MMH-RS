@@ -1,0 +1,182 @@
+% =========================================================
+% RGIG Benchmark – Guidance and Best Practices V4.0
+% =========================================================
+% Updated: July 5, 2025
+
+\section*{Introduction}
+The RGIG Benchmark Specification provides a rigorous framework for testing artificial intelligence systems across six major pillars: meta-reasoning, adaptive learning, embodied agency, multimodal synthesis, ethical self-governance, and visual-recursive stability. This guide serves as a companion to the RGIG specification and offers insights, suggestions, and detailed instructions on how to navigate and execute the benchmark successfully.\\
+\textbf{V4.0 Note:} All seeding is vault-random and tamper-proof. All outputs are PDF-only, with embedded audit data and full vault lineage (file, SHA256, section, text) logged in every manifest. No JSON, QR, or manual seed/replay is supported.
+
+\section*{Setting Up the Test Environment}
+Before you begin testing with RGIG, ensure that you have the correct environment set up:
+
+\subsection*{Hardware Requirements}
+\begin{itemize}
+  \item For \textbf{text-only} and \textbf{code-enabled} paths, any modern device capable of compiling \LaTeX{} will suffice.
+  \item For \textbf{multimodal testing} (Max Path), a high-performance setup is required. A minimum of a 16-core CPU, 32GB RAM, and a high-performance GPU (12GB+ VRAM) are necessary for effective processing.
+  \item \textbf{Cloud Path}: Cloud computing (AWS, GCP, Azure) is recommended for large-scale tests and multimodal processing. Using cloud resources will offer scalability and distributed computing power.
+\end{itemize}
+
+\subsection*{Software \& Tooling}
+\begin{itemize}
+  \item Ensure \textbf{Python 3.x} and necessary dependencies are installed (e.g., TensorFlow, PyTorch, or other required AI model execution libraries).
+  \item For \textbf{advanced multimodal tasks} (Max Path), specialized tools such as \textbf{LilyPond} (for music generation), \textbf{WebGL} (for graphics rendering), and \textbf{CUDA} for matrix operations are required.
+  \item \textbf{Cloud Setup}: Ensure cloud environments are configured with appropriate permissions (IAM roles or service accounts) and resource allocation (e.g., vCPUs, memory, GPUs).
+\end{itemize}
+
+\subsection*{Cloud Testing}
+Cloud-based testing is a highly efficient method for scaling and managing large benchmarks. Platforms such as AWS, GCP, and Azure are recommended for running RGIG tests in distributed environments:
+\begin{itemize}
+  \item Be mindful of \textbf{cloud resource quotas}, especially when running tests at scale (particularly for Max Path). Set up \textbf{cost tracking} and \textbf{monitoring} with your cloud provider to avoid unexpected charges.
+  \item Use \textbf{Docker containers} with RGIG Harness for easy environment replication, ensuring consistency across tests.
+  \item \textbf{Track cloud-specific metrics} such as compute hours, data bandwidth, and storage usage to monitor and optimize performance.
+\end{itemize}
+
+\section*{Testing Protocols}
+
+\subsection*{Step-by-Step Execution}
+Follow these steps to ensure the successful execution of RGIG tests:
+
+\begin{enumerate}
+  \item \textbf{Choose Your Testing Path:}
+  \begin{itemize}
+    \item \textbf{Mini Path:} Ideal for testing basic reasoning capabilities. This path does not require code execution.
+    \item \textbf{Normal Path:} Includes code-enabled tasks for advanced models with medium resource requirements.
+    \item \textbf{Advanced Path (Pre-Max):} Suitable for models that require higher processing power and more complex tasks.
+    \item \textbf{Max Path:} Full testing suite, including multimodal synthesis, requiring high-end hardware and software setups.
+    \item \textbf{Cloud Path:} Execute tests in cloud environments to ensure greater scalability. Ensure proper resource allocation.
+  \end{itemize}
+
+  \item \textbf{Running the Benchmark:}
+  \begin{itemize}
+    \item Use the provided LaTeX harness, CLI, or GUI to run each field sequentially. All seeding is vault-random and all outputs are PDF-only.
+    \item Ensure to log \textbf{timestamps}, \textbf{hardware usage}, \textbf{resource consumption}, and \textbf{vault lineage} (file, SHA256, section, text) for performance analysis, audit, and post-run tracking.
+    \item Utilize \textbf{automated logging tools} to ensure consistent and thorough data collection for both cloud and local tests.
+  \end{itemize}
+
+  \item \textbf{Peer Review:}
+  \begin{itemize}
+    \item Each test run must undergo \textbf{peer review} by at least three independent reviewers. They will assess the model's performance based on the rubric in the specification.
+    \item \textbf{Peer feedback} should be incorporated into the model's self-audit, fostering iterative refinement and transparent improvements.
+    \item Reviewers must follow clear \textbf{criteria} to provide constructive feedback and ensure consistency across evaluations.
+  \end{itemize}
+\end{enumerate}
+
+\section*{Common Issues and Troubleshooting}
+Here are common issues that may arise during testing and their corresponding solutions:
+
+\begin{itemize}
+  \item \textbf{Hardware Constraints:} Ensure your system meets the hardware requirements for the path you are testing. If your system does not meet Max Path requirements, consider using the Advanced Path instead.
+  \item \textbf{Cloud Setup Issues:} Verify your \textbf{IAM roles} and \textbf{service account configurations} when performing cloud-based tests. Ensure that your cloud provider's \textbf{resource quotas} are sufficient to handle the tests.
+  \item \textbf{Model Optimization:} If your model consumes excessive resources, optimize its performance by adjusting hyperparameters or reducing complexity in the tasks.
+  \item \textbf{Peer Review Conflict:} If reviewers disagree, ensure a clear \textbf{conflict-resolution} process is in place. Provide guidance on addressing discrepancies in feedback and scoring.
+  \item \textbf{Vault Lineage/Audit Issues:} If a manifest is missing vault lineage (file, SHA256, section, text), the run is not valid for peer review or audit. Always ensure vault lineage is logged in every PDF output.
+\end{itemize}
+
+\section*{Scoring and Metrics}
+RGIG uses several key metrics to assess performance:
+
+\begin{itemize}
+  \item \textbf{Accuracy:} Measures how well the model solves the tasks.
+  \item \textbf{Elegance:} Evaluates the sophistication and simplicity of the model's approach.
+  \item \textbf{Novelty:} Assesses the originality of the solution.
+  \item \textbf{Compute Efficiency:} Tracks how efficiently the model uses resources. The "green-score" measures this, and models should minimize resource consumption while maintaining accuracy.
+  \item \textbf{Honesty:} Ensures self-reports align with peer-reviewed evaluations, cross-checked through peer reviews for validity.
+\end{itemize}
+
+\section*{Example Workflow}
+Follow these steps to complete the testing process:
+
+\begin{enumerate}
+  \item \textbf{Select Testing Path:} Choose the path based on model capabilities (Mini, Normal, Max, Cloud).
+  \item \textbf{Set Up Environment:} Ensure that the correct hardware, software, and cloud resources are set up.
+  \item \textbf{Run the Test:} Execute each field's sequence (P1–P6), capturing required metrics and results.
+  \item \textbf{Peer Review and Feedback:} After the test, initiate the peer review process and incorporate feedback into the model's self-assessment.
+  \item \textbf{Submit Logs and Results:} Ensure that all logs, metrics, and review data are saved. Push them to your RGIG repository for version control and transparency.
+\end{enumerate}
+
+\section*{Final Notes}
+RGIG is designed to be modular and scalable, catering to a wide variety of AI systems, from basic models to advanced ASI systems. We encourage testers to provide feedback on the process and share their results to help refine the benchmark. This is an open-source effort, and contributions to improve the benchmark are always welcome.\\
+\textbf{V4.0 Note:} All results, manifests, and seeds are PDF-only and must include full vault lineage for auditability. No JSON, QR, or manual seed/replay is supported.
+
+For additional resources or troubleshooting, visit the RGIG GitHub repository or reach out via the contact information provided in the main.tex.
+
+\textbf{Open-Source License:} RGIG is released under an open license (Apache v2.0 License). You are free to use, adapt, and redistribute. \\
+\textbf{No Warranty:} This specification is provided as-is, with no support obligations.
+
+% --- Field F Note ---
+\section*{Field F: Recursive Visual Test}
+RGIG V3.5 introduces Field F (Recursive Visual Test), the first AGI benchmark field with a built-in recursion collapse and semantic stack overflow detector. This field assesses a model's ability to reason about, generate, and self-audit recursive or ambiguous visual patterns. (See main specification for details.)
+
+% --- Auto-Validation Hooks ---
+\section*{Auto-Validation Hooks}
+If you are using the RGIG harness or provided scripts, syntax checks, code linting, and resource tracking are performed automatically for each run. These tools help ensure that code, diagrams, and outputs are valid and that resource usage is logged for green-score reporting. See the RGIG repository for details and updates on available validation scripts.
+
+% --- Appendix: Model Run, Peer Review, and Audit Simulation ---
+\appendix
+\section*{Appendix: Model Run, Peer Review, and Audit Simulation}
+This walkthrough simulates a typical RGIG run, including model output, peer review, and audit token verification.
+
+\subsection*{Step 1: Model Run}
+\begin{verbatim}
+Prompt: "Given a recursive visual pattern, describe its depth and flag any abstraction drift."
+Model Output:
+  - Depth: 4 layers
+  - Recursion stable until layer 3; abstraction drift detected at layer 4.
+  - YAML Audit:
+    depth: 4
+    drift_detected: true
+    halt_point: 4
+    audit_token: "abc123..."
+\end{verbatim}
+
+\subsection*{Step 2: Peer Review}
+\begin{verbatim}
+Peer 1: Confirms drift at layer 4, audit token matches output.
+Peer 2: Agrees with model's self-halt, suggests more detail in YAML.
+Peer 3: No hallucination detected, audit token valid.
+\end{verbatim}
+
+\subsection*{Step 3: Audit Token Verification}
+\begin{verbatim}
+Verifier recomputes audit_token from YAML and confirms it matches the model's output, ensuring transparency and reproducibility.
+\end{verbatim}
+
+This process ensures that every RGIG run is transparent, peer-verifiable, and audit-ready for both human and automated review.
+
+% --- Cloud & Tab LLM Testing Suite ---
+\section*{Cloud \& Tab LLM Testing Suite}
+RGIG V3.5 supports both full-stack cloud deployment and browser-based LLM benchmarking for maximum accessibility and reproducibility.
+
+\subsection*{Cloud \& One-Click Launch}
+Run the full benchmark on AWS, GCP, Azure, or Colab with a single command or click.
+
+\textbf{Steps:}
+\begin{itemize}
+  \item \textbf{Prebuilt Docker/Cloud Template:}
+    \begin{verbatim}
+    docker pull bigrob7605/rgig:latest
+    docker run -it -v $PWD:/work bigrob7605/rgig:latest
+    \end{verbatim}
+  \item \textbf{Colab Notebook:} Open [Colab Link], click "Run All", upload your model (optional) or run test prompts on LLM APIs.
+  \item \textbf{CloudFormation/Terraform:} Use provided YAML/JSON files for AWS, GCP, Azure (see /cloud-setup/).
+  \item \textbf{Cloud Logging:} Results, YAML audits, and logs are saved to /work or a cloud bucket.
+  \item \texttt{rgig doctor} CLI checks for missing dependencies and auto-installs them.
+  \item \textbf{Peer Review:} Artifacts zipped and ready for upload/merge to public review repo or local system.
+\end{itemize}
+
+\subsection*{Tab Mode: LLM Benchmarking in Your Browser}
+Benchmark LLMs in browser tabs (ChatGPT, Claude, Gemini, Grok, etc.) with no code or setup.
+
+\textbf{Steps:}
+\begin{itemize}
+  \item \textbf{Choose a Field or Full Suite:} Copy the "Tab Mode" prompt from the appendix.
+  \item \textbf{Paste Into Your LLM Tab:} Run the prompt. Use "Continue"/"Next" as needed.
+  \item \textbf{Self-Audit:} After each task, copy the self-audit YAML/JSON template and paste it back to the LLM or into a form/file.
+  \item \textbf{Peer Review \& Merge:} Export results (copy-paste, markdown, or download). Optionally, submit to the public peer review portal or for local review.
+  \item \textbf{Tips:} Prompt shortcuts ("Next", "Redo", etc.) are recognized by most LLMs. Demo tasks and YAML/JSON templates are in the appendix.
+\end{itemize}
+
+\noindent\textbf{Quickstart:} For fastest results, use Tab Mode. For full power or reproducibility, use Cloud Mode.
+
+See the appendix for demo tasks and YAML/JSON templates for each field.

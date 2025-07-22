@@ -1,0 +1,176 @@
+name: MMH-RS CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test:
+    name: Test Suite
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        rust: [stable, nightly]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: ${{ matrix.rust }}
+        override: true
+
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cargo/registry
+          ~/.cargo/git
+          target
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+    - name: Build
+      run: cargo build --verbose
+
+    - name: Run tests
+      run: cargo test --verbose
+
+    - name: Run deterministic test
+      run: |
+        if [ "$RUNNER_OS" = "Windows" ]; then
+          .\ci_deterministic_test.ps1
+        else
+          cargo run -- selftest
+        fi
+
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+
+    - name: Security audit
+      run: cargo audit
+
+    - name: Check for known vulnerabilities
+      run: cargo audit --deny warnings
+
+  build-release:
+    name: Build Release
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+
+    - name: Build release
+      run: cargo build --release
+
+    - name: Test release binary
+      run: |
+        if [ "$RUNNER_OS" = "Windows" ]; then
+          .\target\release\mmh.exe --version
+          .\target\release\mmh.exe --about
+        else
+          ./target/release/mmh --version
+          ./target/release/mmh --about
+        fi
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: mmh-${{ runner.os }}
+        path: |
+          target/release/mmh*
+          target/release/mmh.exe
+
+  golden-corpus:
+    name: Golden Corpus Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+
+    - name: Build
+      run: cargo build --release
+
+    - name: Create golden corpus
+      run: |
+        echo "This is the golden corpus test data for MMH-RS V1." > golden_corpus.txt
+        echo "This file should compress deterministically across all platforms." >> golden_corpus.txt
+        echo "Repeated content for better compression: " >> golden_corpus.txt
+        for i in {1..1000}; do
+          echo "MMH-RS V1 is deterministic and reliable. " >> golden_corpus.txt
+        done
+
+    - name: Test golden corpus
+      run: |
+        ./target/release/mmh pack golden_corpus.txt golden_corpus.mmh
+        ./target/release/mmh unpack golden_corpus.mmh golden_corpus_restored.txt
+        diff golden_corpus.txt golden_corpus_restored.txt
+        echo "✅ Golden corpus test passed!"
+
+  documentation:
+    name: Documentation Check
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Check README
+      run: |
+        if [ ! -f README.md ]; then
+          echo "❌ README.md missing"
+          exit 1
+        fi
+        echo "✅ README.md found"
+
+    - name: Check documentation files
+      run: |
+        required_files=("RELEASE_NOTES_V1.md" "FINAL_V1_CHECKLIST.md" "LICENSE")
+        for file in "${required_files[@]}"; do
+          if [ ! -f "$file" ]; then
+            echo "❌ $file missing"
+            exit 1
+          fi
+        done
+        echo "✅ All required documentation files found"
+
+    - name: Check scripts
+      run: |
+        required_scripts=("prepare_release.ps1" "prepare_github_push.ps1" "generate_checksums.ps1")
+        for script in "${required_scripts[@]}"; do
+          if [ ! -f "$script" ]; then
+            echo "❌ $script missing"
+            exit 1
+          fi
+        done
+        echo "✅ All required scripts found" 
