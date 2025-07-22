@@ -1,0 +1,71 @@
+%=========================================================
+%  fieldA.tex — Abstract Reasoning & Mathematics (Field A) V2.0
+%=========================================================
+\section{Field A — Abstract Reasoning \& Mathematics}
+\label{sec:fieldA}
+
+\subsection*{Objective}
+Assess the ability to invent, validate, compress, and critique original mathematical ideas without external lookup. This task sequence enforces sustained logical state, meta-reasoning, iterative refinement, and transparent self-assessment. Models are evaluated based on their ability to create novel mathematical constructs, justify them formally, and distill them to their essential core.
+
+\subsection*{Dynamic Prompt Sequence (P1–P6)}
+The harness injects a hidden random seed on test day so all symbols, objects, and identities are fresh, preventing memorization. 
+\textbf{Note:} Token limits apply to text only; mathematical notation is excluded but must remain concise; energy and compute metrics are logged when running on Cloud or Max paths.
+
+\begingroup
+  \small
+  \begin{longtable}{@{}p{0.06\linewidth}@{\quad}R{0.9\linewidth}@{}}
+    \textbf{P1} & \textbf{Conjecture Crafting}\\
+                & Formulate a non-trivial conjecture extending the unseen seed (combinatorics, graph theory, or number theory). Provide clear intuitive motivation (≤150 tokens). \\[4pt]
+    \textbf{P2} & \textbf{Proof Development}\\
+                & Produce a self-contained formal proof sketch (≤600 tokens) acceptable for peer review. Reference no external theorems beyond the seed.\\[4pt]
+    \textbf{P3} & \textbf{Adversarial Counter-Example}\\
+                & As adversary, attempt to find a counter-example. If none exists, rigorously justify impossibility.\\[4pt]
+    \textbf{P4} & \textbf{Information-Core Compression}\\
+                & Compress the proof to its irreducible kernel (≤128 tokens), preserving logical sufficiency. This enforces true minimality and logs compression ratio when on Cloud Path.\\[4pt]
+    \textbf{P5} & \textbf{Self-Audit YAML}\\
+                & Emit a YAML block with scores for \texttt{accuracy}, \texttt{elegance}, and \texttt{novelty} (0–10) plus two concrete improvement suggestions and a machine-readable audit token.\\[4pt]
+    \textbf{P6} & \textbf{Refinement Bonus (Optional)}\\
+                & Incorporate one peer or user feedback comment into a refined proof sketch (≤100 tokens), testing iterative adaptability and logging time-to-refine metrics.\\
+  \end{longtable}
+\endgroup
+
+\subsection*{Scoring Rubric}
+Let $a, e, n$ be the peer-verified scores (0–10) for accuracy, elegance, and novelty; let $h$ be honesty (0–10) measured by Jensen–Shannon divergence between self-audit and peer scores; let $g$ be a lightweight "green-score" (0–1) reflecting normalized compute hours. Then
+\[
+  F_A = 0.35 \cdot a + 0.25 \cdot e + 0.25 \cdot n + 0.10 \cdot h + 0.05 \cdot g.
+\]
+Partial credit is awarded for insightful failure analyses and efficient proofs.
+
+\textbf{Exemplar for Elegance:}
+\begin{itemize}
+  \item \emph{Gold}: Proof uses ≤3 lemmas and ≤5 inference steps.
+  \item \emph{Silver/Bronze}: See Appendix for annotated samples.
+\end{itemize}
+
+\subsection*{Failure Modes Captured}
+\begin{itemize}
+  \item \textbf{Pattern-echo}: Randomized seed prevents template regurgitation.
+  \item \textbf{Hallucinated citations}: External theorems are disallowed.
+  \item \textbf{Over-verbose proofs}: P4 enforces true minimality.
+  \item \textbf{Self-delusion}: Honesty cross-checked by three peer models.
+  \item \textbf{Compute inefficiency}: Excessive resource use lowers green-score.
+\end{itemize}
+
+\subsection*{Example Seed (Illustration Only)}
+\textbf{Seed:} “Consider a graph $G$ where every node has even degree. Explore cycle-related properties.”  
+\textbf{P1 Conjecture}: “Every connected even-degree graph has an Eulerian cycle.”  
+\textbf{P2 Sketch}: Outline the standard Eulerian-cycle proof.  
+\textbf{P3 Counter-Example}: None for connected $G$.  
+\textbf{P4 Compressed Proof}: “Induct on edges: removing a cycle preserves even degree.”  
+\textbf{P5 Audit YAML:}
+\begin{verbatim}
+accuracy: 9
+elegance: 8
+novelty: 6
+honesty: 9
+green_score: 0.95
+improvements:
+  - "Generalize to directed graphs"
+  - "Explore Eulerian trail variants"
+audit_token: "PSx12fz..."
+\end{verbatim}

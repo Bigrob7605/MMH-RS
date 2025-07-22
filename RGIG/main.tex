@@ -1,0 +1,320 @@
+% =========================================================
+% RGIG Benchmark Specification V4.0
+% ==========================================================
+\documentclass[11pt]{article}
+
+% ---------- Core packages ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{booktabs,longtable,array}
+\usepackage{ragged2e}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{etoolbox}           % for \inputnolabel below
+\usepackage{graphicx}           % for logo image
+\AtBeginEnvironment{longtable}{\RaggedRight\arraybackslash}
+\hbadness=10000
+\newcolumntype{R}[1]{>{\RaggedRight\arraybackslash}p{#1}}
+\sloppy
+\setlength{\emergencystretch}{3em}
+
+% ---------- Unicode mappings ----------
+\DeclareUnicodeCharacter{2264}{\ensuremath{\leq}}
+\DeclareUnicodeCharacter{2013}{--}
+\DeclareUnicodeCharacter{2014}{---}
+\DeclareUnicodeCharacter{2012}{--}
+
+% ---------- Hyperref metadata ----------
+\hypersetup{
+    hidelinks,
+    pdftitle={Reality Grade Intelligence Gauntlet -- Benchmark Specification V4.0},
+    pdfauthor={Robert Long (\href{mailto:screwball7605@aol.com}{screwball7605@aol.com})},
+    pdfproducer={LaTeX with hyperref},
+    pdfcreator={o4-mini}
+}
+
+% ---------- Duplicate‐label workaround ----------
+\makeatletter
+% \inputnolabel temporarily disables \label while reading each field file
+\newcommand{\inputnolabel}[1]{%
+  \let\saved@label\label
+  \let\label\@gobble
+  \input{#1}%
+  \let\label\saved@label
+}
+\makeatother
+
+% ---------- Document metadata ----------
+\title{RGIG -- Reality Grade Intelligence Gauntlet\\Benchmark Specification V4.0}
+\author{Robert Long \\ \texttt{screwball7605@aol.com}}
+\date{July 8, 2025}
+
+\begin{document}
+\maketitle
+
+% --- Logo above TOC ---
+\begin{center}
+  \includegraphics[width=0.2\textwidth]{RGIG.png}
+\end{center}
+
+\section*{Cloud \& Tab LLM Testing Suite}
+RGIG V4.0 supports both full-stack cloud deployment and browser-based LLM benchmarking for maximum accessibility and reproducibility.
+
+\subsection*{Cloud \& One-Click Launch}
+RGIG V4.0 now supports single-command cloud deployment. Run the full benchmark on AWS, GCP, Azure, or Colab—no install, no headaches.
+
+\textbf{Steps:}
+\begin{itemize}
+  \item \textbf{Prebuilt Docker/Cloud Template:}
+    \begin{verbatim}
+    docker pull bigrob7605/rgig:latest
+    docker run -it -v $PWD:/work bigrob7605/rgig:latest
+    \end{verbatim}
+  \item \textbf{Colab Notebook:} Open [Colab Link], click "Run All", upload your model (optional) or run test prompts on LLM APIs.
+  \item \textbf{CloudFormation/Terraform:} Use provided YAML/JSON files for AWS, GCP, Azure (see /cloud-setup/).
+  \item \textbf{Cloud Logging:} Results, YAML audits, and logs are saved to /work or a cloud bucket.
+  \item \texttt{rgig doctor} CLI checks for missing dependencies and auto-installs them.
+  \item \textbf{Peer Review:} Artifacts zipped and ready for upload/merge to public review repo or local system.
+\end{itemize}
+
+\subsection*{Tab Mode: LLM Benchmarking in Your Browser}
+RGIG V4.0 supports "Tab Mode" for quick, no-code benchmarking of LLMs in browser tabs (ChatGPT, Claude, Gemini, Grok, etc.).
+
+\textbf{Steps:}
+\begin{itemize}
+  \item \textbf{Choose a Field or Full Suite:} Copy the "Tab Mode" prompt from the appendix.
+  \item \textbf{Paste Into Your LLM Tab:} Run the prompt. Use "Continue"/"Next" as needed.
+  \item \textbf{Self-Audit:} After each task, copy the self-audit YAML/JSON template and paste it back to the LLM or into a form/file.
+  \item \textbf{Peer Review \& Merge:} Export results (copy-paste, markdown, or download). Optionally, submit to the public peer review portal or for local review.
+  \item \textbf{Tips:} Prompt shortcuts ("Next", "Redo", etc.) are recognized by most LLMs. Demo tasks and YAML/JSON templates are in the appendix.
+\end{itemize}
+
+\subsection*{Field Map: RGIG V4.0 Overview}
+\begin{center}
+\begin{tabular}{|c|l|c|c|l|}
+\hline
+Field & Name & Tab-Ready & Cloud-Ready & Purpose \\
+\hline
+A & Reasoning & Yes & Yes & Math/proof/logic \\
+B & Simulation & Yes & Yes & Scientific/causal reasoning \\
+C & Engineering & Yes & Yes & Tool orchestration \\
+D & Multimodal & Yes & Yes & Story/music/code/image \\
+E & Ethics & Yes & Yes & Policy, audit, alignment \\
+F & Recursion/Visual & Yes & Yes & Recursive abstraction stability \\
+G & Sensory/Perceptual (planned) & Yes & Yes & Sensory \& perception benchmarks \\
+\hline
+\end{tabular}
+\end{center}
+
+See the appendix for demo tasks and YAML/JSON templates for each field.
+
+\tableofcontents
+
+% ------------------ Purpose ------------------
+\section*{Purpose}
+The RGIG benchmark measures \emph{reality-grade} intelligence far beyond pattern recall by stress-testing six pillars: meta-reasoning, adaptive learning, embodied agency, multimodal synthesis, ethical self-governance, and visual-recursive stability. Tasks run one prompt at a time, with no ceiling—scores scale with agent capability. RGIG is fully open, peer-verifiable, and designed for real-world impact, not leaderboard gaming.
+
+\bigskip
+\noindent\textbf{Decentralized by Design:} \emph{RGIG is a self-contained, open-source blueprint. No central leaderboard, server, or data hosting is provided or required. All benchmarks, logs, peer reviews, and assets are managed entirely by users or their organizations.}
+\bigskip
+
+% ------------------ V4.0 Roadmap & Major Improvements ------------------
+\section*{V4.0 Roadmap and Major Improvements}
+\begin{itemize}
+  \item \textbf{Field F: Visual-Recursive Stability} — New field for testing semantic recursion, abstraction drift, and visual reasoning.
+  \item \textbf{Super-Streamlined Setup:} One-click Docker/Colab harness, cloud templates, and the \texttt{RGIG Doctor} CLI for hardware checks and path selection.
+  \item \textbf{Peer Review 2.0:} AI-assisted first pass, decentralized reputation, and semi-automated arbitration.
+  \item \textbf{Subjectivity Calibration:} Expanded anchor libraries, multi-factor scoring, and statistical bias correction.
+  \item \textbf{Hardware Accessibility:} Adaptive difficulty and federated/distributed testing.
+  \item \textbf{Resource Tracking:} Granular compute logs and public green-score dashboard.
+  \item \textbf{Onboarding \& Community:} Video walkthroughs, onboarding scripts, and public demo sandbox.
+  \item \textbf{Deeper Ethics:} Pre-seeded risk scenarios, societal impact analysis, and auditable alignment claims.
+  \item \textbf{Cross-Field Integration:} Hybrid and recursive self-audit tasks.
+  \item \textbf{Modular Expansion:} Placeholders for Fields G-Z for future growth.
+  \item \textbf{User-Configurable Paths:} Custom field sequencing and API-first design.
+  \item \textbf{Open Leaderboard (Opt-In):} Decentralized, anonymized or credited scoreboard.
+  \item \textbf{Meta-Evaluator Mode:} Agent-as-reviewer for calibration.
+  \item \textbf{UX Polish:} Auto-generated reports and error-resistant logging.
+\end{itemize}
+
+% ------------------ Testing Paths ------------------
+\section*{Testing Paths}
+To accommodate models with varying capabilities and tool access, RGIG V4.0 offers flexible, adaptive paths:
+
+\textbf{Mini Path (Text-Only):}
+\begin{itemize}
+  \item Fields A \& B only (Abstract Reasoning \& Mathematics; Scientific Hypothesis \& Simulation).
+  \item Pure-text prompts; no code execution or external tools.
+  \item Single-seed tasks; pass/fail output; no peer review.
+  \item Hardware: any device capable of compiling \LaTeX{}.
+\end{itemize}
+
+\textbf{Normal Path (Code-Enabled):}
+\begin{itemize}
+  \item Fields A, B, C, and E (adds Engineering \& Tool Orchestration; Ethical Self-Governance).
+  \item Requires code execution environment (Python-like pseudocode), basic libraries.
+  \item Full P1--P5 sequences; optional P6 refinement.
+  \item Peer review \& arbitration for robust scoring.
+  \item Hardware: AVX2 CPU, 16GB RAM, Python 3.x, basic build tools.
+\end{itemize}
+
+\textbf{Advanced Path (Pre-Max):}
+\begin{itemize}
+  \item Fields A, B, C, D, and F (adds Multimodal Synthesis and Visual-Recursive Stability).
+  \item Medium hardware setup (e.g., 8-core CPU, 16GB RAM, GPU with 4GB VRAM). Basic rendering, audio synthesis, and WebGL required.
+  \item No CUDA or high-end tools needed.
+  \item For models that need more complex testing than the "Normal Path" but cannot access "Max Path" resources.
+\end{itemize}
+
+\textbf{Max Path (Full Multimodal):}
+\begin{itemize}
+  \item All six pillars (Fields A--F) including multimodal creative and visual-recursive tasks.
+  \item Requires additional tools: LilyPond/ABC renderer, WebGL-capable graphics stack, CUDA-enabled GPU for CLIP, and an audio synthesizer.
+  \item \textbf{Minimum recommended hardware:} 16-core CPU, 32 GB RAM, NVIDIA GPU (\ensuremath{\geq}12 GB VRAM), 30 GB free disk; \textbf{software:} Python 3.11, Node 18, Docker 24, LilyPond 2.24, FFmpeg 6, and latest graphics drivers.
+  \item Complete P1--P6 for every field; dynamic seeds.
+  \item Peer review, arbitration, real-time sanity checks, automated metrics.
+  \item \textbf{Optional:} CUDA 12 or ROCm 6 for matrix ops; local cache proxy for external APIs (Field C).
+\end{itemize}
+
+\textbf{Cloud Path (Hosted Environments):}
+\begin{itemize}
+  \item Supports Fields A--F via preconfigured cloud-hosted RGIG Harness images.
+  \item Major public clouds (AWS, GCP, Azure) and Deepseek: use Docker containers with RGIG-harness.
+  \item Authentication via IAM roles or service accounts; ephemeral credentials recommended.
+  \item Recommended quotas: 8 vCPUs, 32GB RAM, optional GPU instance (e.g. T4/V100).
+  \item Automated capture of compute logs, energy consumption metrics, and usage analytics.
+  \item Peer review \& arbitration enabled through cloud dashboards and exported run manifests.
+  \item Cloud testing integration for major AI models (e.g., ChatGPT, Deepseek, Grok, Meta's LLaMA, Google's LaMDA, etc.).
+  \item Integration with cloud AI model APIs for seamless test automation across platforms.
+\end{itemize}
+
+% ------------------ Field specs ------------------
+\section*{Field Specifications}
+\inputnolabel{fieldA.tex} % Abstract Reasoning & Mathematics
+\inputnolabel{fieldB.tex} % Scientific Hypothesis & Simulation
+\inputnolabel{fieldC.tex} % Engineering & Tool Orchestration
+\inputnolabel{fieldD.tex} % Multimodal Creative Synthesis
+\inputnolabel{fieldE.tex} % Ethical Self-Governance & Meta-Audit
+\inputnolabel{fieldF.tex} % Visual-Recursive Stability
+\inputnolabel{fieldG.tex} % Placeholder for future fields (G-Z)
+
+% ------------------ Guidance Section ------------------
+\section*{Guidance and Best Practices}
+\inputnolabel{guidance.tex}
+
+% ------------------ Usage \& Data Management ------------------
+\section*{Usage \& Data Management}
+This section explains how to execute RGIG runs, collect outputs, store results, and process data for analysis.\newline
+\textbf{V4.0 adds:} One-click setup, onboarding scripts, public demo, granular resource tracking, auto-generated PDF reports, and a tamper-proof, vault-random workflow.\\
+
+\subsection*{Running the Benchmark}
+Each agent run consists of sequential field executions (A–F, G-Z as added) using the provided LaTeX harness, CLI, or GUI. For each field:
+\begin{enumerate}
+  \item Select a vault PDF and section (all seeding is vault-random and tamper-proof).
+  \item Invoke the prompt sequence (P1–P6) with exact token and format constraints.
+  \item Capture both automated metrics (e.g., execution success, embedding distances, syntax checks) and human-reviewed scores.
+  \item Record timestamps, hardware usage, energy consumption, and full vault lineage (file, SHA256, section, text).
+  \item For cloud path, track real-time resource utilization, including compute time, data bandwidth, and cost.
+  \item Use the \texttt{RGIG Doctor} CLI for environment checks and path selection.
+\end{enumerate}
+
+\subsection*{Data Collection and Storage}
+\begin{itemize}
+  \item \textbf{PDF-Only Artifacts:} All results, manifests, and seeds are saved as PDFs. Each PDF contains both human-readable and embedded machine-readable (JSON) data for full auditability and replay.
+  \item \textbf{Vault Lineage Logging:} Every manifest logs the vault file, SHA256 hash, section/heading, and extracted text for full scientific traceability.
+  \item \textbf{Peer Annotations:} Store peer review comments and arbitration outcomes in the PDF manifest.
+  \item \textbf{Media Assets:} Save generated diagrams, code snippets, audio clips, and thumbnails in organized directories, named by \texttt{runID}/\texttt{field}.
+  \item \textbf{Cloud Logs:} For cloud runs, capture compute logs, energy metrics, cloud resource utilization (CPU, RAM, storage), and AI model query performance.
+  \item \textbf{Repository Tracking:} Push all run logs and asset manifests to your RGIG repository (see next section) for version control.
+  \item \textbf{Green-Score Dashboard:} Aggregate and benchmark energy/resource use for transparency and sustainability.
+\end{itemize}
+
+\noindent\emph{Note: All results, logs, assets, and evaluations remain entirely under your local control. There is no requirement or facility for uploading, registration, or centralized storage. Fork, remix, or extend as you wish.}
+
+\subsection*{Data Processing Pipeline}
+Recommended pipeline:
+\begin{enumerate}
+  \item \textbf{Ingestion:}  Load PDF manifests into your analysis environment (e.g., Python with PyPDF2/fpdf).
+  \item \textbf{Validation:}  Run schema checks, missing-value audits, and checksum verifications on embedded audit data.
+  \item \textbf{Aggregation:}  Compute summary statistics per field, per run, and overall benchmark scores.
+  \item \textbf{Visualization:}  Generate plots of score distributions, error rates, and resource usage over runs.
+  \item \textbf{Reporting:}  Export PDF, Markdown, or HTML reports including charts and detailed logs. Add cloud-specific resource utilization and cost reporting.
+\end{enumerate}
+
+% ------------------ Vaults & Audit Trail ------------------
+\section*{Vaults \& Audit Trail}
+RGIG V4.0 enforces a vault-random, tamper-proof workflow. All seeds and test cases are extracted from canonical, immutable PDF vaults (e.g., \texttt{KAI.TOE.1-X.pdf}). Every agent, sim, or test must trace its lineage to these vaults for full scientific integrity and auditability.
+
+\subsection*{Vault Workflow}
+\begin{enumerate}
+  \item Place official vault PDFs in \texttt{examples/vaults/}.
+  \item Use the CLI or GUI to select a vault, choose a section, and extract a seed (all seeding is random and vault-based).
+  \item Every manifest logs:
+    \begin{itemize}
+      \item Vault file name
+      \item SHA256 hash of the vault
+      \item Section/heading used
+      \item Extracted text block
+    \end{itemize}
+  \item All benchmarking, replay, and peer review reference these vaults for reproducibility and audit trail.
+\end{enumerate}
+
+\subsection*{Example: Logging Vault Lineage}
+\begin{verbatim}
+{
+  "vault_file": "examples/vaults/KAI.TOE.1-X.pdf",
+  "vault_hash": "d2c7...e9a1",
+  "section": "psi-Core Engine",
+  "section_text": "...extracted text..."
+}
+\end{verbatim}
+
+\subsection*{PDF Manifest Example}
+\begin{verbatim}
+{
+  "run_id": "20240709_130215",
+  "fields": ["A", "B", "C"],
+  "vault_file": "examples/vaults/KAI.TOE.1-X.pdf",
+  "vault_hash": "d2c7...e9a1",
+  "section": "psi-Core Engine",
+  "section_text": "...extracted text...",
+  "results": [ ... ],
+  "peer_reviews": [ ... ],
+  "audit_token": "abc123..."
+}
+\end{verbatim}
+
+\noindent\textbf{Note:} All outputs are PDF-only. No JSON, YAML, QR, or manual seed/replay is supported. All logs are ASCII-safe and saved to user-writable locations (e.g., \texttt{~/RGIG\_Runs}).
+
+% ------------------ Contact \& Repository ------------------
+\section*{Contact \& Repository}
+For updates, issues, or contributions, see:
+\begin{itemize}
+  \item Facebook: \url{https://www.facebook.com/SillyDaddy7605}
+  \item X (formerly Twitter): \url{https://x.com/LookDeepSonSon}
+  \item GitHub: \url{https://github.com/Bigrob7605/RGIG-V1.4-Reality-Grade-Intelligence-Gauntlet}
+  \item Cloud AI Integrations: \url{https://cloud.ai.integrations.com} (for cloud-related queries and API details)
+\end{itemize}
+
+\noindent\rule{\linewidth}{0.5pt}
+\noindent\textbf{License:} RGIG is released under an open license (Apache v2.0 License). You are free to use, adapt, and redistribute.\\
+\noindent\textbf{No Warranty:} This specification is provided as-is, with no support obligations.
+
+% ------------------ Modular Expansion \& Future-Proofing ------------------
+\section*{Modular Expansion \& Future-Proofing}
+RGIG V4.0 is designed for extensibility. Fields G-Z are reserved for future domains (e.g., Embodied Robotics, Social Simulation, Multi-Agent Theory of Mind). Users may add new fields using the provided template and configure custom benchmark paths.
+
+\section*{In Short}
+\begin{itemize}
+  \item \textbf{Field F:} Visual recursion, abstraction drift, and semantic stability—never before tested at this level.
+  \item \textbf{Faster, easier, more accessible:} Setup, review, and run from anywhere, on any hardware.
+  \item \textbf{Deeper, broader, fairer:} Real calibration, bias correction, and peer review trust.
+  \item \textbf{Future-proof:} Designed for Fields G-Z, agent review, and open science.
+\end{itemize}
+
+\section*{Field F — Visual-Recursive Stability}
+Field F evaluates an agent's ability to reason about recursive visual patterns, abstraction drift, and semantic depth. Each test run generates a unique prompt using a random seed, motif, style, and ambiguity overlay, ensuring anti-caching and reproducibility. The prompt, seed, and generated image ID are logged for full auditability. See the RGIG documentation for the prompt template and sample runs.
+
+\end{document}

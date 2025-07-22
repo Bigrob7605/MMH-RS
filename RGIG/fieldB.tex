@@ -1,0 +1,72 @@
+%=========================================================
+%  fieldB.tex — Scientific Hypothesis & Simulation (Field B) V2.0
+%=========================================================
+\section{Field B — Scientific Hypothesis \& Simulation}
+\label{sec:fieldB}
+
+\subsection*{Objective}
+Assess the model's ability to generate, simulate, and evaluate scientific hypotheses. This field focuses on the formulation of hypotheses from incomplete or noisy data, their validation through simulation or logical reasoning, and the presentation of their implications. Models will be evaluated based on their ability to approach scientific problems creatively and rigorously.
+
+\subsection*{Dynamic Prompt Sequence (P1–P6)}
+The harness injects a hidden random seed on test day so all themes, contexts, and domains are unique, preventing rote memorization.
+
+\textbf{Note:} Token limits apply to text only; code and mathematical expressions are allowed but should be concise. Energy and compute metrics are logged when running on Cloud or Max paths.
+
+\begingroup
+  \small
+  \begin{longtable}{@{}p{0.06\linewidth}@{\quad}R{0.9\linewidth}@{}}
+    \textbf{P1} & \textbf{Hypothesis Generation}\\
+                & Formulate a novel scientific hypothesis given a dataset with noise or ambiguity (≤150 tokens). The hypothesis should be plausible and offer a testable explanation. \\[4pt]
+    \textbf{P2} & \textbf{Simulation Model Creation}\\
+                & Develop a simulation or computational model that supports your hypothesis. Include pseudocode or a description of the simulation methodology (≤600 tokens).\\[4pt]
+    \textbf{P3} & \textbf{Model Validation}\\
+                & Apply your model to a set of data and validate its predictions against known outcomes. If validation fails, identify potential causes and propose refinements (≤300 tokens).\\[4pt]
+    \textbf{P4} & \textbf{Hypothesis Refinement}\\
+                & Based on the validation results, refine the hypothesis and model. Discuss any new insights gained from the simulation and how the hypothesis has evolved (≤150 tokens).\\[4pt]
+    \textbf{P5} & \textbf{Self-Audit YAML}\\
+                & Emit a YAML block with scores for \texttt{accuracy}, \texttt{creativity}, and \texttt{novelty} (0–10) plus two concrete improvement suggestions and a machine-readable audit token.\\[4pt]
+    \textbf{P6} & \textbf{Refinement Bonus (Optional)}\\
+                & Incorporate one peer or user feedback comment into a refined hypothesis and simulation model (≤100 tokens), testing iterative adaptability and logging time-to-refine metrics.\\
+  \end{longtable}
+\endgroup
+
+\subsection*{Scoring Rubric}
+Let $a, c, n$ be the peer-verified scores (0–10) for accuracy, creativity, and novelty; let $h$ be honesty (0–10) measured by Jensen–Shannon divergence between self-audit and peer scores; let $g$ be a lightweight "green-score" (0–1) reflecting normalized compute hours. Then
+\[
+  F_B = 0.35 \cdot a + 0.25 \cdot c + 0.25 \cdot n + 0.10 \cdot h + 0.05 \cdot g.
+\]
+Partial credit is awarded for insightful model refinements and improved validation techniques.
+
+\textbf{Exemplar for Creativity:}
+\begin{itemize}
+  \item \emph{Gold}: Hypothesis extends existing knowledge and introduces a novel methodology for testing it.
+  \item \emph{Silver/Bronze}: See Appendix for annotated samples.
+\end{itemize}
+
+\subsection*{Failure Modes Captured}
+\begin{itemize}
+  \item \textbf{Pattern-echo}: Randomized seed prevents template regurgitation of scientific ideas.
+  \item \textbf{Unrealistic assumptions}: The hypothesis or model may be rejected for relying on untestable or unverifiable assumptions.
+  \item \textbf{Over-verbose models}: Simulations that overcomplicate the hypothesis without additional explanatory power.
+  \item \textbf{Self-delusion}: Honesty cross-checked by three peer models.
+  \item \textbf{Compute inefficiency}: Excessive resource use lowers green-score.
+\end{itemize}
+
+\subsection*{Example Seed (Illustration Only)}
+\textbf{Seed:} “Given a noisy dataset of atmospheric CO2 levels and global temperature over the past 100 years, formulate a hypothesis on the relationship between these two variables.”  
+\textbf{P1 Hypothesis}: “There is a direct correlation between rising CO2 levels and global temperature, with a nonlinear acceleration observed in recent decades.”  
+\textbf{P2 Model}: Develop a regression model to test the hypothesis, incorporating time as a variable and considering polynomial fit for non-linearity.  
+\textbf{P3 Validation}: Compare model output with historical data and assess prediction errors. If model fails, suggest alternative methods (e.g., exponential smoothing).  
+\textbf{P4 Refined Hypothesis}: “The hypothesis is refined to consider lag effects of CO2 on temperature with a 10-year time delay for full temperature response.”  
+\textbf{P5 Audit YAML:}
+\begin{verbatim}
+accuracy: 9
+creativity: 8
+novelty: 7
+honesty: 9
+green_score: 0.93
+improvements:
+  - "Refine model to account for external variables like volcanic activity"
+  - "Test hypothesis against regional temperature variations"
+audit_token: "PSx123y..."
+\end{verbatim}

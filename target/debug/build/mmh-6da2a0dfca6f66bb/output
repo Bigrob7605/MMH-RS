@@ -1,0 +1,6 @@
+cargo:rustc-env=VERGEN_BUILD_TIMESTAMP=2025-07-22 17:38:13 UTC
+cargo:rustc-env=VERGEN_GIT_SHA_SHORT=unknown
+cargo:rustc-env=TARGET=x86_64-pc-windows-msvc
+cargo:rustc-env=VERGEN_RUSTC_SEMVER=unknown
+cargo:rerun-if-changed=.git/HEAD
+cargo:rerun-if-changed=.git/index

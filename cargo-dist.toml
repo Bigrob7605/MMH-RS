@@ -1,0 +1,96 @@
+[dist]
+# The name of your app (defaults to the crate name)
+name = "mmh"
+# The version of your app (defaults to the crate version)
+version = "1.0.0"
+# The authors of your app (defaults to the crate authors)
+authors = ["Bigrob7605 <Screwball7605@aol.com>"]
+# The description of your app (defaults to the crate description)
+description = "MMH-RS: Universal Digital DNA Format - The compression engine so honest it will roast your files if they're not worth compressing"
+# The license of your app (defaults to the crate license)
+license = "MIT"
+# The repository of your app (defaults to the crate repository)
+repository = "https://github.com/Bigrob7605/MMH-RS"
+# The homepage of your app (defaults to the crate homepage)
+homepage = "https://github.com/Bigrob7605/MMH-RS"
+# The keywords of your app (defaults to the crate keywords)
+keywords = ["compression", "zstd", "file", "archive", "deterministic"]
+# The categories of your app (defaults to the crate categories)
+categories = ["command-line-utilities", "compression"]
+
+# The targets to build for
+targets = ["x86_64-unknown-linux-gnu", "x86_64-pc-windows-msvc", "x86_64-apple-darwin"]
+
+# The installers to generate
+installers = ["msi", "pkg", "appimage"]
+
+# The files to include in the release
+files = [
+    "README.md",
+    "LICENSE",
+    "RELEASE_NOTES_V1.md",
+    "FINAL_V1_CHECKLIST.md",
+    "prepare_release.ps1",
+    "prepare_github_push.ps1",
+    "generate_checksums.ps1",
+    "ci_deterministic_test.ps1"
+]
+
+# The scripts to run before building
+pre-build = [
+    "cargo build --release",
+    "cargo test",
+    "cargo audit"
+]
+
+# The scripts to run after building
+post-build = [
+    "generate_checksums.ps1"
+]
+
+# The GitHub release settings
+[dist.github]
+# The repository to release to
+repo = "Bigrob7605/MMH-RS"
+# The branch to release from
+branch = "main"
+# The tag prefix for releases
+tag-prefix = "v"
+# The release title template
+title = "MMH-RS {version}"
+# The release body template
+body = """
+## 🎉 MMH-RS {version} Release
+
+**The compression engine so honest it will roast your files if they're not worth compressing.**
+
+### 🚀 What's New
+- Legendary CLI/UX with ASCII art and roast levels
+- Deterministic compression across all platforms
+- Perfect integrity verification
+- Real compression ratios with honest expectations
+
+### 📦 Installation
+Download the appropriate binary for your platform and run:
+- **Windows:** `mmh.exe`
+- **Linux:** `./mmh`
+- **macOS:** `./mmh`
+
+### 🔧 Features
+- Up to 7:1 compression for repetitive content
+- 162-375 MB/s across diverse payload types
+- Interactive menu system with performance "roast" levels
+- Comprehensive test suite with deterministic verification
+
+### 📚 Documentation
+- [README](README.md) - Quick start and feature overview
+- [Release Notes](RELEASE_NOTES_V1.md) - Detailed changelog
+- [Final Checklist](FINAL_V1_CHECKLIST.md) - Quality assurance
+
+### 🔗 Links
+- **Repository:** https://github.com/Bigrob7605/MMH-RS
+- **Issues:** https://github.com/Bigrob7605/MMH-RS/issues
+- **Discussions:** https://github.com/Bigrob7605/MMH-RS/discussions
+
+**Ready to dominate the compression world!** 🚀
+""" 
