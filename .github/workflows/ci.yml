@@ -145,6 +145,15 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+
+    - name: Build project
+      run: cargo build --release
+
     - name: Check README
       run: |
         if [ ! -f README.md ]; then
