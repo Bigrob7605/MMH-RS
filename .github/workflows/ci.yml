@@ -64,6 +64,9 @@ jobs:
         toolchain: stable
         override: true
 
+    - name: Install cargo-audit
+      run: cargo install cargo-audit
+
     - name: Security audit
       run: cargo audit
 
@@ -101,7 +104,7 @@ jobs:
         fi
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: mmh-${{ runner.os }}
         path: |
