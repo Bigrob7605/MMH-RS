@@ -7,6 +7,7 @@ use std::process;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 use std::thread;
+use rand::Rng;
 
 static RUNNING: AtomicBool = AtomicBool::new(false);
 
@@ -89,6 +90,9 @@ fn main() {
             },
             cli::Commands::Stressbench { size } => {
                 run_stress_benchmark(size);
+            },
+            cli::Commands::Goldbench { size, seed, format } => {
+                run_gold_benchmark(*size, *seed, format);
             },
             cli::Commands::Selftest => {
                 cli::selftest();
@@ -410,6 +414,52 @@ fn run_stress_benchmark(size_gb: u64) {
     // For now, just run the regular benchmark
     // Note: Stress test with mixed file types implemented in V2
     run_benchmark_with_abort(size_gb, &Arc::new(AtomicBool::new(true)));
+}
+
+fn run_gold_benchmark(size_gb: u64, seed: Option<u64>, format: String) {
+    println!("🏆 Running MMH-RS Gold Standard Benchmark ({} GB)...", size_gb);
+    println!("This benchmark provides comprehensive performance analysis and system evaluation.");
+    
+    // Show progress indicator
+    println!("⏳ Initializing benchmark system...");
+    
+    // Run the benchmark with optional seed
+    let report = if let Some(replay_seed) = seed {
+        println!("🔢 Using replay seed: {}", replay_seed);
+        bench::run_with_seed(size_gb, replay_seed)
+    } else {
+        let random_seed = rand::random::<u64>();
+        println!("🎲 Using random seed: {}", random_seed);
+        bench::run_with_seed(size_gb, random_seed)
+    };
+    
+    // Display results based on format
+    match format.as_str() {
+        "text" => {
+            println!("\n{}", report.pretty_box());
+        },
+        "json" => {
+            let json = serde_json::to_string_pretty(&report).unwrap();
+            println!("{}", json);
+        },
+        "both" | _ => {
+            println!("\n{}", report.pretty_box());
+            println!("\n📊 JSON Report:");
+            let json = serde_json::to_string_pretty(&report).unwrap();
+            println!("{}", json);
+        }
+    }
+    
+    // Show final status
+    let all_tests_passed = report.input_hash == report.unpacked_hash && report.errors.is_empty();
+    if all_tests_passed {
+        println!("\n✅ GOLD STANDARD BENCHMARK: ALL TESTS PASSED");
+        println!("📁 Reports saved to: bench_reports/<timestamp>/");
+    } else {
+        println!("\n❌ GOLD STANDARD BENCHMARK: SOME TESTS FAILED");
+        println!("📁 Check detailed logs in: bench_reports/<timestamp>/");
+        process::exit(1);
+    }
 }
 
 fn show_advanced_menu() {

@@ -7,9 +7,11 @@
 //!  ✓ One‑shot SHA‑256 integrity + optional per‑file verify
 //!  ✓ Score formula printed verbatim (anti‑cheat)
 //!  ✓ Automatic export to `bench_reports/<timestamp>/`
-//!  ✓ Smoketest mode (`size_gb == 0`) for <50 MiB micro‑run
+//!  ✓ Smoketest mode (`size_gb == 0`) for <50 MiB micro‑run
 //!  ✓ `run_with_seed()` for CI/reviewer deterministic replay
 //!  ✓ Single public `run()` wrapper keeps existing CLI unchanged
+//!  ✓ Gold Standard Reporting with system tier detection
+//!  ✓ Comprehensive audit trails and performance analysis
 
 use std::{fs, path::{PathBuf, Path}, time::Instant, io::{BufWriter, Write}};
 use std::fs::File;
@@ -18,13 +20,44 @@ use indicatif::{ProgressBar, ProgressStyle};
 use rand::{rngs::StdRng, Rng, SeedableRng};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
-use sysinfo::{RefreshKind, System};
+use sysinfo::{RefreshKind, System, CpuExt, SystemExt};
 
 const BYTES_PER_MB: f64 = 1_048_576.0;
 const MAX_SMOKE_BYTES: u64 = 50 * 1_048_576; // 50 MiB
 
-// ─────────────────────────────────────────────────────────────
+// System tier definitions
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub enum SystemTier {
+    Entry,
+    Mainstream,
+    HighEnd,
+    Enterprise,
+    Unfair, // For testing/development systems
+}
 
+impl SystemTier {
+    fn from_specs(cpu_cores: usize, ram_gb: u64, has_ssd: bool) -> Self {
+        match (cpu_cores, ram_gb, has_ssd) {
+            (1..=2, 1..=4, _) => SystemTier::Entry,
+            (2..=8, 4..=16, _) => SystemTier::Mainstream,
+            (8..=32, 16..=64, true) => SystemTier::HighEnd,
+            (32.., 64.., true) => SystemTier::Enterprise,
+            _ => SystemTier::Unfair,
+        }
+    }
+    
+    fn as_str(&self) -> &'static str {
+        match self {
+            SystemTier::Entry => "Entry",
+            SystemTier::Mainstream => "Mainstream",
+            SystemTier::HighEnd => "High-End",
+            SystemTier::Enterprise => "Enterprise",
+            SystemTier::Unfair => "Unfair/Development",
+        }
+    }
+}
+
+// Enhanced benchmark report with gold standard metrics
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Report {
     // Meta & reproducibility
@@ -32,11 +65,13 @@ pub struct Report {
     pub timestamp_utc: String,
     pub replay_seed: u64,
     pub run_mode: String,
+    pub system_tier: SystemTier,
 
     // Workload
     pub test_set_desc: String,
     pub total_files: usize,
     pub total_size_bytes: u64,
+    pub seed_output_size_bytes: u64,
 
     // Performance (MB/s & s)
     pub pack_speed: f64,
@@ -46,53 +81,224 @@ pub struct Report {
     pub unpack_time: f64,
     pub verify_time: f64,
     pub compression_ratio: f64,
+    pub files_per_sec: f64,
 
     // System stats
     pub peak_cpu_pct: f32,
     pub avg_cpu_pct: f32,
     pub peak_ram_mb: u64,
     pub peak_threads: usize,
+    pub thermal_throttling: bool,
+    pub memory_pressure: String,
 
     // Hashes
     pub input_hash: String,
     pub packed_hash: String,
     pub unpacked_hash: String,
 
-    // Score
+    // Score & Analysis
     pub seed_score: u32,
     pub seed_score_formula: String,
+    pub overall_system_score: u32,
+    pub performance_tier: String,
+    pub warnings: Vec<String>,
+    pub errors: Vec<String>,
+    
+    // System info
+    pub os_info: String,
+    pub cpu_info: String,
+    pub ram_info: String,
+    pub storage_info: String,
 }
 
 impl Report {
-    /// Produce a screenshot‑ready Unicode box summary
+    /// Generate gold standard benchmark report display
     pub fn pretty_box(&self) -> String {
         use std::fmt::Write;
         let mut s = String::new();
-        writeln!(s, "╔═{:═^74}═╗", " MMH‑RS BENCHMARK ").unwrap();
-        writeln!(s, "║ 🗂️  {:<70} ║", format!("{} ({} files, {:.1} MiB)", self.test_set_desc, self.total_files, self.total_size_bytes as f64 / BYTES_PER_MB)).unwrap();
-        writeln!(s, "║ 🏷️  Mode: {:<64} ║", self.run_mode).unwrap();
+        
+        // Header
+        writeln!(s, "╔═{:═^74}═╗", " MMH-RS V1 BENCHMARK REPORT ").unwrap();
+        writeln!(s, "║ Test File:         {:<50} ║", format!("./testdata/{}", self.test_set_desc)).unwrap();
+        writeln!(s, "║ File Count:        {:<50} ║", self.total_files).unwrap();
+        writeln!(s, "║ Total Size:        {:<50} ║", format!("{} bytes ({:.1} GB)", 
+            self.total_size_bytes, self.total_size_bytes as f64 / 1_073_741_824.0)).unwrap();
+        writeln!(s, "║ Seed Output Size:  {:<50} ║", format!("{} bytes ({:.1} GB)", 
+            self.seed_output_size_bytes, self.seed_output_size_bytes as f64 / 1_073_741_824.0)).unwrap();
+        writeln!(s, "║ Compression Ratio: {:<50} ║", format!("{:.2}x", self.compression_ratio)).unwrap();
+        writeln!(s, "║ Time to Pack:      {:<50} ║", format!("{:.2} sec", self.pack_time)).unwrap();
+        writeln!(s, "║ Time to Unpack:    {:<50} ║", format!("{:.2} sec", self.unpack_time)).unwrap();
+        writeln!(s, "║ Pack Speed:        {:<50} ║", format!("{:.1} MB/s", self.pack_speed)).unwrap();
+        writeln!(s, "║ Unpack Speed:      {:<50} ║", format!("{:.1} MB/s", self.unpack_speed)).unwrap();
+        writeln!(s, "║ Verify Speed:      {:<50} ║", format!("{:.1} MB/s", self.verify_speed)).unwrap();
+        writeln!(s, "║ Files/sec:         {:<50} ║", format!("{:.1}", self.files_per_sec)).unwrap();
+        writeln!(s, "║ Max CPU:           {:<50} ║", format!("{:.1}%", self.peak_cpu_pct)).unwrap();
+        writeln!(s, "║ Max RAM:           {:<50} ║", format!("{:.1} GB", self.peak_ram_mb as f64 / 1024.0)).unwrap();
+        writeln!(s, "║ Thread Count:      {:<50} ║", self.peak_threads).unwrap();
+        
+        // Integrity check
+        let integrity_status = if self.input_hash == self.unpacked_hash { "✅ SHA256 MATCH" } else { "❌ SHA256 MISMATCH" };
+        writeln!(s, "║ Integrity:         {:<50} ║", integrity_status).unwrap();
+        
+        // System status
+        let thermal_status = if self.thermal_throttling { "YES" } else { "NO" };
+        writeln!(s, "║ Thermal/Resource:  {:<50} ║", format!("[Thermal Throttling: {}] / [Memory Pressure: {}]", 
+            thermal_status, self.memory_pressure)).unwrap();
+        
+        // Separator
         writeln!(s, "╠═{:═^74}═╣", "").unwrap();
-        writeln!(s, "║ PACK   {:>8.1} MB/s ({:>5.1}s) | UNPACK {:>8.1} MB/s ({:>5.1}s) ║", self.pack_speed, self.pack_time, self.unpack_speed, self.unpack_time).unwrap();
-        writeln!(s, "║ VERIFY {:>8.1} MB/s ({:>5.1}s) | Ratio {:>7.2}× | Score {:>4} ║", self.verify_speed, self.verify_time, self.compression_ratio, self.seed_score).unwrap();
-        writeln!(s, "║ CPU ↑ {:>5.1}% | RAM ↑ {:>6.1} MiB | Threads ↑ {:>4}             ║", self.peak_cpu_pct, self.peak_ram_mb, self.peak_threads).unwrap();
+        
+        // Overall scores
+        writeln!(s, "║ Overall System Score: {:<50} ║", self.overall_system_score).unwrap();
+        writeln!(s, "║ Performance Tier:     {:<50} ║", self.performance_tier).unwrap();
+        
+        // Warnings and errors
+        if !self.warnings.is_empty() {
+            writeln!(s, "╠═{:═^74}═╣", " WARNINGS ").unwrap();
+            for warning in &self.warnings {
+                writeln!(s, "║ ⚠️  {:<70} ║", warning).unwrap();
+            }
+        }
+        
+        if !self.errors.is_empty() {
+            writeln!(s, "╠═{:═^74}═╣", " ERRORS ").unwrap();
+            for error in &self.errors {
+                writeln!(s, "║ ❌ {:<70} ║", error).unwrap();
+            }
+        }
+        
+        // Footer with pass/fail status
+        let all_tests_passed = self.input_hash == self.unpacked_hash && self.errors.is_empty();
+        let status = if all_tests_passed { "[ALL TESTS PASSED]" } else { "[SOME TESTS FAILED]" };
         writeln!(s, "╠═{:═^74}═╣", "").unwrap();
-        writeln!(s, "║ Formula: {} ║", self.seed_score_formula).unwrap();
+        writeln!(s, "║ {:<74} ║", status).unwrap();
         writeln!(s, "╚═{:═^74}═╝", "").unwrap();
+        
         s
     }
 
-    /// Save TXT+JSON to a timestamped folder under `bench_reports/`
+    /// Save comprehensive TXT+JSON to a timestamped folder under `bench_reports/`
     pub fn save(&self) {
         let ts = Local::now().format("%Y-%m-%d_%H-%M-%S").to_string();
         let dir = PathBuf::from("bench_reports").join(&ts);
         fs::create_dir_all(&dir).expect("Failed to create report dir");
+        
+        // Save JSON report
         let json = serde_json::to_string_pretty(self).unwrap();
         fs::write(dir.join("report.json"), &json).unwrap();
+        
+        // Save human-readable report
         fs::write(dir.join("report.txt"), self.pretty_box()).unwrap();
+        
+        // Save detailed log
+        let mut log_content = String::new();
+        log_content.push_str(&format!("MMH-RS V1 Benchmark Report\n"));
+        log_content.push_str(&format!("Generated: {}\n", self.timestamp_utc));
+        log_content.push_str(&format!("Replay Seed: {}\n", self.replay_seed));
+        log_content.push_str(&format!("System Tier: {}\n", self.system_tier.as_str()));
+        log_content.push_str(&format!("OS: {}\n", self.os_info));
+        log_content.push_str(&format!("CPU: {}\n", self.cpu_info));
+        log_content.push_str(&format!("RAM: {}\n", self.ram_info));
+        log_content.push_str(&format!("Storage: {}\n", self.storage_info));
+        log_content.push_str(&format!("Score Formula: {}\n", self.seed_score_formula));
+        log_content.push_str(&format!("Overall Score: {}\n", self.overall_system_score));
+        
+        if !self.warnings.is_empty() {
+            log_content.push_str("\nWarnings:\n");
+            for warning in &self.warnings {
+                log_content.push_str(&format!("- {}\n", warning));
+            }
+        }
+        
+        if !self.errors.is_empty() {
+            log_content.push_str("\nErrors:\n");
+            for error in &self.errors {
+                log_content.push_str(&format!("- {}\n", error));
+            }
+        }
+        
+        fs::write(dir.join("detailed.log"), log_content).unwrap();
+        
+        println!("📊 Benchmark report saved to: bench_reports/{}/", ts);
+    }
+    
+    /// Calculate overall system score based on performance and efficiency
+    fn calculate_overall_score(&self) -> u32 {
+        let base_score = self.seed_score as f64;
+        
+        // Bonus for good compression ratio
+        let ratio_bonus = if self.compression_ratio > 2.0 { 20.0 } else { 0.0 };
+        
+        // Bonus for high speeds
+        let speed_bonus = if self.pack_speed > 100.0 && self.unpack_speed > 200.0 { 30.0 } else { 0.0 };
+        
+        // Penalty for high resource usage
+        let resource_penalty = if self.peak_ram_mb > 8192 { 10.0 } else { 0.0 }; // 8GB threshold
+        
+        // Penalty for thermal throttling
+        let thermal_penalty = if self.thermal_throttling { 15.0 } else { 0.0 };
+        
+        let final_score = base_score + ratio_bonus + speed_bonus - resource_penalty - thermal_penalty;
+        final_score.max(0.0).round() as u32
+    }
+    
+    /// Determine performance tier based on overall score
+    fn determine_performance_tier(&self) -> String {
+        match self.overall_system_score {
+            0..=100 => "Entry Level".to_string(),
+            101..=200 => "Mainstream".to_string(),
+            201..=350 => "High Performance".to_string(),
+            351..=500 => "Enterprise".to_string(),
+            _ => "Ultra Performance".to_string(),
+        }
+    }
+    
+    /// Analyze system for warnings and errors
+    fn analyze_system(&self) -> (Vec<String>, Vec<String>) {
+        let mut warnings = Vec::new();
+        let mut errors = Vec::new();
+        
+        // Check for integrity issues
+        if self.input_hash != self.unpacked_hash {
+            errors.push("Integrity verification failed - data corruption detected".to_string());
+        }
+        
+        // Check for performance issues
+        if self.pack_speed < 50.0 {
+            warnings.push("Compression speed below 50 MB/s - consider faster storage".to_string());
+        }
+        
+        if self.unpack_speed < 100.0 {
+            warnings.push("Decompression speed below 100 MB/s - system may be underpowered".to_string());
+        }
+        
+        // Check for resource issues
+        if self.peak_ram_mb > 16384 { // 16GB
+            warnings.push("High memory usage detected - consider more RAM for larger datasets".to_string());
+        }
+        
+        if self.peak_cpu_pct > 90.0 {
+            warnings.push("High CPU usage detected - system may be thermal throttling".to_string());
+        }
+        
+        if self.thermal_throttling {
+            warnings.push("Thermal throttling detected - performance may be limited".to_string());
+        }
+        
+        if self.memory_pressure == "HIGH" {
+            warnings.push("High memory pressure detected - system may be swapping".to_string());
+        }
+        
+        // Check compression ratio
+        if self.compression_ratio < 1.5 {
+            warnings.push("Low compression ratio - data may already be compressed".to_string());
+        }
+        
+        (warnings, errors)
     }
 }
 
-// ────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────
 // public API
 
 /// Run benchmark with `size_gb` of deterministic random data.
@@ -248,9 +454,11 @@ fn run_inner(size_gb: u64, replay_seed: u64) -> Report {
         timestamp_utc: Utc::now().to_rfc3339(),
         replay_seed,
         run_mode: if size_gb == 0 { "SMOKETEST | MMH‑RS V1" } else { "Mainstream | MMH‑RS V1" }.into(),
-        test_set_desc: if size_gb == 0 { format!("~{} MiB deterministic", MAX_SMOKE_BYTES / 1_048_576) } else { format!("{} GiB deterministic", size_gb) },
+        system_tier: SystemTier::from_specs(sys.cpus().len(), sys.total_memory() / 1_073_741_824, sys.disks().iter().any(|d| d.is_ssd())),
+        test_set_desc: if size_gb == 0 { format!("~{} MiB deterministic", MAX_SMOKE_BYTES / 1_048_576) } else { format!("{} GiB deterministic", size_gb) },
         total_files: file_count,
         total_size_bytes: total_bytes,
+        seed_output_size_bytes: (packed_mb * BYTES_PER_MB) as u64,
         pack_speed,
         unpack_speed,
         verify_speed,
@@ -258,16 +466,36 @@ fn run_inner(size_gb: u64, replay_seed: u64) -> Report {
         unpack_time,
         verify_time,
         compression_ratio: ratio,
+        files_per_sec: file_count as f64 / pack_time,
         peak_cpu_pct: peak_cpu,
         avg_cpu_pct: avg_cpu,
         peak_ram_mb: peak_ram / 1024,
         peak_threads: peak_thr,
+        thermal_throttling: peak_cpu > 95.0,
+        memory_pressure: if peak_ram > sys.total_memory() * 8 / 10 { "HIGH" } else if peak_ram > sys.total_memory() * 6 / 10 { "MEDIUM" } else { "LOW" }.to_string(),
         input_hash,
         packed_hash,
         unpacked_hash,
         seed_score,
         seed_score_formula: seed_formula,
+        overall_system_score: 0,
+        performance_tier: "N/A".to_string(),
+        warnings: Vec::new(),
+        errors: Vec::new(),
+        os_info: format!("{}", sys.name().unwrap_or("Unknown OS")),
+        cpu_info: format!("{} cores, {} MHz", sys.cpus().len(), sys.cpus()[0].frequency()),
+        ram_info: format!("{:.1} GB", sys.total_memory() as f64 / 1_073_741_824.0),
+        storage_info: format!("SSD: {}, HDD: {}", sys.disks().iter().filter(|d| d.is_ssd()).count(), sys.disks().len() - sys.disks().iter().filter(|d| d.is_ssd()).count()),
     };
+    
+    // Calculate overall score and analyze system
+    let mut rpt = rpt;
+    rpt.overall_system_score = rpt.calculate_overall_score();
+    rpt.performance_tier = rpt.determine_performance_tier();
+    let (warnings, errors) = rpt.analyze_system();
+    rpt.warnings = warnings;
+    rpt.errors = errors;
+    
     rpt.save();
     rpt
 }

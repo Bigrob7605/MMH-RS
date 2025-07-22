@@ -97,6 +97,18 @@ pub enum Commands {
     Benchmenu { #[arg(long, default_value = "2")] size: u64 },
     /// Run MMH stress test with 3 realistic file types
     Stressbench { #[arg(long, default_value = "2")] size: u64 },
+    /// Run gold standard benchmark with comprehensive reporting
+    Goldbench { 
+        /// Test size in GB (0 for smoketest, 1-10 for full benchmark)
+        #[arg(long, default_value = "2")]
+        size: u64,
+        /// Replay seed for deterministic testing (optional)
+        #[arg(long)]
+        seed: Option<u64>,
+        /// Output format: text, json, or both
+        #[arg(long, default_value = "both")]
+        format: String,
+    },
     /// Run comprehensive self-test (CI/CD & user validation)
     Selftest,
     /// Clean up all generated test data and temporary files
