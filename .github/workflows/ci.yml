@@ -155,7 +155,7 @@ jobs:
 
     - name: Check documentation files
       run: |
-        required_files=("RELEASE_NOTES_V1.md" "FINAL_V1_CHECKLIST.md" "LICENSE")
+        required_files=("README.md" "LICENSE" "V2_ROADMAP.md" "RELEASE_ANNOUNCEMENT.md")
         for file in "${required_files[@]}"; do
           if [ ! -f "$file" ]; then
             echo "❌ $file missing"
@@ -164,13 +164,13 @@ jobs:
         done
         echo "✅ All required documentation files found"
 
-    - name: Check scripts
+    - name: Check launcher scripts
       run: |
-        required_scripts=("prepare_release.ps1" "prepare_github_push.ps1" "generate_checksums.ps1")
+        required_scripts=("mmh_human.bat" "mmh_agent.bat" "mmh.sh" "mmh_menu.ps1")
         for script in "${required_scripts[@]}"; do
           if [ ! -f "$script" ]; then
             echo "❌ $script missing"
             exit 1
           fi
         done
-        echo "✅ All required scripts found" 
+        echo "✅ All required launcher scripts found" 
