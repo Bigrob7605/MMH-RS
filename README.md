@@ -1,4 +1,7 @@
-# MMH-RS (Multi-Modal Hash - Rust System)
+MMH-RS: Open-source, deterministic, quantum-ready file compression for the AI age.  
+Perfect integrity, blazing speed, built for the next era of data.
+
+# MMH-RS (Multi-Modal Hash - Rust System) (V1.2.0, Updated: July 2025)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Rust](https://img.shields.io/badge/Rust-1.70+-orange.svg)](https://www.rust-lang.org/)
@@ -6,6 +9,22 @@
 [![V2 GPU Upgrade](https://img.shields.io/badge/V2%20GPU%20Upgrade-In%20Progress-blue.svg)](Project%20White%20Papers/MMH-RS_ROADMAP_COMPLETE.pdf)
 [![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen.svg)](https://github.com/Bigrob7605/MMH-RS/actions)
 [![Test Coverage](https://img.shields.io/badge/Coverage-95%25-brightgreen.svg)](https://github.com/Bigrob7605/MMH-RS/actions)
+
+## 🟢 First Steps
+1. **Read [User Guide](Project%20White%20Papers/USER_GUIDE.md)** for basics and V2 beta testing
+2. **See [Project Status](Project%20White%20Papers/PROJECT_STATUS.md)** for current features and community tasks
+3. **Check [MMH-RS_ROADMAP_COMPLETE.pdf](Project%20White%20Papers/MMH-RS_ROADMAP_COMPLETE.pdf)** for what's coming in V2+
+
+## ⚡ Quick Comparison: V1.2.0 vs V2.0
+
+| Feature | V1.2.0 (Now) | V2.0 (Roadmap) |
+|---------|--------------|----------------|
+| **Compression** | CPU only, deterministic | GPU acceleration, multi-GPU |
+| **Integrity** | SHA-256, Merkle, FEC | Quantum-resistant encryption |
+| **Directory Support** | File-level only | Full directory, symlinks |
+| **Platform Support** | Win/Linux/macOS | All + new drivers |
+| **Performance** | 2.15x @ 54 MB/s | 500+ MB/s, 10x faster |
+| **UI** | CLI, menu, scripting | Modern GUI, live dashboard |
 
 ## 🎉 What's New in V1.2.0
 

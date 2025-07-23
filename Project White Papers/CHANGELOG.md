@@ -1,4 +1,4 @@
-# MMH-RS Changelog
+# MMH-RS Changelog (V1.2.0, Updated: July 2025)
 
 **📚 Full Documentation:** [Master Roadmap](MMH-RS_ROADMAP_COMPLETE.pdf) | [Technical Specification](MMH-RS_TECHNICAL_COMPLETE.pdf) | [User Guide](USER_GUIDE.md) | [Project Status](PROJECT_STATUS.md) | [Development History](DEVELOPMENT_HISTORY.md) | [RGIG Integration](RGIG_INTEGRATION_COMPLETE.pdf) | [Kai Core Integration](KAI_CORE_INTEGRATION_COMPLETE.pdf)
 

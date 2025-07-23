@@ -1,4 +1,4 @@
-# MMH-RS Project Status
+# MMH-RS Project Status (V1.2.0, Updated: July 2025)
 
 **For the full V2 roadmap and latest development milestones, see [MMH-RS_ROADMAP_COMPLETE.pdf](MMH-RADMAP_COMPLETE.pdf).**
 

@@ -1,4 +1,4 @@
-# MMH-RS Project White Papers
+# MMH-RS Project White Papers (V1.2.0, Updated: July 2025)
 
 This folder contains the comprehensive documentation for the MMH-RS (Multi-Modal Hash - Rust System) project, organized in a clean, structured format.
 
