@@ -193,4 +193,16 @@
 
 ---
 
+## See Also
+
+- **[Master Roadmap](MMH-RS_ROADMAP_COMPLETE.pdf)** - Complete V1-V5 development roadmap
+- **[Technical Specification](MMH-RS_TECHNICAL_COMPLETE.pdf)** - Detailed implementation documentation
+- **[User Guide](USER_GUIDE.md)** - Installation and usage instructions
+- **[Development History](DEVELOPMENT_HISTORY.md)** - Complete timeline and milestones
+- **[Changelog](CHANGELOG.md)** - Version-by-version change history
+- **[RGIG Integration](RGIG_INTEGRATION_COMPLETE.pdf)** - Reality-Grade Intelligence Gauntlet integration
+- **[Kai Core Integration](KAI_CORE_INTEGRATION_COMPLETE.pdf)** - AI bootstrap and neural processing
+
+---
+
 **For detailed technical specifications and implementation details, see [MMH-RS_TECHNICAL_COMPLETE.pdf](MMH-RS_TECHNICAL_COMPLETE.pdf).** 
