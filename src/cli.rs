@@ -1221,6 +1221,11 @@ pub fn selftest() {
     let packed_file = "selftest_packed.mmh";
     let unpacked_file = "selftest_unpacked.txt";
     
+    // Clean up any existing test files first (auto-overwrite for selftest)
+    let _ = std::fs::remove_file(test_file);
+    let _ = std::fs::remove_file(packed_file);
+    let _ = std::fs::remove_file(unpacked_file);
+    
     // Create test data
     let test_data = b"MMH-RS Self-Test: This is test data for validation!";
     if let Err(e) = std::fs::write(test_file, test_data) {
@@ -1312,6 +1317,11 @@ pub fn selftest() {
     let detest2 = "detest2.txt";
     let detest_mmh = "detest.mmh"; // Use same output filename for both
     
+    // Clean up any existing deterministic test files first (auto-overwrite for selftest)
+    let _ = std::fs::remove_file(detest1);
+    let _ = std::fs::remove_file(detest2);
+    let _ = std::fs::remove_file(detest_mmh);
+    
     // Create identical test files
     if let Err(e) = std::fs::write(detest1, &test_content) {
         println!("❌ Failed to create deterministic test file 1: {}", e);
@@ -1328,6 +1338,9 @@ pub fn selftest() {
         if pack1_result.is_ok() {
             // Read the first compressed file
             let comp1 = std::fs::read(detest_mmh);
+            
+            // Remove the file before second pack to avoid overwrite prompt
+            let _ = std::fs::remove_file(detest_mmh);
             
             // Compress second file (will overwrite the first)
             let pack2_result = pack(detest2, detest_mmh);
