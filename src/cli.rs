@@ -669,15 +669,18 @@ pub fn unpack(input: &str, output: &str) -> Result<(), String> {
             .and_then(|n| n.to_str())
             .unwrap_or("restored_file");
         
-        // Always add the extension if it exists in the header
-        let original_filename = if !file_extension.is_empty() {
-            format!("{}.{}", base_filename, file_extension)
+        // Check if the output filename already has the correct extension
+        let final_output = if !file_extension.is_empty() {
+            if base_filename.ends_with(&format!(".{}", file_extension)) {
+                // Output filename already has the correct extension
+                base_filename.to_string()
+            } else {
+                // Add the extension from the header
+                format!("{}.{}", base_filename, file_extension)
+            }
         } else {
             base_filename.to_string()
         };
-        
-        // Always use the original filename with extension for unpacking
-        let final_output = original_filename.to_string();
         
         // Check for existing output file and handle overwrite
         if Path::new(&final_output).exists() {
@@ -696,7 +699,7 @@ pub fn unpack(input: &str, output: &str) -> Result<(), String> {
             }
         }
         
-        log(&format!("DEBUG: Restoring original filename: {}", original_filename));
+        log(&format!("DEBUG: Restoring original filename: {}", final_output));
         log(&format!("DEBUG: Trying to create output file: {}", final_output));
         
         // Create progress bar for decompression - estimate output size as 3x input (typical compression ratio)

@@ -24,6 +24,7 @@ use std::path::Path;
 pub enum MissionStepResult {
     Success(String),
     Failure(String),
+    #[allow(dead_code)]
     Skipped(String),
 }
 
@@ -422,7 +423,7 @@ impl TestingAgent {
         let success_msg = "[OK] Abort functionality works - operation stopped".to_string();
         let normal_msg = "[NORMAL] Abort test completed normally".to_string();
         let handle = thread::spawn(move || {
-            let start = Instant::now();
+            let _start = Instant::now();
             let mut count = 0;
             
             while running_clone.load(Ordering::SeqCst) && count < 50 {

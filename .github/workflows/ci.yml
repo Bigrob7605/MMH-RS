@@ -169,7 +169,7 @@ jobs:
 
     - name: Check documentation files
       run: |
-        required_files=("README.md" "LICENSE" "V2_ROADMAP.md" "RELEASE_ANNOUNCEMENT.md")
+        required_files=("README.md" "LICENSE" "MMH-RS_V1.2.0_ELITE_TIER_COMPLETE.md" "MMH-RS_V1.2.0_TECHNICAL_SPECIFICATION.md" "MMH-RS_V1.2.0_USER_GUIDE.md")
         for file in "${required_files[@]}"; do
           if [ ! -f "$file" ]; then
             echo "❌ $file missing"
@@ -180,7 +180,7 @@ jobs:
 
     - name: Check launcher scripts
       run: |
-        required_scripts=("mmh_human.bat" "mmh_agent.bat" "mmh.sh" "mmh_menu.ps1")
+        required_scripts=("mmh_universal.bat" "mmh.sh" "mmh_menu.ps1")
         for script in "${required_scripts[@]}"; do
           if [ ! -f "$script" ]; then
             echo "❌ $script missing"

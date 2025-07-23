@@ -173,17 +173,17 @@ fn show_main_menu() {
                 let choice = choice.trim();
                 match choice {
                     "1" => run_benchmark_menu(2),
-                    "2" => run_quick_smoketest(),
-                    "3" => run_standard_test(),
-                    "4" => run_extended_test(),
-                    "5" => compare_benchmark_results(),
-                    "6" => generate_html_report_menu(),
-                    "7" => view_benchmark_history(),
-                    "8" => system_analytics_dashboard(),
-                    "9" => stress_test_pathological(),
-                    "10" => multi_threading_analysis(),
-                    "11" => export_system_profile(),
-                    "12" => generate_ci_script(),
+            "2" => run_quick_smoketest(),
+            "3" => run_standard_test(),
+            "4" => run_extended_test(),
+            "5" => compare_benchmark_results(),
+            "6" => generate_html_report_menu(),
+            "7" => view_benchmark_history(),
+            "8" => system_analytics_dashboard(),
+            "9" => stress_test_pathological(),
+            "10" => multi_threading_analysis(),
+            "11" => export_system_profile(),
+            "12" => generate_ci_script(),
                     "13" => generate_shareable_benchmark(),
                     "14" => share_results_online(),
                     "15" => email_error_logs(),
@@ -195,14 +195,14 @@ fn show_main_menu() {
                     "21" => show_about(),
                     "22" => {
                         println!("🚀 Thanks for using MMH-RS V1.2.0 ELITE TIER - CPU ONLY!");
-                        println!("   Ready for V2 GPU acceleration!");
+                println!("   Ready for V2 GPU acceleration!");
                         return;
-                    }
-                    _ => {
+            }
+            _ => {
                         println!("Invalid choice. Please enter 1-22.");
-                        thread::sleep(Duration::from_millis(1000));
-                    }
-                }
+                thread::sleep(Duration::from_millis(1000));
+            }
+        }
             }
             Err(_) => {
                 println!("Error reading input. Please try again.");
@@ -240,82 +240,82 @@ fn run_benchmark_menu(_default_size: u64) {
             Ok(_) => {
                 let choice = choice.trim();
                 match choice {
-                    "1" => {
-                        println!("Running Smoketest...");
-                        let report = bench::run(0);
-                        println!("\n{}", report.pretty_box());
+            "1" => {
+                println!("Running Smoketest...");
+                let report = bench::run(0);
+                println!("\n{}", report.pretty_box());
                         println!("[OK] Smoketest Complete! Score: {}/1000", report.overall_system_score);
                         break;
-                    }
-                    "2" => {
-                        println!("Running Toasty (2GB)...");
-                        let report = bench::run(2);
-                        println!("\n{}", report.pretty_box());
+            }
+            "2" => {
+                println!("Running Toasty (2GB)...");
+                let report = bench::run(2);
+                println!("\n{}", report.pretty_box());
                         println!("[OK] Toasty Complete! Score: {}/1000", report.overall_system_score);
                         break;
-                    }
-                    "3" => {
-                        println!("Running Scorched (8GB)...");
-                        let report = bench::run(8);
-                        println!("\n{}", report.pretty_box());
+            }
+            "3" => {
+                println!("Running Scorched (8GB)...");
+                let report = bench::run(8);
+                println!("\n{}", report.pretty_box());
                         println!("[OK] Scorched Complete! Score: {}/1000", report.overall_system_score);
                         break;
-                    }
-                    "4" => {
-                        println!("Running Nuked (32GB)...");
-                        let report = bench::run(32);
-                        println!("\n{}", report.pretty_box());
+            }
+            "4" => {
+                println!("Running Nuked (32GB)...");
+                let report = bench::run(32);
+                println!("\n{}", report.pretty_box());
                         println!("[OK] Nuked Complete! Score: {}/1000", report.overall_system_score);
                         break;
-                    }
-                    "5" => {
-                        println!("Running Total Annihilation (128GB)...");
-                        let report = bench::run(128);
-                        println!("\n{}", report.pretty_box());
+            }
+            "5" => {
+                println!("Running Total Annihilation (128GB)...");
+                let report = bench::run(128);
+                println!("\n{}", report.pretty_box());
                         println!("[OK] Total Annihilation Complete! Score: {}/1000", report.overall_system_score);
                         break;
-                    }
-                    "6" => {
-                        println!("Running Memory Madness (256GB)...");
-                        let report = bench::run(256);
-                        println!("\n{}", report.pretty_box());
+            }
+            "6" => {
+                println!("Running Memory Madness (256GB)...");
+                let report = bench::run(256);
+                println!("\n{}", report.pretty_box());
                         println!("[OK] Memory Madness Complete! Score: {}/1000", report.overall_system_score);
                         break;
-                    }
-                    "7" => {
-                        println!("Running Swapocalypse (512GB)...");
-                        let report = bench::run(512);
-                        println!("\n{}", report.pretty_box());
+            }
+            "7" => {
+                println!("Running Swapocalypse (512GB)...");
+                let report = bench::run(512);
+                println!("\n{}", report.pretty_box());
                         println!("[OK] Swapocalypse Complete! Score: {}/1000", report.overall_system_score);
                         break;
-                    }
-                    "8" => {
-                        println!("Running RAMpocalypse (1TB)...");
-                        let report = bench::run(1024);
-                        println!("\n{}", report.pretty_box());
+            }
+            "8" => {
+                println!("Running RAMpocalypse (1TB)...");
+                let report = bench::run(1024);
+                println!("\n{}", report.pretty_box());
                         println!("[OK] RAMpocalypse Complete! Score: {}/1000", report.overall_system_score);
                         break;
-                    }
-                    "9" => {
-                        println!("Running Bulk Small File Test...");
+            }
+            "9" => {
+                println!("Running Bulk Small File Test...");
                         let running = Arc::new(AtomicBool::new(true));
                         run_bulk_small_file_test(&running);
                         break;
-                    }
+            }
                     "10" => {
                         println!("Generating Compact Report...");
                         let report = bench::run(2);
                         println!("\n{}", report.compact_report());
-                        break;
-                    }
+                break;
+            }
                     "11" => {
                         return; // Back to main menu
                     }
                     "12" => {
                         println!("🚀 Thanks for using MMH-RS V1.1.1 ELITE TIER!");
-                        std::process::exit(0);
-                    }
-                    _ => {
+                std::process::exit(0);
+            }
+            _ => {
                         println!("Invalid choice. Please enter 1-12.");
                         thread::sleep(Duration::from_millis(1000));
                     }
@@ -369,7 +369,7 @@ fn run_benchmark_with_abort(size_gb: u64, _running: &Arc<AtomicBool>) {
     println!("Benchmark completed. Returning to menu...");
 }
 
-fn display_world_class_results(rpt: &bench::Report, size_gb: u64) {
+fn display_world_class_results(rpt: &bench::Report, _size_gb: u64) {
     println!("\n");
     println!("╔══════════════════════════════════════════════════════════════════════════════╗");
     println!("║                    🏆 MMH-RS V1.1.0 ELITE TIER - CPU ONLY 🏆                ║");
@@ -932,8 +932,8 @@ fn handle_unpack_file() {
     // Just provide a base filename and let cli::unpack determine the final name with extension
     let input_path = std::path::Path::new(&input);
     let base_filename = input_path.file_stem()
-        .unwrap_or_else(|| std::ffi::OsStr::new("output"))
-        .to_string_lossy()
+            .unwrap_or_else(|| std::ffi::OsStr::new("output"))
+            .to_string_lossy()
         .to_string();
     
     print!("Enter base file name (or press Enter for '{}'): ", base_filename);
@@ -2079,7 +2079,7 @@ fn run_quick_smoketest() {
         .unwrap_or(false);
     
     if test_data_saved {
-        println!("\n💾 Report saved to: bench_reports/");
+    println!("\n💾 Report saved to: bench_reports/");
     }
     println!("📈 Ready for V2 GPU acceleration!");
 }
@@ -2126,7 +2126,7 @@ fn run_standard_test() {
         .unwrap_or(false);
     
     if test_data_saved {
-        println!("\n💾 Report saved to: bench_reports/");
+    println!("\n💾 Report saved to: bench_reports/");
     }
     println!("📈 Ready for V2 GPU acceleration!");
 }
@@ -2173,7 +2173,7 @@ fn run_extended_test() {
         .unwrap_or(false);
     
     if test_data_saved {
-        println!("\n💾 Report saved to: bench_reports/");
+    println!("\n💾 Report saved to: bench_reports/");
     }
     println!("📈 Ready for V2 GPU acceleration!");
 }

@@ -322,7 +322,7 @@ impl Report {
         fs::write(dir.join("detailed.log"), log_content).unwrap();
         
         if show_message {
-            println!("📊 Benchmark report saved to: bench_reports/{}/", ts);
+        println!("📊 Benchmark report saved to: bench_reports/{}/", ts);
         }
     }
     
@@ -857,7 +857,7 @@ fn run_inner(size_gb: u64, replay_seed: u64) -> Report {
                 if let Err(e) = copy_dir_recursive(&testdir, &export_dir) {
                     println!("⚠️  Failed to copy test data: {}", e);
                 } else {
-                    let _ = fs::remove_dir_all(&testdir);
+    let _ = fs::remove_dir_all(&testdir);
                     println!("✅ Test data exported to: {}", export_dir);
                 }
             } else {

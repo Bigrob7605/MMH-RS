@@ -1,0 +1,1 @@
+[2025-07-23 07:21:05] [verify] Input or restored file not found: selftest_input.txt or selftest_unpacked.txt
