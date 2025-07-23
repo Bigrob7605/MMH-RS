@@ -8,27 +8,37 @@ AI-ready, deterministic compression engine with public benchmarks, agent/human t
 
 ### Windows
 ```bash
-# Human interface
-mmh_human.bat
+# Universal launcher (recommended)
+mmh_universal.bat
 
-# Agent/automated testing
-mmh_agent.bat
+# Interactive menu
+cargo run
+
+# Direct command
+cargo run -- pack input.txt output.mmh
 ```
 
 ### Linux/macOS
 ```bash
 # Universal launcher
 ./mmh.sh
+
+# Interactive menu
+cargo run
+
+# Direct command
+cargo run -- pack input.txt output.mmh
 ```
 
 ## Features
 
 - **Deterministic Compression**: Same input → Same output, every time
-- **Self-Healing**: RaptorQ FEC automatically repairs corruption
+- **Perfect Data Integrity**: Bit-for-bit verification with extension preservation
+- **Auto-Overwrite Selftest**: Zero user interaction required for testing
 - **Cryptographic Integrity**: SHA-256 + Merkle trees
 - **Universal Format**: Open CBOR "seed pack" format
 - **Cross-Platform**: Windows, Linux, macOS launchers
-- **Production Ready**: V1.1.0 with comprehensive testing and validation
+- **Production Ready**: V1.2.0 Elite Tier with comprehensive testing and validation
 
 ## Performance
 
@@ -80,7 +90,7 @@ Random data detected - expansion is normal and expected. This is not a bug.
 - ✅ **Self-healing**: RaptorQ FEC corruption recovery
 - ✅ **Universal format**: Open CBOR "seed pack" with 128-bit "Digital DNA"
 
-### 🎯 **Best Use Cases for V1.1.0**
+### 🎯 **Best Use Cases for V1.2.0 Elite Tier**
 
 **For Compression Savings:**
 - Text documents, logs, source code
@@ -94,12 +104,32 @@ Random data detected - expansion is normal and expected. This is not a bug.
 - Deterministic verification and reproduction
 - Foundation for future V2+ features
 
-### 🚀 **V1.1.0 is Just the Foundation**
+### 🚀 **V1.2.0 Elite Tier is Just the Foundation**
 
-**Current (V1.1.0):** CPU-based compression with perfect integrity
+**Current (V1.2.0 Elite Tier):** CPU-based compression with perfect integrity
 **Coming (V2.0):** GPU acceleration, directory support, encryption
 **Future (V3.0):** AI model seeding, intelligent compression
 **Vision (V4.0+):** Quantum-ready, distributed storage
+
+## 🏆 Elite Tier Achievements
+
+### ✅ **Perfect Data Integrity**
+- **Bit-for-bit verification**: SHA-256 + Merkle tree validation
+- **Extension preservation**: Original file extensions perfectly maintained
+- **Deterministic output**: Consistent compression results every time
+- **Auto-overwrite selftest**: Zero user interaction required
+
+### 🚀 **Performance Excellence**
+- **High-speed compression**: 121.59 MB/s average
+- **Rapid decompression**: 572.20 MB/s average
+- **Memory optimization**: Efficient large file processing
+- **Multi-threading**: Parallel processing support
+
+### 🎮 **User Experience**
+- **Interactive menus**: Intuitive file selection and operation
+- **Progress tracking**: Real-time operation feedback
+- **Error handling**: Comprehensive error recovery
+- **Cross-platform**: Universal launcher system
 
 ## Documentation
 
