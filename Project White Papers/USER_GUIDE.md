@@ -25,6 +25,55 @@ MMH-RS represents the next evolution in compression technology, designed specifi
 - **Multi-GPU Scaling**: Distributed processing across multiple GPUs
 - **Advanced CLI**: Enhanced command-line interface with progress tracking
 
+## 🚀 V2 Beta Quickstart
+
+*Want to be an early tester for GPU and quantum features?*
+
+### 🟢 Join V2 Beta Testing
+
+1. **Join the community:**
+   - Discord: [Join our server](#) and say hi in #v2-beta
+   - GitHub: Watch this repo for V2 announcements
+   - Email: Subscribe to V2 beta notifications
+
+2. **Get the V2 development branch:**
+   ```bash
+   git clone https://github.com/Bigrob7605/MMH-RS
+   cd MMH-RS
+   git checkout dev/v2
+   ```
+
+3. **Build with GPU support:**
+   ```bash
+   cargo build --release --features gpu
+   ```
+
+4. **Test GPU acceleration:**
+   ```bash
+   # Test GPU compression
+   cargo run --release -- bench-gpu 10gb
+   
+   # Test directory compression (V2 feature)
+   cargo run --release -- compress-dir test_directory/ output.mmh
+   
+   # Test quantum encryption (V2 feature)
+   cargo run --release -- pack --quantum input.txt output.mmh
+   ```
+
+5. **Report feedback:**
+   - Discord: #v2-beta channel
+   - GitHub: Create issues with [V2-Beta] tag
+   - Email: v2-beta@mmh-rs.dev
+
+**🎯 V2 Beta Features Available:**
+- GPU-accelerated compression (CUDA/ROCm/Metal)
+- Directory support with metadata preservation
+- Quantum-safe encryption algorithms
+- Enhanced CLI with progress tracking
+- Multi-GPU support (experimental)
+
+---
+
 ## 🚀 Quick Start Guide
 
 ### 🟢 Run This First

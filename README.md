@@ -3,6 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Rust](https://img.shields.io/badge/Rust-1.70+-orange.svg)](https://www.rust-lang.org/)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-blue.svg)](https://github.com/Bigrob7605/MMH-RS)
+[![V2 GPU Upgrade](https://img.shields.io/badge/V2%20GPU%20Upgrade-In%20Progress-blue.svg)](Project%20White%20Papers/MMH-RS_ROADMAP_COMPLETE.pdf)
 
 ## 🚧 V2 GPU/Quantum Features in Active Development—Community Contributors Wanted!
 
@@ -62,7 +63,7 @@
 | **Self-Healing (FEC)** | ✅ RaptorQ | ❌ | ✅ | ❌ | ❌ | ❌ |
 | **AI Model-Aware** | ✅ (V3) | ❌ | ❌ | ❌ | ❌ | ❌ |
 | **Quantum Security** | ✅ (V3/4) | ❌ | ❌ | ❌ | ❌ | ❌ |
-| **Directory/Metadata** | ✅ (V2) | Partial | ❌ | ✅ | ✅ | ✅ |
+| **Directory/Metadata** | ✅ (V2) | Partial | ✅ | ✅ | ✅ | ✅ |
 | **Cross-Platform** | ✅ | ✅ | ✅ | ✅ | Partial | Partial |
 | **Open Source** | ✅ MIT | ✅ | ✅ | ✅ | ❌ | ❌ |
 | **Perfect Integrity** | ✅ | ❌ | Partial | Partial | ❌ | ❌ |
@@ -215,49 +216,25 @@ mmh.compressGPU('input.txt', 'output.mmh', { gpuId: 0 });
 mmh.compressDirectory('input_dir/', 'output.mmh');
 ```
 
-## 🔄 V2 Upgrade Guide
+## 📊 V1 vs V2 Feature Comparison
 
-**When V2 releases, simply:**
+| Feature | V1.2.0 (Current) | V2.0 Target | V2.1+ Future |
+|---------|------------------|-------------|--------------|
+| **CPU Compression** | ✅ SHA-256 + Merkle | ✅ Enhanced | ✅ Optimized |
+| **GPU Acceleration** | ❌ | ✅ CUDA/ROCm/Metal | ✅ Multi-GPU |
+| **Directory Support** | Limited | ✅ Native, full metadata | ✅ Filesystem |
+| **Quantum Encryption** | ❌ | ✅ Quantum-safe | ✅ Post-quantum |
+| **Cross-Platform GUI** | ❌ | ✅ Tauri-based | ✅ Advanced UI |
+| **Multi-GPU Scaling** | ❌ | ❌ | ✅ Dynamic scaling |
+| **AI Model Integration** | ❌ | ✅ Basic | ✅ Advanced |
+| **Self-Healing (FEC)** | ✅ RaptorQ | ✅ Enhanced | ✅ Adaptive |
+| **Deterministic Output** | ✅ Perfect | ✅ Perfect | ✅ Perfect |
 
-1. **Pull the latest code**
-   ```bash
-   git pull origin main
-   ```
-
-2. **Build with GPU support**
-   ```bash
-   cargo build --release --features gpu
-   ```
-
-3. **Use the new GPU and directory features**
-   ```bash
-   # GPU-accelerated compression
-   cargo run --release -- compress --gpu input.txt output.mmh
-   
-   # Directory compression
-   cargo run --release -- compress-dir input_directory/ output.mmh
-   ```
-
-**No migration needed—MMH-RS seeds are forward-compatible.**
-
-## 🎯 Feature Comparison: V1 vs V2 vs V3+
-
-| Feature | V1.2.0 (Current) | V2.0-2.1 (Next) | V3+ (Future) |
-|---------|------------------|------------------|--------------|
-| **CPU Compression** | ✅ | ✅ | ✅ |
-| **GPU Acceleration** | 🚫 | ✅ | ✅ |
-| **Directory Support** | 🚫 | ✅ | ✅ |
-| **Quantum Encryption** | 🚫 | ✅ | ✅ |
-| **AI Model Folding** | 🚫 | 🚫 | ✅ |
-| **Self-Healing FEC** | ✅ | ✅ | ✅ |
-| **Performance** | CPU-only compression | GPU acceleration | AI-optimized |
-| **AI Integration** | None | Kai Core bootstrap | Full neural processing |
-| **File Support** | Single files | Directory support | Full filesystem |
-| **Security** | SHA-256 + Merkle | Quantum encryption | Quantum-ready |
-| **Benchmarking** | Basic tests | Full suite | AI-powered analysis |
-| **Compression Speed** | ~54 MB/s | 500+ MB/s | 1000+ MB/s |
-| **Memory Usage** | ~2GB | <1GB | Optimized |
-| **GPU Support** | None | CUDA/ROCm/Metal | Multi-GPU |
+### 🔄 V1 to V2 Upgrade Path
+**If you're using V1:** V2 maintains full backward compatibility. Your V1 seeds will load transparently into V2+.
+- **Get notified:** Watch this repo or join [Discord](#) for V2 beta announcements
+- **Join beta testing:** Pull the `dev/v2` branch and test GPU features
+- **Migration guide:** [USER_GUIDE.md](Project%20White%20Papers/USER_GUIDE.md#v2-migration)
 
 ## 📚 Documentation
 

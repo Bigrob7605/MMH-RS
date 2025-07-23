@@ -98,6 +98,31 @@
 - **GitHub Stars**: Growing community interest
 - **Downloads**: Increasing usage across platforms
 - **Contributors**: Active development community
+
+## 🔄 Upcoming Breaking Changes
+
+| Version | Change Type | Description | Migration Guide |
+|---------|-------------|-------------|-----------------|
+| V2.0 | Feature Addition | GPU acceleration, directory support | Backward compatible |
+| V2.1 | Enhancement | Multi-GPU support | Minimal changes |
+| V3.0 | Major | AI integration, quantum security | Migration guide provided |
+| V4.0 | Major | Quantum computing features | New API documentation |
+
+**Note:** MMH-RS prioritizes backward compatibility. Breaking changes are minimized and always accompanied by migration guides.
+
+## 🤝 Open Community Tasks
+
+| Area | Priority | Description | Skills Needed | Contact |
+|------|----------|-------------|---------------|---------|
+| **GPU Development** | High | CUDA/ROCm/Metal implementation | GPU programming, Rust | Discord #gpu-dev |
+| **CLI Enhancement** | Medium | Command-line interface improvements | Rust, CLI design | GitHub Issues |
+| **Test Suite** | High | Comprehensive testing framework | Testing, Rust | Discord #testing |
+| **Documentation** | Medium | Translation, tutorials, examples | Technical writing | GitHub PRs |
+| **Benchmarking** | High | Performance testing and validation | Performance analysis | Discord #benchmarks |
+| **Security Audit** | Critical | Cryptographic review | Cryptography, security | Email: security@mmh-rs.dev |
+| **GUI Development** | Medium | Cross-platform interface | Tauri, UI/UX | Discord #gui-dev |
+
+**Want to contribute?** Join our [Discord](#) or check [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 - **Documentation**: Comprehensive guides and examples
 
 ### Community Engagement

@@ -288,6 +288,32 @@ The following features are planned for V3+ and beyond. They are not part of the 
 % ============================================================================
 \section{Development Timeline}
 
+\subsection{V2.0 Development Timeline}
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+    % Timeline
+    \draw[thick, blue] (0,0) -- (12,0);
+    
+    % Phase markers
+    \draw[fill=blue!20] (0.5,0.2) rectangle (2.5,-0.2) node[midway] {Phase 1};
+    \draw[fill=green!20] (3,0.2) rectangle (5,-0.2) node[midway] {Phase 2};
+    \draw[fill=orange!20] (5.5,0.2) rectangle (7.5,-0.2) node[midway] {Phase 3};
+    \draw[fill=red!20] (8,0.2) rectangle (10,-0.2) node[midway] {Phase 4};
+    
+    % Labels
+    \node[above] at (1.5,0.3) {Q1 2025};
+    \node[above] at (4,0.3) {Q2 2025};
+    \node[above] at (6.5,0.3) {Q3 2025};
+    \node[above] at (9,0.3) {Q4 2025};
+    
+    % Phase descriptions
+    \node[below, text width=2cm, align=center] at (1.5,-0.5) {GPU\\Acceleration};
+    \node[below, text width=2cm, align=center] at (4,-0.5) {Directory\\Support};
+    \node[below, text width=2cm, align=center] at (6.5,-0.5) {Security\\Enhancement};
+    \node[below, text width=2cm, align=center] at (9,-0.5) {UI/UX\\Development};
+\end{tikzpicture}
+\end{center}
+
 \subsection{V2.0 Development Phases}
 \begin{enumerate}
     \item \textbf{Phase 1 (Q1 2025)}: GPU acceleration core implementation
@@ -322,6 +348,30 @@ The following features are planned for V3+ and beyond. They are not part of the 
 
 \textbf{Contact:} \email{} | \textbf{GitHub:} \github
 \end{tcolorbox}
+
+\subsection{How You Can Help}
+
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Area} & \textbf{What We Need} & \textbf{How to Help} \\
+\hline
+\textbf{GPU Development} & CUDA/ROCm/Metal expertise & Join Discord \#gpu-dev, test GPU features \\
+\hline
+\textbf{Directory Support} & Filesystem API feedback & Test directory compression, report issues \\
+\hline
+\textbf{Security} & Cryptographic review & Audit quantum encryption, report vulnerabilities \\
+\hline
+\textbf{Benchmarking} & Performance validation & Run benchmarks on your hardware, share results \\
+\hline
+\textbf{Documentation} & Translation \& tutorials & Write guides, translate docs, create examples \\
+\hline
+\textbf{Testing} & Comprehensive testing & Test edge cases, report bugs, validate fixes \\
+\hline
+\textbf{GUI Development} & UI/UX design & Design interfaces, implement Tauri components \\
+\hline
+\end{tabular}
+\end{center}
 
 \subsection{Getting Involved}
 \begin{itemize}

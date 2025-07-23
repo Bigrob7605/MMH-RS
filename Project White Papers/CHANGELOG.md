@@ -9,6 +9,30 @@
 **Security Review:** Pending for V2.0 quantum-secure features  
 **Full roadmap:** [MMH-RS_ROADMAP_COMPLETE.pdf](MMH-RS_ROADMAP_COMPLETE.pdf)
 
+## 🚀 V2.0 Preview
+
+**🎯 What's Coming in V2.0 (Q4 2025):**
+
+### Core V2 Features
+- **GPU Acceleration**: 10-100x performance improvement with CUDA/ROCm/Metal
+- **Directory Support**: Native recursive compression with full metadata preservation
+- **Quantum Encryption**: Post-quantum cryptographic algorithms for future-proof security
+- **Multi-GPU Scaling**: Distributed processing across multiple GPUs
+- **Cross-Platform GUI**: Modern Tauri-based interface for all platforms
+
+### V2 Development Progress
+- **Phase 1 (Q1 2025)**: GPU acceleration core implementation ✅ In Progress
+- **Phase 2 (Q2 2025)**: Directory support and filesystem integration 🔄 Planned
+- **Phase 3 (Q3 2025)**: Security enhancements and encryption 🔄 Planned
+- **Phase 4 (Q4 2025)**: UI/UX development and testing 🔄 Planned
+
+### Join V2 Beta Testing
+- **Discord**: Join #v2-beta for early access and feedback
+- **GitHub**: Watch for V2 beta announcements
+- **Email**: Subscribe to v2-beta@mmh-rs.dev for updates
+
+**📋 V2 Migration:** V2 maintains full backward compatibility. Your V1 seeds will load transparently into V2+.
+
 ## [V2.1.0] - 2025-01-XX (Current Development)
 
 ### Added
