@@ -21,7 +21,7 @@ fn main() {
     
     // Handle version and about flags
     if cli.version {
-        println!("MMH-RS V1.1.0");
+        println!("MMH-RS V1.2.0");
         return;
     }
     
@@ -372,7 +372,7 @@ fn run_benchmark_with_abort(size_gb: u64, _running: &Arc<AtomicBool>) {
 fn display_world_class_results(rpt: &bench::Report, _size_gb: u64) {
     println!("\n");
     println!("╔══════════════════════════════════════════════════════════════════════════════╗");
-    println!("║                    🏆 MMH-RS V1.1.0 ELITE TIER - CPU ONLY 🏆                ║");
+            println!("║                    🏆 MMH-RS V1.2.0 ELITE TIER - CPU ONLY 🏆                ║");
     println!("║                           WORLD-CLASS BENCHMARK RESULTS                     ║");
     println!("╚══════════════════════════════════════════════════════════════════════════════╝");
     println!();

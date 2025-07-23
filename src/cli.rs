@@ -497,7 +497,7 @@ pub fn pack(input: &str, output: &str) -> Result<(), String> {
     let file_extension = input_path.extension()
         .and_then(|ext| ext.to_str())
         .unwrap_or("");
-    let header = format!("MMH-RS V1.1.0\nDETERMINISTIC_ID: {}\nFILE_EXTENSION: {}\n", 
+    let header = format!("MMH-RS V1.2.0\nDETERMINISTIC_ID: {}\nFILE_EXTENSION: {}\n", 
         deterministic_filename, file_extension);
     outfile.write_all(header.as_bytes()).map_err(|e| format!("Header write failed: {}", e))?;
     
@@ -586,7 +586,7 @@ pub fn unpack(input: &str, output: &str) -> Result<(), String> {
     let mut header_line = String::new();
     infile.read_line(&mut header_line).map_err(|e| format!("Header read failed: {}", e))?;
     
-    let final_output = if !header_line.starts_with("MMH-RS V1.1.0") {
+            let final_output = if !header_line.starts_with("MMH-RS V1.2.0") {
         // Legacy format without header - treat as raw zstd
         log("WARNING: Legacy format detected, attempting raw zstd decompression");
         

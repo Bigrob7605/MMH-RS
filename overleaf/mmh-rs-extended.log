@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.7.13)  23 JUL 2025 01:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.7.13)  23 JUL 2025 07:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -3944,18 +3944,8 @@ ux file.>
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-04>
  ***********
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
-
-Package rerunfilecheck Warning: File `mmh-rs-extended.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
-
-Package rerunfilecheck Info: Checksums for `mmh-rs-extended.out':
-(rerunfilecheck)             Before: 38DCE2FA63ED7F58927F86C2771555B7;15048
-(rerunfilecheck)             After:  EAACCD7BB362540D47C921768EF078B1;15081.
+Package rerunfilecheck Info: File `mmh-rs-extended.out' has not changed.
+(rerunfilecheck)             Checksum: EAACCD7BB362540D47C921768EF078B1;15081.
  ) 
 Here is how much of TeX's memory you used:
  30895 strings out of 474486
@@ -3976,7 +3966,7 @@ C:/Users/screw/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmtt12.pfb><
 C:/Users/screw/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbol
 s/msam10.pfb><C:/Users/screw/AppData/Local/Programs/MiKTeX/fonts/type1/urw/zapf
 ding/uzdr.pfb>
-Output written on mmh-rs-extended.pdf (19 pages, 391641 bytes).
+Output written on mmh-rs-extended.pdf (19 pages, 391687 bytes).
 PDF statistics:
  835 PDF objects out of 1000 (max. 8388607)
  309 named destinations out of 1000 (max. 500000)
