@@ -15,10 +15,10 @@ jobs:
         with:
           root_file: Project White Papers/MMH-RS_MASTER_DOCUMENT.tex
           latexmk_use_xelatex: true
-      - name: Build all PDFs
+          args: -pdf -interaction=nonstopmode
+      - name: Build additional PDFs
         run: |
           cd "Project White Papers"
-          pdflatex -interaction=nonstopmode MMH-RS_MASTER_DOCUMENT.tex
           pdflatex -interaction=nonstopmode MMH-RS_ROADMAP_COMPLETE.tex
           pdflatex -interaction=nonstopmode MMH-RS_TECHNICAL_COMPLETE.tex
           pdflatex -interaction=nonstopmode RGIG_INTEGRATION_COMPLETE.tex
