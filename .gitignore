@@ -38,4 +38,34 @@ ehthumbs.db
 Desktop.ini
 
 # Logs
-*.log 
+*.log
+
+# LaTeX auxiliary files
+*.aux
+*.log
+*.out
+*.toc
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.bbl
+*.blg
+*.idx
+*.ind
+*.ilg
+*.glo
+*.gls
+*.glg
+*.acn
+*.acr
+*.alg
+*.ist
+*.loa
+*.lof
+*.lot
+*.nav
+*.snm
+*.vrb
+*.xdv
+*.bcf
+*.run.xml 
