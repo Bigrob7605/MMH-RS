@@ -13,6 +13,82 @@
 **ETA:** Q4 2025.  
 **See:** [MMH-RS_ROADMAP_COMPLETE.pdf](Project%20White%20Papers/MMH-RS_ROADMAP_COMPLETE.pdf) for live updates.
 
+## 🏗️ How Everything Fits Together
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                           MMH-RS Ecosystem Architecture                          │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                 │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐      │
+│  │   Input     │───▶│ Compression │───▶│ Integrity   │───▶│ Seed/Pack   │      │
+│  │   Files     │    │   Engine    │    │   Checks    │    │   Output    │      │
+│  └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘      │
+│         │                   │                   │                   │          │
+│         ▼                   ▼                   ▼                   ▼          │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐      │
+│  │  Directory  │    │   GPU/CPU   │    │ SHA-256 +   │    │ CBOR Seed   │      │
+│  │  Support    │    │  Processing │    │ Merkle Tree │    │   Format    │      │
+│  └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘      │
+│         │                   │                   │                   │          │
+│         ▼                   ▼                   ▼                   ▼          │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐      │
+│  │  Metadata   │    │  Quantum    │    │  Self-      │    │  Universal  │      │
+│  │Preservation │    │  Security   │    │  Healing    │    │Compatibility│      │
+│  └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘      │
+│                                                                                 │
+│  ┌─────────────────────────────────────────────────────────────────────────────┐ │
+│  │                    V2-V5: AI Integration & Quantum Processing               │ │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐        │ │
+│  │  │   Kai Core  │  │   RGIG V5   │  │  Quantum    │  │  Neural     │        │ │
+│  │  │   AI Boot   │  │ Integration │  │  Encryption │  │ Compression │        │ │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────┘        │ │
+│  └─────────────────────────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+**V1.2.0 (Current):** CPU compression with perfect integrity  
+**V2.0 (Q4 2025):** GPU acceleration + directory support  
+**V3.0 (2026):** AI model integration + quantum security  
+**V4.0 (2027):** Quantum computing + hybrid processing  
+**V5.0 (2027+):** Universal file system + autonomous management
+
+## 🆚 Quick Comparison: MMH-RS vs Alternatives
+
+| Feature | MMH-RS V2+ | Zstd/gzip | Par2 | IPFS/Filecoin | 7-Zip | WinRAR |
+|---------|------------|-----------|------|---------------|-------|--------|
+| **GPU Acceleration** | ✅ (V2) | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **Deterministic Output** | ✅ SHA/Merkle | ❌ | ❌ | Partial | ❌ | ❌ |
+| **Self-Healing (FEC)** | ✅ RaptorQ | ❌ | ✅ | ❌ | ❌ | ❌ |
+| **AI Model-Aware** | ✅ (V3) | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **Quantum Security** | ✅ (V3/4) | ❌ | ❌ | ❌ | ❌ | ❌ |
+| **Directory/Metadata** | ✅ (V2) | Partial | ❌ | ✅ | ✅ | ✅ |
+| **Cross-Platform** | ✅ | ✅ | ✅ | ✅ | Partial | Partial |
+| **Open Source** | ✅ MIT | ✅ | ✅ | ✅ | ❌ | ❌ |
+| **Perfect Integrity** | ✅ | ❌ | Partial | Partial | ❌ | ❌ |
+
+## 🎯 Real-World Use Cases
+
+### **Alice: AI Researcher**
+*"I need to compress 50TB of neural network models across my GPU farm with perfect integrity."*
+- **Solution:** MMH-RS V2 GPU acceleration + deterministic output
+- **Benefit:** 10-100x faster compression, bit-for-bit verification
+
+### **Bob: Medical Archive Manager**
+*"I need cryptographic integrity and self-healing for 100TB of patient imaging data."*
+- **Solution:** MMH-RS SHA-256 + Merkle tree + RaptorQ FEC
+- **Benefit:** Perfect data integrity, automatic corruption recovery
+
+### **Charlie: Home User**
+*"I want to compress 100GB of family photos with perfect integrity and future-proofing."*
+- **Solution:** MMH-RS universal seed format + cross-platform compatibility
+- **Benefit:** One format works everywhere, quantum-ready for the future
+
+### **Delta: Enterprise IT**
+*"We need directory compression with metadata preservation for our backup system."*
+- **Solution:** MMH-RS V2 directory support + metadata preservation
+- **Benefit:** Complete filesystem compression with full metadata retention
+
 ## 🚀 Why MMH-RS for AI Storage?
 
 **Built for the AI age—deterministic, self-healing, quantum-ready, GPU-accelerated, and 100% open. Don't settle for legacy—upgrade your storage and future-proof your data today.**
@@ -306,6 +382,22 @@ MMH-RS V1.2.0 is **production-ready** with:
 ### Security Review
 **Full quantum-secure audit log and cryptographic review will be published for V2. Security white paper in progress.**
 
+## ⚠️ Known Limitations & Roadmap
+
+### Current Limitations (V1.2.0)
+- **CPU-only compression** - GPU acceleration coming in V2.0
+- **Single file support** - Directory compression planned for V2.0
+- **Basic encryption** - Quantum security planned for V2.0/3.0
+- **File-level healing** - Directory-level healing planned for V2.1
+- **No AI integration** - Kai Core integration planned for V3.0
+
+### Upcoming Features
+- **V2.0 (Q4 2025)**: GPU acceleration, directory support, quantum encryption
+- **V2.1 (2026)**: Multi-GPU support, advanced CLI, container integration
+- **V3.0 (2026)**: AI model integration, neural compression, RGIG V5.0
+- **V4.0 (2027)**: Quantum computing, hybrid processing, quantum security
+- **V5.0 (2027+)**: Universal file system, autonomous management
+
 ## 🤝 Community & Contribution
 
 **Want to help? Star the repo, join the Discord, submit test logs, or open a PR. The future is open-source and AI-powered!**
@@ -327,6 +419,36 @@ We need your help to test, review, and contribute to MMH-RS V2:
 - **Testing Programs**: Early access to V2 features
 - **Community Calls**: Regular development updates and Q&A
 - **Contribution Guidelines**: How to contribute code and documentation
+
+### How to Contribute (Step-by-Step)
+
+1. **Fork the repository**
+   ```bash
+   git clone https://github.com/YOUR_USERNAME/MMH-RS.git
+   cd MMH-RS
+   ```
+
+2. **Create a feature branch**
+   ```bash
+   git checkout -b feature/your-awesome-feature
+   ```
+
+3. **Make your changes and test**
+   ```bash
+   cargo build --release
+   cargo test
+   cargo run --release -- smoketest test_data/
+   ```
+
+4. **Submit a pull request**
+   - Include clear description of changes
+   - Add tests if applicable
+   - Update documentation if needed
+
+5. **Join the community**
+   - Discord: [Join our server](https://discord.gg/mmh-rs)
+   - GitHub Issues: Report bugs and request features
+   - Discussions: Share ideas and feedback
 
 ## 📄 License
 

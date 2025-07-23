@@ -45,6 +45,134 @@ cargo build --release
 
 **🟢 You should see:** Interactive MMH-RS menu with compression, verification, and extraction options.
 
+## 🎯 Getting Started for Different Audiences
+
+### **For AI Researchers & Data Scientists**
+*"I need to compress large datasets and neural network models with perfect integrity."*
+
+**Best Practices:**
+- Use `--verify` after every compression operation
+- Run benchmarks on your specific hardware: `cargo run --release -- bench 1gb`
+- Prepare for V2.0 GPU acceleration (Q4 2025)
+- Monitor memory usage for large files (>10GB)
+
+**GPU Tips (V2.0):**
+- Install latest CUDA/ROCm drivers
+- Use `--gpu` flag for 10-100x speed improvement
+- Multi-GPU support coming in V2.1
+
+**Example Workflow:**
+```bash
+# Compress model files with verification
+cargo run --release -- pack model.pt model.mmh
+cargo run --release -- verify model.mmh
+
+# Batch process multiple models
+for model in models/*.pt; do
+    cargo run --release -- pack "$model" "${model%.pt}.mmh"
+done
+```
+
+### **For IT Professionals & Backup Managers**
+*"I need reliable, self-healing compression for enterprise backup systems."*
+
+**Best Practices:**
+- Always use `--verify` for integrity checking
+- Test recovery procedures regularly
+- Use `--smoketest` for comprehensive validation
+- Monitor for corruption with `--verify` on restored files
+
+**Enterprise Integration:**
+- Script integration with existing backup systems
+- Use deterministic output for reproducible backups
+- Prepare for V2.0 directory support and metadata preservation
+
+**Example Workflow:**
+```bash
+# Create verified backup with self-healing
+cargo run --release -- pack critical_data.tar critical_data.mmh
+cargo run --release -- verify critical_data.mmh
+
+# Restore and verify integrity
+cargo run --release -- unpack critical_data.mmh
+cargo run --release -- verify critical_data.mmh
+```
+
+### **For Developers & System Administrators**
+*"I need to integrate MMH-RS into my applications and automation scripts."*
+
+**API Integration:**
+- Use command-line interface for scripting
+- Parse JSON output for programmatic access
+- Integrate with CI/CD pipelines
+- Use exit codes for error handling
+
+**Automation Examples:**
+```bash
+# Automated backup script
+#!/bin/bash
+BACKUP_FILE="backup_$(date +%Y%m%d_%H%M%S).mmh"
+cargo run --release -- pack "$1" "$BACKUP_FILE"
+if cargo run --release -- verify "$BACKUP_FILE"; then
+    echo "Backup successful: $BACKUP_FILE"
+else
+    echo "Backup verification failed!"
+    exit 1
+fi
+```
+
+**CI/CD Integration:**
+```yaml
+# GitHub Actions example
+- name: Test MMH-RS
+  run: |
+    cargo build --release
+    cargo run --release -- smoketest test_data/
+    cargo run --release -- bench 100mb
+```
+
+### **For Home Users & Content Creators**
+*"I want to compress my photos, videos, and documents with perfect integrity."*
+
+**Best Practices:**
+- Use interactive menu for simple operations
+- Verify files after compression
+- Keep original files until verification passes
+- Use descriptive filenames for easy identification
+
+**Simple Workflow:**
+```bash
+# Interactive mode (recommended for beginners)
+cargo run --release
+
+# Or direct commands
+cargo run --release -- pack family_photos.zip photos.mmh
+cargo run --release -- verify photos.mmh
+cargo run --release -- unpack photos.mmh
+```
+
+### **For Security Professionals**
+*"I need cryptographic integrity and audit trails for sensitive data."*
+
+**Security Features:**
+- SHA-256 + Merkle tree verification
+- Deterministic output (same input = same output)
+- No data collection or telemetry
+- Local processing only
+
+**Audit Workflow:**
+```bash
+# Create compressed archive with integrity
+cargo run --release -- pack sensitive_data.tar secure.mmh
+
+# Verify integrity and generate audit log
+cargo run --release -- verify secure.mmh > audit.log
+
+# Restore and re-verify
+cargo run --release -- unpack secure.mmh
+cargo run --release -- verify secure.mmh >> audit.log
+```
+
 ### Prerequisites
 - **V1.2.0**: Rust 1.70+, 4GB+ RAM, Windows 10+/Ubuntu 20.04+/macOS 11+
 - **V2.0**: GPU support (NVIDIA GTX 1060+/AMD RX 580+/Apple M1+), 8GB+ RAM
