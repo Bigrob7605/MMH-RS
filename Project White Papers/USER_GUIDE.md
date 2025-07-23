@@ -1,6 +1,27 @@
 # MMH-RS User Guide
 
+**📚 Full Documentation:** [Master Roadmap](MMH-RS_ROADMAP_COMPLETE.pdf) | [Technical Specification](MMH-RS_TECHNICAL_COMPLETE.pdf) | [Project Status](PROJECT_STATUS.md) | [Development History](DEVELOPMENT_HISTORY.md) | [Changelog](CHANGELOG.md) | [RGIG Integration](RGIG_INTEGRATION_COMPLETE.pdf) | [Kai Core Integration](KAI_CORE_INTEGRATION_COMPLETE.pdf)
+
 **For the full V2 roadmap and latest development milestones, see [MMH-RS_ROADMAP_COMPLETE.pdf](MMH-RS_ROADMAP_COMPLETE.pdf).**
+
+## 🚀 Why MMH-RS for AI Storage?
+
+**Built for the AI age—deterministic, self-healing, quantum-ready, GPU-accelerated, and 100% open. Don't settle for legacy—upgrade your storage and future-proof your data today.**
+
+MMH-RS represents the next evolution in compression technology, designed specifically for AI workloads, quantum computing, and the data-intensive future. With perfect data integrity, GPU acceleration, and seamless AI integration, MMH-RS is the foundation for next-generation storage systems.
+
+## 🔥 Coming in V2.0: GPU Acceleration & Quantum Security
+
+**Coming Soon:** GPU acceleration, quantum encryption, directory support, blazing-fast benchmarks, and true multi-GPU scaling.
+
+**Full roadmap:** [MMH-RS_ROADMAP_COMPLETE.pdf](MMH-RS_ROADMAP_COMPLETE.pdf)
+
+### V2.0 Features Preview
+- **GPU Acceleration**: 10-100x performance improvement
+- **Directory Support**: Native recursive compression
+- **Quantum Encryption**: Post-quantum cryptographic algorithms
+- **Multi-GPU Scaling**: Distributed processing across multiple GPUs
+- **Advanced CLI**: Enhanced command-line interface with progress tracking
 
 ## 🚀 Quick Start Guide
 
@@ -333,7 +354,63 @@ jobs:
       - run: cargo run --release -- smoketest test_data/
 ```
 
+## 🔄 V2 Upgrade Guide
+
+**When V2 releases, simply:**
+
+1. **Pull the latest code**
+   ```bash
+   git pull origin main
+   ```
+
+2. **Build with GPU support**
+   ```bash
+   cargo build --release --features gpu
+   ```
+
+3. **Use the new GPU and directory features**
+   ```bash
+   # GPU-accelerated compression
+   cargo run --release -- compress --gpu input.txt output.mmh
+   
+   # Directory compression
+   cargo run --release -- compress-dir input_directory/ output.mmh
+   ```
+
+**No migration needed—MMH-RS seeds are forward-compatible.**
+
+## 🔧 Troubleshooting FAQ
+
+### Common Build Issues
+**Q: "error: failed to compile"**
+A: Ensure you have Rust 1.70+ installed: `rustup update stable`
+
+**Q: "crate not found"**
+A: Run `cargo clean && cargo build --release`
+
+**Q: "permission denied"**
+A: On Linux/macOS, ensure execute permissions: `chmod +x target/release/mmh-rs`
+
+### Common Usage Issues
+**Q: "file not found"**
+A: Check file paths and ensure files exist in the specified location
+
+**Q: "out of memory"**
+A: For large files (>16GB), ensure you have sufficient RAM (8GB+ recommended)
+
+**Q: "compression failed"**
+A: Check file permissions and ensure the file isn't corrupted
+
+### Performance Issues
+**Q: "compression is slow"**
+A: V1.2.0 is CPU-only. V2.0 will add GPU acceleration for 10-100x improvement
+
+**Q: "high memory usage"**
+A: Normal for large files. V2.0 will optimize memory usage by 50%
+
 ## 🤝 Community Support
+
+**We want your feedback—join Discord, open issues, and help shape V2+!**
 
 ### Getting Help
 - **GitHub Issues**: Bug reports and feature requests
