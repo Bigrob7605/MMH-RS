@@ -106,10 +106,53 @@ Random data detected - expansion is normal and expected. This is not a bug.
 
 ### 🚀 **V1.2.0 Elite Tier is Just the Foundation**
 
-**Current (V1.2.0 Elite Tier):** CPU-based compression with perfect integrity
-**Coming (V2.0):** GPU acceleration, directory support, encryption
-**Future (V3.0):** AI model seeding, intelligent compression
-**Vision (V4.0+):** Quantum-ready, distributed storage
+**Current (V1.2.0 Elite Tier):** CPU+HDD - Gold-standard compression with perfect integrity
+**Coming (V2.0):** GPU+HDD - GPU acceleration for massive performance gains
+**Future (V3.0):** CPU+GPU+HDD - Hybrid engine with RGIG integration
+**Vision (V4.0):** CPU+GPU+NPU+TPU - AI Model Seeding and deterministic training
+**Ultimate (V5.0):** CPU+GPU+NPU+TPU+QPU - Universal AI file system with quantum integration
+
+## 🚀 **V2.0 ROADMAP: GPU Acceleration Revolution**
+
+**MMH-RS V2 isn't an upgrade—it's a paradigm shift.**
+
+### 🎯 **What V2 Delivers**
+- **10×–20× faster than CPU-only**: 1000+ MB/s compression, 5000+ MB/s decompression
+- **GPU-native compression**: RTX, CUDA, OpenCL stack unleashed
+- **Full model/directory support**: Compress entire LLMs, diffusion nets, RL agents
+- **Real-time compression**: Stream active AI datasets, logs, checkpoints live
+- **Multi-GPU support**: Scale as wide as your rig can handle
+- **Zero-loss, bit-perfect unfolding**: No GPU artifacting, just precision
+
+### 🔥 **V2 Core Features**
+- **GPU-Accelerated Pipeline**: CUDA/OpenCL support with hardware auto-detection
+- **Directory & Model Folding**: Smart chunking, cross-file deduplication
+- **Live Compression**: Compress and move active datasets for AI/ML in real-time
+- **Python Integration**: PyO3 bindings for seamless ML/data pipelines
+- **Multi-GPU/Async Support**: Parallel, multi-card, and cluster scenarios
+
+## 🌟 **V3.0 ROADMAP: RGIG Reality-Grade Intelligence Gauntlet**
+
+**MMH-RS V3 will be the world's first hybrid, falsifiable storage + AI/AGI benchmarking platform.**
+
+### 🎯 **V3 Core Goals**
+- **Unified Hybrid Engine**: Full-stack CPU + GPU + HDD/NVMe fusion
+- **Native RGIG Integration**: Built-in Reality Grade Intelligence Gauntlet
+- **Universal AGI/Agent Testbed**: Plug in any agent (CPU/GPU, LLM, quantized, quantum)
+- **End-to-End Falsifiability**: Every operation tracked, signed, and mapped
+
+### 🔥 **V3 Major Features**
+- **Hybrid Performance Pipeline**: Simultaneous CPU+GPU+HDD stress analysis
+- **RGIG Test Harness**: Menu-driven test suites (recursion, logic, entropy, memory)
+- **Open Benchmarking**: Every result logged, hashed, and signed
+- **Pluggable Codec & Agent Registry**: New micro-codecs and agent models
+- **Cross-Platform & Open Source**: Runs everywhere with full transparency
+
+### 🎯 **V3 Vision: Why This Matters**
+- **No More Black Boxes**: Every AI/AGI claim gets put through the gauntlet
+- **Hardware-Agnostic**: Your hardware, your models, your data—publicly testable
+- **Open Science**: If you can't reproduce or beat the score, it didn't happen
+- **"If it can't survive the RGIG gauntlet, it's not reality grade."**
 
 ## 🏆 Elite Tier Achievements
 
@@ -131,11 +174,19 @@ Random data detected - expansion is normal and expected. This is not a bug.
 - **Error handling**: Comprehensive error recovery
 - **Cross-platform**: Universal launcher system
 
-## Documentation
+## 📚 **Complete Roadmap Documentation**
 
+### **Current Version**
 - [Technical Specification](Project%20White%20Papers/mmh-rs-technical-specification.pdf)
 - [Extended Documentation](Project%20White%20Papers/mmh-rs-extended-documentation.pdf)
-- [V2+ Roadmap](V2_ROADMAP.md)
+
+### **Future Roadmap**
+- [V2.0 Roadmap](V2_ROADMAP.md) - GPU+HDD Acceleration Revolution
+- [V3.0 Roadmap](V3_ROADMAP.md) - CPU+GPU+HDD with RGIG Integration
+- [V4.0 Roadmap](V4_ROADMAP.md) - CPU+GPU+NPU+TPU with AI Model Seeding
+- [V5.0 Roadmap](V5_ROADMAP.md) - CPU+GPU+NPU+TPU+QPU Universal AI File System
+
+### **Project Status**
 - [Release Announcement](RELEASE_ANNOUNCEMENT.md)
 
 ## Installation

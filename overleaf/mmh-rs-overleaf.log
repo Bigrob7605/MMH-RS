@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.7.13)  23 JUL 2025 07:36
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (MiKTeX 24.1) (preloaded format=pdflatex 2025.7.13)  23 JUL 2025 08:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1120,8 +1120,14 @@ L3 programming layer <2024-01-04>
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package rerunfilecheck Info: File `mmh-rs-overleaf.out' has not changed.
-(rerunfilecheck)             Checksum: 0D1A39787027ABAD03E3FCBB07ADFFA0;9145.
+
+Package rerunfilecheck Warning: File `mmh-rs-overleaf.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `mmh-rs-overleaf.out':
+(rerunfilecheck)             Before: 0D1A39787027ABAD03E3FCBB07ADFFA0;9145
+(rerunfilecheck)             After:  32DB8FFCC0A1F68D2F13880E99D4EFB9;9145.
  ) 
 Here is how much of TeX's memory you used:
  31524 strings out of 474486
