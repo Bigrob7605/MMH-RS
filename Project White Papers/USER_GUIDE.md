@@ -2,6 +2,12 @@
 
 **📚 Full Documentation:** [Master Roadmap](MMH-RS_ROADMAP_COMPLETE.pdf) | [Technical Specification](MMH-RS_TECHNICAL_COMPLETE.pdf) | [Project Status](PROJECT_STATUS.md) | [Development History](DEVELOPMENT_HISTORY.md) | [Changelog](CHANGELOG.md) | [RGIG Integration](RGIG_INTEGRATION_COMPLETE.pdf) | [Kai Core Integration](KAI_CORE_INTEGRATION_COMPLETE.pdf)
 
+## 🚀 V2 BETA NOW IN DEVELOPMENT!
+
+**Want to help test GPU/Quantum features?** Join our [Discord](https://discord.gg/mmh-rs), check the `dev/v2` branch, or email v2-beta@mmh-rs.dev!
+
+---
+
 ## 🚧 V2 GPU/Quantum Features in Active Development—Community Contributors Wanted!
 
 **For the full V2 roadmap and latest development milestones, see [MMH-RS_ROADMAP_COMPLETE.pdf](MMH-RS_ROADMAP_COMPLETE.pdf).**

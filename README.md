@@ -9,6 +9,64 @@ Perfect integrity, blazing speed, built for the next era of data.
 [![V2 GPU Upgrade](https://img.shields.io/badge/V2%20GPU%20Upgrade-In%20Progress-blue.svg)](Project%20White%20Papers/MMH-RS_ROADMAP_COMPLETE.pdf)
 [![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen.svg)](https://github.com/Bigrob7605/MMH-RS/actions)
 [![Test Coverage](https://img.shields.io/badge/Coverage-95%25-brightgreen.svg)](https://github.com/Bigrob7605/MMH-RS/actions)
+[![CI Status](https://github.com/Bigrob7605/MMH-RS/workflows/CI/badge.svg)](https://github.com/Bigrob7605/MMH-RS/actions)
+
+## 🚀 V2 BETA NOW IN DEVELOPMENT!
+
+**Want to help test GPU/Quantum features?** Join our [Discord](https://discord.gg/mmh-rs), check the `dev/v2` branch, or email v2-beta@mmh-rs.dev!
+
+---
+
+## ⚡ Quick Start (5 Lines)
+
+| Step | Command | What It Does |
+|------|---------|--------------|
+| **1. Clone** | `git clone https://github.com/Bigrob7605/MMH-RS` | Get the code |
+| **2. Build** | `cargo build --release` | Compile optimized version |
+| **3. Launch** | `./mmh_human.sh` (Linux/Mac)<br>`mmh_human.bat` (Windows) | Start interactive menu |
+| **4. Test** | `cargo run --release -- pack input.txt output.mmh` | Compress a file |
+| **5. V2 Beta** | `git checkout dev/v2` | For GPU/Quantum features |
+
+**[See USER_GUIDE.md for all usage examples →](Project%20White%20Papers/USER_GUIDE.md)**
+
+## 🖥️ What It Looks Like
+
+### Interactive Menu Demo
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    MMH-RS Interactive Menu                   │
+├─────────────────────────────────────────────────────────────┤
+│ 1. Compress File (Pack)                                     │
+│ 2. Extract File (Unpack)                                    │
+│ 3. Verify Integrity                                         │
+│ 4. Run Benchmark                                            │
+│ 5. Show Statistics                                          │
+│ 6. Exit                                                     │
+├─────────────────────────────────────────────────────────────┤
+│ Enter your choice: 1                                        │
+│                                                             │
+│ 📦 Compressing: large_file.dat → large_file.mmh            │
+│ ⏱️  Progress: ████████████████████████████████ 100%        │
+│ ✅ Compression complete! (2.15x ratio, 54 MB/s)            │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Benchmark Results Demo
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    MMH-RS Benchmark Results                  │
+├─────────────────────────────────────────────────────────────┤
+│ 📊 32GB Test Dataset Results:                              │
+│                                                             │
+│ 🎯 Score: 83/100 (High-end laptop baseline)                │
+│ 📦 Compression Ratio: 2.15x                                │
+│ ⚡ Pack Speed: 54.0 MB/s                                   │
+│ 🔄 Unpack Speed: 47.7 MB/s                                │
+│ ⏱️  Total Time: 20.6 minutes                              │
+│ ✅ Integrity: Perfect (SHA-256 + Merkle verified)         │
+│ 🛡️  Self-Healing: FEC corruption recovery ready          │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ## 🟢 First Steps
 1. **Read [User Guide](Project%20White%20Papers/USER_GUIDE.md)** for basics and V2 beta testing
@@ -25,6 +83,29 @@ Perfect integrity, blazing speed, built for the next era of data.
 | **Platform Support** | Win/Linux/macOS | All + new drivers |
 | **Performance** | 2.15x @ 54 MB/s | 500+ MB/s, 10x faster |
 | **UI** | CLI, menu, scripting | Modern GUI, live dashboard |
+
+## 📋 Known Issues
+
+**V1.2.0 Status: Clean** ✅
+- No known issues as of V1.2.0
+- All features tested and validated
+- Perfect bit-for-bit integrity achieved
+
+**V2.0 Beta Status:**
+- GPU acceleration in development
+- Directory support being implemented
+- Quantum encryption algorithms being integrated
+
+## 📚 Mini Glossary
+
+| Term | Definition |
+|------|------------|
+| **MMH** | Multi-Modal Hash - the core compression algorithm |
+| **Seed** | Compressed file format with embedded metadata |
+| **RGIG** | Rust Generic Implementation Guide - integration framework |
+| **FEC** | Forward Error Correction - self-healing capability |
+| **Merkle Tree** | Cryptographic integrity verification structure |
+| **Digital DNA** | 128-bit unique identifier for each compressed file |
 
 ## 🎉 What's New in V1.2.0
 
@@ -103,7 +184,7 @@ Perfect integrity, blazing speed, built for the next era of data.
 | Video | 2GB | 60% smaller | 100MB/s | ✅ Deterministic |
 | Neural Models | 5GB | 80% smaller | 40MB/s | ✅ Perfect Match |
 
-**[Full Benchmark Suite →](benchmarks/)**
+**[Full Benchmark Suite →](benchmarks/)** | **[Sample Results →](benchmarks/sample_1GB_benchmark_result.txt)**
 
 ## 💻 Code Examples
 
