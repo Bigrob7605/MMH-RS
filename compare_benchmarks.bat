@@ -1,10 +1,10 @@
 @echo off
-title MMH-RS V1.1.0 - Benchmark Comparison Tool
+title MMH-RS V1.2.0 - Benchmark Comparison Tool
 color 0B
 
 echo.
 echo ================================================================================
-echo                    MMH-RS V1.1.0 - BENCHMARK COMPARISON TOOL
+echo                    MMH-RS V1.2.0 - BENCHMARK COMPARISON TOOL
 echo                           SIDE-BY-SIDE ANALYSIS
 echo ================================================================================
 echo.

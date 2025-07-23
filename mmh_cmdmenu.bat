@@ -5,10 +5,10 @@ set MMH_BENCH_SIZE_GB=2
 :menu
 cls
 echo ============================
-echo | MMH-RS V1.1.0 ELITE TIER |
+echo | MMH-RS V1.2.0 ELITE TIER |
 echo |     CPU ONLY SYSTEM      |
 echo ============================
-echo   MMH-RS V1.1.0 Main Menu
+echo   MMH-RS V1.2.0 Main Menu
 echo ============================
 echo 1. Generate test data (gentestdir)
 echo 2. MMH-RS Seed Benchmark (Coming Soon)

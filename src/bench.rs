@@ -547,12 +547,12 @@ fn run_inner(size_gb: u64, replay_seed: u64) -> Report {
         // Check for abort request
         if crate::cli::check_abort() {
             pb.finish_with_message("❌ Data generation aborted");
-            return Report {
-                mmh_version: "MMH-RS V1.1.0".to_string(),
-                timestamp_utc: chrono::Utc::now().to_rfc3339(),
-                replay_seed,
-                run_mode: "aborted".to_string(),
-                system_tier: SystemTier::Entry,
+                    return Report {
+            mmh_version: "MMH-RS V1.2.0".to_string(),
+            timestamp_utc: chrono::Utc::now().to_rfc3339(),
+            replay_seed,
+            run_mode: "aborted".to_string(),
+            system_tier: SystemTier::Entry,
                 test_set_desc: "Aborted".to_string(),
                 total_files: 0,
                 total_size_bytes: 0,
@@ -635,7 +635,7 @@ fn run_inner(size_gb: u64, replay_seed: u64) -> Report {
     // Pack directory → .seed
     if crate::cli::check_abort() {
         return Report {
-            mmh_version: "MMH-RS V1.1.0".to_string(),
+            mmh_version: "MMH-RS V1.2.0".to_string(),
             timestamp_utc: chrono::Utc::now().to_rfc3339(),
             replay_seed,
             run_mode: "aborted".to_string(),
@@ -746,7 +746,7 @@ fn run_inner(size_gb: u64, replay_seed: u64) -> Report {
     if crate::cli::check_abort() {
         println!("❌ Benchmark aborted during hash computation phase");
         return Report {
-            mmh_version: "MMH-RS V1.1.0".to_string(),
+            mmh_version: "MMH-RS V1.2.0".to_string(),
             timestamp_utc: chrono::Utc::now().to_rfc3339(),
             replay_seed,
             run_mode: "aborted".to_string(),

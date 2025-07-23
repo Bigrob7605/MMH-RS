@@ -1,4 +1,4 @@
-# 📖 **MMH-RS V1.1.0 - USER GUIDE**
+# 📖 **MMH-RS V1.2.0 - USER GUIDE**
 
 ## 🎯 **QUICK START GUIDE**
 
@@ -300,7 +300,7 @@ After each test, you'll be prompted to save results:
 
 ---
 
-**Version**: MMH-RS V1.1.0
+**Version**: MMH-RS V1.2.0
 **Focus**: CPU Performance Testing with GPU-Ready Foundation
 **Status**: GOLD STANDARD BASELINE ESTABLISHED
 **Validation System**: UniversalTruth (i7-13620H + RTX 4070 + 64GB RAM)

@@ -1,10 +1,10 @@
 @echo off
-title MMH-RS V1.1.0 - Generate Shareable Benchmark
+title MMH-RS V1.2.0 - Generate Shareable Benchmark
 color 0A
 
 echo.
 echo ================================================================================
-echo                    MMH-RS V1.1.0 - SHAREABLE BENCHMARK GENERATOR
+echo                    MMH-RS V1.2.0 - SHAREABLE BENCHMARK GENERATOR
 echo                           CROSS-SYSTEM COMPARISON READY
 echo ================================================================================
 echo.
