@@ -1,0 +1,25 @@
+Expected at least 2 args, received 0
+CertUtil: Missing argument
+
+Usage:
+  CertUtil [Options] -decodehex InFile OutFile [type]
+  Decode hexadecimal-encoded file
+    type -- numeric CRYPT_STRING_* encoding type
+
+Options:
+  -f                -- Force overwrite
+  -Unicode          -- Write redirected output in Unicode
+  -gmt              -- Display times as GMT
+  -seconds          -- Display times with seconds and milliseconds
+  -v                -- Verbose operation
+  -privatekey       -- Display password and private key data
+  -pin PIN                  -- Smart Card PIN
+  -sid WELL_KNOWN_SID_TYPE  -- Numeric SID
+            22 -- Local System
+            23 -- Local Service
+            24 -- Network Service
+
+CertUtil -?              -- Display a verb list (command list)
+CertUtil -decodehex -?   -- Display help text for the "decodehex" verb
+CertUtil -v -?           -- Display all help text for all verbs
+

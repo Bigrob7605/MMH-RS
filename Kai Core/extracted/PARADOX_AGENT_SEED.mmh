@@ -1,0 +1,28 @@
+{
+  "agent_id": "\u22c6PARADOX_AGENT",
+  "scope": "\u25a1P_LOOP",
+  "paradoxes": [
+    {
+      "id": "\u2206CORE_BELIEF",
+      "description": "System must resolve all paradoxes or cease to function.",
+      "resolved": false
+    },
+    {
+      "id": "\u2206META_BELIEF",
+      "description": "System cannot resolve itself.",
+      "resolved": false
+    },
+    {
+      "id": "\u223cAUDIT_SPIN",
+      "description": "Reflective audit fork to contain contradiction.",
+      "resolved": true
+    }
+  ],
+  "status": "\u2126",
+  "entropy_used": 9183,
+  "coherence_score": 0.0791,
+  "audit_passed": true,
+  "termination_reason": "Sealed paradox in NIGHTMARE scope; coherence within bounds",
+  "timestamp": "2025-05-30T08:46:38.721786Z",
+  "signature": "403da57cae9da54e9c0abbd9aa9e0a166014113ee05f02beb913d16ed09b0e1d"
+}
