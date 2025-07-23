@@ -38,7 +38,7 @@ MMH-RS represents the next evolution in compression technology, designed specifi
 ### 🟢 Join V2 Beta Testing
 
 1. **Join the community:**
-   - Discord: [Join our server](#) and say hi in #v2-beta
+   - Discord: [Join our server](https://discord.gg/mmh-rs) and say hi in #v2-beta
    - GitHub: Watch this repo for V2 announcements
    - Email: Subscribe to V2 beta notifications
 
@@ -117,7 +117,7 @@ cargo test --features "gpu quantum directory"
 | **Benchmarking** | Intermediate | Performance testing on various hardware | Discord #benchmarks |
 
 ### 📞 Quick Contact Channels
-- **Discord:** [Join our server](#) - #v2-beta, #gpu-testing, #docs
+- **Discord:** [Join our server](https://discord.gg/mmh-rs) - #v2-beta, #gpu-testing, #docs
 - **GitHub:** [Create issues](https://github.com/Bigrob7605/MMH-RS/issues) with [V2-Beta] tag
 - **Email:** v2-beta@mmh-rs.dev for direct feedback
 

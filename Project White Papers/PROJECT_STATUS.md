@@ -1,6 +1,6 @@
 # MMH-RS Project Status (V1.2.0, Updated: July 2025)
 
-**For the full V2 roadmap and latest development milestones, see [MMH-RS_ROADMAP_COMPLETE.pdf](MMH-RADMAP_COMPLETE.pdf).**
+**For the full V2 roadmap and latest development milestones, see [MMH-RS_ROADMAP_COMPLETE.pdf](MMH-RS_ROADMAP_COMPLETE.pdf).**
 
 ## 🎯 Current Version: V1.2.0 Production Ready
 
@@ -122,7 +122,7 @@
 | **Security Audit** | Critical | Cryptographic review | Cryptography, security | Email: security@mmh-rs.dev |
 | **GUI Development** | Medium | Cross-platform interface | Tauri, UI/UX | Discord #gui-dev |
 
-**Want to contribute?** Join our [Discord](#) or check [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+**Want to contribute?** Join our [Discord](https://discord.gg/mmh-rs) or check the [User Guide](USER_GUIDE.md#-how-to-contributetest-v2) for detailed guidelines.
 - **Documentation**: Comprehensive guides and examples
 
 ### Community Engagement
