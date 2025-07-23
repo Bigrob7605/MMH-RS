@@ -1,195 +1,135 @@
-# MMH-RS V1.2.0 ELITE TIER: Universal Digital DNA Format
+# 🚀 MMH-RS V1.2.0 – The Compression Engine That Audits Itself (and Roasts Your Files)
 
-**🎉 MISSION ACCOMPLISHED: PERFECT BIT-FOR-BIT INTEGRITY ACHIEVED**
+[![GOLD STANDARD: 83/100 – 32GB Benchmark (2025-07-22)](https://img.shields.io/badge/Baseline-Gold%2083%2F100-brightgreen)]()
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)]()
+[![Version](https://img.shields.io/badge/version-1.2.0-blue)]()
+[![License](https://img.shields.io/badge/license-MIT-yellow)]()
 
-AI-ready, deterministic compression engine with public benchmarks, agent/human testing, and real-world data performance. **Production-ready with comprehensive testing and validation and perfect extension preservation.**
+---
 
-## Quick Start
+**Built and refined by Rob + Kai (aka Syntari)**  
+*This is not just another file compressor. This is the world's first self-auditing, gold-standard, agent-powered, "no games, just proof" storage engine for the real world. If your files are trash, it'll let you know. If your hardware sucks, it'll find out. If you cheat, it'll catch you—publicly.*
 
-### Windows
-```bash
-# Universal launcher (recommended)
+---
+
+## 💡 What is MMH-RS?
+
+MMH-RS is a **Merkle-Seeded, agent-driven, cryptographically accountable file archiver**. It shreds the old rules for data benchmarks, exposes system bottlenecks, and sets a baseline for the next era of high-entropy compression and AI data movement.  
+- **No fluff. No vaporware.** Just real numbers, provable benchmarks, and no "small file tax" games.
+- Designed for **hackers, engineers, and reviewers** who want evidence, not excuses.
+
+---
+
+## 🔥 Why Is This Groundbreaking?
+
+- **Real Self-Audit:** Every run produces an auditable log and score—no hidden failures, no cherry-picked numbers.
+- **Gold Baseline:** 32GB, 83/100 run on real hardware. If you can beat it, prove it.
+- **Tiny File Fix:** "Pack directory as single seed" eliminates the "small file tax." Real-world benchmarks, no rigging.
+- **Live Stats, Abort, Meter:** You see progress, memory, and bottleneck in real time. Abort safely at any time.
+- **Cross-Platform:** Windows, Linux, macOS—all work, no BS.
+- **AI-Ready:** Foundation for V2/V3: GPU support, AI model folding, quantum-level codecs.
+
+---
+
+## 🚦 Quick Start (CLI + Menu)
+
+### **Windows**
+```powershell
+# In project folder:
+cargo build --release
+./target/release/mmh.exe
+# ...or run the universal menu:
 mmh_universal.bat
-
-# Interactive menu
-cargo run
-
-# Direct command
-cargo run -- pack input.txt output.mmh
 ```
 
-### Linux/macOS
+### **Linux/Mac**
 ```bash
-# Universal launcher
+cargo build --release
+./target/release/mmh
+# ...or run:
 ./mmh.sh
-
-# Interactive menu
-cargo run
-
-# Direct command
-cargo run -- pack input.txt output.mmh
 ```
 
-## Features
+### **Main Menu**
+- **Benchmark Menu (Tiers):** From 2GB to 1TB, pick your stress level.
+- **Pack Directory as Single Seed:** Eliminate the small-file penalty.
+- **Full Self-Audit:** Agent+Human test with full debug logs.
+- **Advanced Features:** Cleanup, diagnostics, rebuild, export.
+- **Full CLI/Interactive:** For power users and hackers.
 
-- **Deterministic Compression**: Same input → Same output, every time
-- **Perfect Data Integrity**: Bit-for-bit verification with extension preservation
-- **Auto-Overwrite Selftest**: Zero user interaction required for testing
-- **Cryptographic Integrity**: SHA-256 + Merkle trees
-- **Universal Format**: Open CBOR "seed pack" format
-- **Cross-Platform**: Windows, Linux, macOS launchers
-- **Production Ready**: V1.2.0 Elite Tier with comprehensive testing and validation
+---
 
-## Performance
+## 🏅 Gold Standard Baseline (As of 2025-07-22)
 
-- **Compression**: 121.59 MB/s
-- **Decompression**: 572.20 MB/s
-- **Ratios**: 2.01-2.17x real-world (AI/user data mix), up to 3.97:1 advanced
-- **Integrity**: 100% deterministic, self-healing
+| Tier | Files | Size (GB) | System (i7-13620H, 63GB RAM) | Score | Status |
+|------|-------|-----------|------------------------------|-------|--------|
+| Memory Madness | 7360 | 32 | Win11 Pro, 2025 | 83/100 | GOLD ⭐️ |
+| Swapocalypse | 10k+ | 64+ | [Tested by Rob/Kai] | [---] | [soon] |
 
-## What to Expect
+Want to run your own? Just hit "Benchmark," upload your results, and compare. If you cheat, the log will roast you.
 
-### ✅ **Great Compression** (2-4x smaller)
-- **Text files**: .txt, .md, .json, .csv, .xml, .html
-- **Log files**: Application logs, system logs, debug output
-- **Code files**: Source code, scripts, configuration files
-- **Raw images**: .bmp, .tiff, uncompressed formats
-- **AI model weights**: Neural network parameters, training data
-- **Databases**: SQL dumps, data exports
-- **Archives**: Already-compressed files that can be re-compressed
+"My files are special!": Try the "Pack Directory as Single Seed" option. You get one .seed, no overhead games.
 
-### ⚠️ **Limited or No Compression** (may expand slightly)
-- **Already-compressed videos**: .mp4, .webm, .avi, .mkv
-- **Already-compressed images**: .jpg, .png, .gif
-- **Already-compressed audio**: .mp3, .aac, .flac
-- **Already-compressed archives**: .zip, .rar, .7z
-- **Encrypted files**: Random data that can't be compressed
-- **Binary executables**: Compiled programs, libraries
+---
 
-### 🔍 **Understanding "Random Data Detected"**
+## 🛠 Features at a Glance
 
-When you see this message:
-```
-Random data detected - expansion is normal and expected. This is not a bug.
-```
+✅ **Real cryptographic self-audit** (every run is verifiable)  
+✅ **No "small file tax"** (single-seed mode for dirs)  
+✅ **Cross-platform, open source, fully auditable**  
+✅ **Clean, modern CLI and interactive menus**  
+✅ **Gold baseline score included for reviewer-proofing**  
+✅ **Ready for V2 (GPU) and V3 (AI/codec)**  
 
-**This is NOT an error!** It means:
-- Your file is already highly compressed or contains random data
-- MMH-RS cannot compress it further (this is mathematically impossible)
-- The file might grow slightly due to metadata overhead
-- **This is normal behavior for all compression tools**
+---
 
-**Why this happens:**
-- Information theory says you cannot compress already-compressed or random data
-- MMH-RS is being honest and transparent about this limitation
-- Other tools might silently fail or give misleading results
+## 🚧 Roadmap
 
-**What you're still getting:**
-- ✅ **Deterministic archive**: Same input → Same output, every time
-- ✅ **Data integrity**: SHA-256 + Merkle tree verification
-- ✅ **Self-healing**: RaptorQ FEC corruption recovery
-- ✅ **Universal format**: Open CBOR "seed pack" with 128-bit "Digital DNA"
+### **V2 (Q3 2025):**
+- GPU acceleration (NVIDIA, AMD, Apple M-series)
+- 10x–50x speed boost for compress/unpack on supported cards
+- Real-time heat/throttle monitor, expanded abort options
+- Full CI/CD test suite for contributors
 
-### 🎯 **Best Use Cases for V1.2.0 Elite Tier**
+### **V3 (Q4 2025+):**
+- AI/AGI model "fold/unfold" (portable model vaults)
+- Quantum entropy codec layer, deep AI-aware compression
+- RGIG V4 AI Benchmarks (model fitness and folding)
+- Integration with Blue Brain, open model repositories
+- Reviewer "challenge" mode: break the seed, win the prize
 
-**For Compression Savings:**
-- Text documents, logs, source code
-- Raw images, uncompressed data
-- AI model weights and training data
-- Database exports and data dumps
+---
 
-**For Data Integrity & Archiving:**
-- Any file type (even already-compressed)
-- Long-term storage with corruption protection
-- Deterministic verification and reproduction
-- Foundation for future V2+ features
+## 📚 Docs & Links
 
-### 🚀 **V1.2.0 Elite Tier is Just the Foundation**
+- [User Guide](Project%20White%20Papers/USER_GUIDE.md) (full)
+- [Project Status](Project%20White%20Papers/PROJECT_STATUS.md)
+- [Development History](Project%20White%20Papers/DEVELOPMENT_HISTORY.md)
+- [Technical Spec PDF](Project%20White%20Papers/mmh-rs-technical-specification.pdf)
+- [Extended Doc PDF](Project%20White%20Papers/mmh-rs-extended-documentation.pdf)
+- [Master Doc PDF](Project%20White%20Papers/MMH-RS_MASTER_DOCUMENT.pdf)
 
-**Current (V1.2.0 Elite Tier):** CPU+HDD - Gold-standard compression with perfect integrity
-**Coming (V2.0):** GPU+HDD - GPU acceleration for massive performance gains
-**Future (V3.0):** CPU+GPU+HDD - Hybrid engine with RGIG integration
-**Vision (V4.0):** CPU+GPU+NPU+TPU - AI Model Seeding and deterministic training
-**Ultimate (V5.0):** CPU+GPU+NPU+TPU+QPU - Universal AI file system with quantum integration
+---
 
-## 🚀 **V2.0 ROADMAP: GPU Acceleration Revolution**
+## 🎯 Performance Comparison
 
-**MMH-RS V2 isn't an upgrade—it's a paradigm shift.**
+| Feature | MMH-RS V1.2.0 | Zstd | IPFS | Google Drive | HuggingFace |
+|---------|---------------|------|------|--------------|-------------|
+| **Compression Ratio** | 2-4x (text, code) | 2-4x | 1x | 1x | 1x (zipped) |
+| **Integrity Verification** | SHA-256/Merkle | CRC/none | Content hash | Weak/slow | None |
+| **Deterministic Output** | Yes (all OS) | Maybe | N/A | N/A | No |
+| **Self-Healing** | Yes (FEC) | No | No | No | No |
+| **Abort/Progress** | Real, instant | Partial | N/A | N/A | N/A |
+| **Directory Support** | Coming V2 | Yes | Yes | Yes | Yes |
+| **GPU Acceleration** | Coming V2 | No | No | No | No |
+| **Cross-Platform** | Yes (Win/Linux/Mac) | Yes | Yes | Yes | Yes |
+| **Open Format** | Yes | Yes | Yes | No | No |
+| **Audit/Proof-of-Original** | Yes (DNA) | No | Hash | No | No |
+| **AI-Model Roadmap** | Yes (V3+) | No | No | No | Partial |
 
-### 🎯 **What V2 Delivers**
-- **10×–20× faster than CPU-only**: 1000+ MB/s compression, 5000+ MB/s decompression
-- **GPU-native compression**: RTX, CUDA, OpenCL stack unleashed
-- **Full model/directory support**: Compress entire LLMs, diffusion nets, RL agents
-- **Real-time compression**: Stream active AI datasets, logs, checkpoints live
-- **Multi-GPU support**: Scale as wide as your rig can handle
-- **Zero-loss, bit-perfect unfolding**: No GPU artifacting, just precision
+---
 
-### 🔥 **V2 Core Features**
-- **GPU-Accelerated Pipeline**: CUDA/OpenCL support with hardware auto-detection
-- **Directory & Model Folding**: Smart chunking, cross-file deduplication
-- **Live Compression**: Compress and move active datasets for AI/ML in real-time
-- **Python Integration**: PyO3 bindings for seamless ML/data pipelines
-- **Multi-GPU/Async Support**: Parallel, multi-card, and cluster scenarios
-
-## 🌟 **V3.0 ROADMAP: RGIG Reality-Grade Intelligence Gauntlet**
-
-**MMH-RS V3 will be the world's first hybrid, falsifiable storage + AI/AGI benchmarking platform.**
-
-### 🎯 **V3 Core Goals**
-- **Unified Hybrid Engine**: Full-stack CPU + GPU + HDD/NVMe fusion
-- **Native RGIG Integration**: Built-in Reality Grade Intelligence Gauntlet
-- **Universal AGI/Agent Testbed**: Plug in any agent (CPU/GPU, LLM, quantized, quantum)
-- **End-to-End Falsifiability**: Every operation tracked, signed, and mapped
-
-### 🔥 **V3 Major Features**
-- **Hybrid Performance Pipeline**: Simultaneous CPU+GPU+HDD stress analysis
-- **RGIG Test Harness**: Menu-driven test suites (recursion, logic, entropy, memory)
-- **Open Benchmarking**: Every result logged, hashed, and signed
-- **Pluggable Codec & Agent Registry**: New micro-codecs and agent models
-- **Cross-Platform & Open Source**: Runs everywhere with full transparency
-
-### 🎯 **V3 Vision: Why This Matters**
-- **No More Black Boxes**: Every AI/AGI claim gets put through the gauntlet
-- **Hardware-Agnostic**: Your hardware, your models, your data—publicly testable
-- **Open Science**: If you can't reproduce or beat the score, it didn't happen
-- **"If it can't survive the RGIG gauntlet, it's not reality grade."**
-
-## 🏆 Elite Tier Achievements
-
-### ✅ **Perfect Data Integrity**
-- **Bit-for-bit verification**: SHA-256 + Merkle tree validation
-- **Extension preservation**: Original file extensions perfectly maintained
-- **Deterministic output**: Consistent compression results every time
-- **Auto-overwrite selftest**: Zero user interaction required
-
-### 🚀 **Performance Excellence**
-- **High-speed compression**: 121.59 MB/s average
-- **Rapid decompression**: 572.20 MB/s average
-- **Memory optimization**: Efficient large file processing
-- **Multi-threading**: Parallel processing support
-
-### 🎮 **User Experience**
-- **Interactive menus**: Intuitive file selection and operation
-- **Progress tracking**: Real-time operation feedback
-- **Error handling**: Comprehensive error recovery
-- **Cross-platform**: Universal launcher system
-
-## 📚 **Complete Roadmap Documentation**
-
-### **Current Version**
-- [Technical Specification](Project%20White%20Papers/mmh-rs-technical-specification.pdf)
-- [Extended Documentation](Project%20White%20Papers/mmh-rs-extended-documentation.pdf)
-
-### **Future Roadmap**
-- [V2.0 Roadmap](V2_ROADMAP.md) - GPU+HDD Acceleration Revolution
-- [V3.0 Roadmap](V3_ROADMAP.md) - CPU+GPU+HDD with RGIG Integration
-- [V4.0 Roadmap](V4_ROADMAP.md) - CPU+GPU+NPU+TPU with AI Model Seeding
-- [V5.0 Roadmap](V5_ROADMAP.md) - CPU+GPU+NPU+TPU+QPU Universal AI File System
-
-### **Project Status**
-- [Release Announcement](RELEASE_ANNOUNCEMENT.md)
-
-## Installation
+## 🚀 Installation
 
 ### Prerequisites
 - **Rust**: Latest stable version (1.70+)
@@ -224,14 +164,18 @@ echo "This is test data for MMH-RS compression." > test.txt
 diff test.txt test_restored.txt
 ```
 
-## License
+---
 
-MIT License - see [LICENSE](LICENSE) file.
-
-## Contact
+## 📞 Contact
 
 - **Email**: Screwball7605@aol.com
 - **GitHub**: [Bigrob7605/MMH-RS](https://github.com/Bigrob7605/MMH-RS)
+
+---
+
+## License
+
+MIT License - see [LICENSE](LICENSE) file.
 
 ---
 
