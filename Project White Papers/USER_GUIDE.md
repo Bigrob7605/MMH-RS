@@ -1,225 +1,352 @@
-# MMH-RS V1.2.0 User Guide
+# MMH-RS User Guide
 
-## Quick Start Guide
+**For the full V2 roadmap and latest development milestones, see [MMH-RS_ROADMAP_COMPLETE.pdf](MMH-RS_ROADMAP_COMPLETE.pdf).**
 
-### Launching the System
+## 🚀 Quick Start Guide
+
+### Prerequisites
+- **V1.2.0**: Rust 1.70+, 4GB+ RAM, Windows 10+/Ubuntu 20.04+/macOS 11+
+- **V2.0**: GPU support (NVIDIA GTX 1060+/AMD RX 580+/Apple M1+), 8GB+ RAM
+
+### Installation
 ```bash
-# Windows (PowerShell)
+# Clone the repository
+git clone https://github.com/Bigrob7605/MMH-RS.git
+cd MMH-RS
+
+# Build the project
 cargo build --release
-./target/release/mmh.exe
 
-# Windows (Universal Launcher)
-mmh_universal.bat
-
-# Linux/macOS
-cargo build --release
-./target/release/mmh
-
-# Linux/macOS (Universal Launcher)
-./mmh.sh
+# Install (optional)
+cargo install --path .
 ```
 
-### Benchmark Menu Options
-1. **Smoketest** (~50 MiB) - Quick validation
-2. **Toasty** (2 GiB) - Standard testing
-3. **Scorched** (8 GiB) - Performance testing
-4. **Nuked** (32 GiB) - Extended testing (Baseline)
-5. **Total Annihilation** (128 GiB) - Stress testing
-6. **Memory Madness** (256 GiB) - Extreme testing
-7. **Swapocalypse** (512 GiB) - System testing
-8. **RAMpocalypse** (1 TiB) - Ultimate testing
+## 📋 V1.2.0 Usage (Current Production Version)
 
----
-
-## Performance Baseline
-
-### Validation System Performance
-- **System**: Intel i7-13620H + RTX 4070 + 64GB RAM
-- **OS**: Windows 11 Home (24H2) with WSL
-- **32GB Benchmark Score**: 83/100 (High-end laptop tier)
-- **Compression Ratio**: 2.15x (CPU-only implementation)
-- **Pack Speed**: 54.0 MB/s
-- **Unpack Speed**: 47.7 MB/s
-- **Total Time**: 20.6 minutes for 32GB test
-
-### Performance Expectations by System Tier
-- **Entry Level**: 20-40 MB/s, 1.5-2.0x compression
-- **Mainstream**: 30-50 MB/s, 1.8-2.2x compression
-- **High End**: 45-60 MB/s, 2.0-2.5x compression
-- **Enterprise**: 50-80 MB/s, 2.2-3.0x compression
-- **Development**: 60+ MB/s, 2.5+ compression
-
----
-
-## V1.2.0 Features
-
-### Data Integrity
-- **Bit-for-bit verification**: SHA-256 + Merkle tree validation
-- **Extension preservation**: Original file extensions perfectly maintained
-- **Deterministic output**: Consistent compression results every time
-- **Self-healing**: RaptorQ FEC corruption recovery
-
-### Real-Time Progress Monitoring
-- **Speed Displays**: MB/s, GB/s, TB/s in real-time
-- **File Count**: Shows files created during generation
-- **Phase Indicators**: Clear status for each operation
-- **Progress Bars**: Visual feedback for all operations
-- **Spinning Indicators**: Continuous visual feedback in menus
-
-### Abort Functionality
-- **Ctrl+C**: Immediately stops any operation
-- **Phase Awareness**: Knows which phase was aborted
-- **Clean Exit**: No hanging processes
-- **Status Reports**: Proper aborted report generation
-
-### Size-Prefixed Logging
-- **Unique Filenames**: `32G-test_results_2025-07-22_19-29-49.txt`
-- **Multiple Formats**: Text, JSON, and log outputs
-- **Organized Storage**: Easy to find and compare results
-- **Timestamped**: Automatic timestamp generation
-
-### Universal Format
-- **Open CBOR "seed pack" format**: Interoperable and extensible
-- **128-bit "Digital DNA"**: Unique identifier for each compressed file
-- **Cross-platform compatibility**: Windows, Linux, macOS
-
----
-
-## Testing Protocol
-
-### Recommended Testing Sequence
-
-#### **Step 1: Smoketest Validation**
+### Basic Commands
 ```bash
-Select tier: 1
-# Validates system is working correctly
-# ~50 MiB test, completes quickly
-# Expected: 1-2 minutes, 1.5-2.0x compression
+# Compress a file
+cargo run --release -- compress input_file.txt output_file.mmh
+
+# Extract a file
+cargo run --release -- extract input_file.mmh output_file.txt
+
+# Verify integrity
+cargo run --release -- verify input_file.mmh
+
+# Show file information
+cargo run --release -- info input_file.mmh
 ```
 
-#### **Step 2: Standard Performance Test**
+### Interactive Menu
 ```bash
-Select tier: 2
-# 2 GiB test for baseline performance
-# Expected: 5-10 minutes, 1.8-2.2x compression
+# Launch interactive menu
+cargo run --release
 ```
 
-#### **Step 3: Gold Standard Test**
+### Batch Processing
 ```bash
-Select tier: 4 (Nuked - 32 GiB)
-# ⭐ RECOMMENDED: Gold standard baseline
-# Expected: 15-30 minutes, 2.0-2.5x compression
-# Target score: 80+ for high-end systems
+# Process multiple files
+for file in *.txt; do
+    cargo run --release -- compress "$file" "${file%.txt}.mmh"
+done
 ```
 
-#### **Step 4: Stress Testing (Optional)**
+### Benchmarking
 ```bash
-Select tier: 5+ (128 GiB+)
-# For systems with 32GB+ RAM
-# Extended testing for performance validation
+# Run performance benchmark
+cargo run --release -- bench 1gb
+
+# Generate test data
+cargo run --release -- gentest 100mb test_data.bin
 ```
 
----
+## 🚀 V2.0 Features (Upcoming)
 
-## 🚀 **V1.2.0 ELITE TIER CAPABILITIES**
+### GPU Acceleration
+```bash
+# GPU-accelerated compression (V2.0)
+cargo run --release -- compress --gpu input_file.txt output_file.mmh
 
-### **✅ WHAT MMH-RS V1.2.0 DOES BEST**
-- **Text files**: .txt, .md, .json, .csv, .xml, .html (2-4x compression)
-- **Log files**: Application logs, system logs, debug output
-- **Code files**: Source code, scripts, configuration files
-- **Raw images**: .bmp, .tiff, uncompressed formats
-- **AI model weights**: Neural network parameters, training data
-- **Databases**: SQL dumps, data exports
-- **Any file type**: Perfect integrity preservation
+# Multi-GPU processing (V2.1+)
+cargo run --release -- compress --gpu --multi-gpu input_file.txt output_file.mmh
 
-### **⚠️ LIMITATIONS (Expected Behavior)**
-- **Already-compressed files**: .mp4, .jpg, .png, .mp3, .zip (may expand slightly)
-- **Encrypted files**: Random data that can't be compressed
-- **Binary executables**: Limited compression potential
-
-### **🔍 Understanding "Random Data Detected"**
-When you see this message:
-```
-Random data detected - expansion is normal and expected. This is not a bug.
+# GPU selection
+cargo run --release -- compress --gpu-id 0 input_file.txt output_file.mmh
 ```
 
-**This is NOT an error!** It means:
-- Your file is already highly compressed or contains random data
-- MMH-RS cannot compress it further (mathematically impossible)
-- The file might grow slightly due to metadata overhead
-- **This is normal behavior for all compression tools**
+### Directory Support
+```bash
+# Compress entire directory (V2.0)
+cargo run --release -- compress-dir input_directory/ output_file.mmh
+
+# Extract directory with metadata preservation
+cargo run --release -- extract-dir input_file.mmh output_directory/
+
+# Directory verification
+cargo run --release -- verify-dir input_file.mmh
+```
+
+### Advanced Security (V2.0)
+```bash
+# Encrypted compression
+cargo run --release -- compress --encrypt input_file.txt output_file.mmh
+
+# Key management
+cargo run --release -- keygen --output key.pem
+cargo run --release -- compress --key key.pem input_file.txt output_file.mmh
+
+# Quantum-resistant encryption (V2.1+)
+cargo run --release -- compress --quantum-safe input_file.txt output_file.mmh
+```
+
+### Real-time Verification
+```bash
+# Continuous integrity checking (V2.0)
+cargo run --release -- compress --verify-continuous input_file.txt output_file.mmh
+
+# Progress monitoring
+cargo run --release -- compress --progress input_file.txt output_file.mmh
+```
+
+## 🎯 Performance Optimization
+
+### V1.2.0 Optimization
+```bash
+# Memory optimization
+cargo run --release -- compress --memory-limit 4gb input_file.txt output_file.mmh
+
+# Thread optimization
+cargo run --release -- compress --threads 8 input_file.txt output_file.mmh
+
+# Block size optimization
+cargo run --release -- compress --block-size 1mb input_file.txt output_file.mmh
+```
+
+### V2.0 GPU Optimization
+```bash
+# GPU memory management
+cargo run --release -- compress --gpu-memory 8gb input_file.txt output_file.mmh
+
+# Kernel optimization
+cargo run --release -- compress --gpu-kernel optimized input_file.txt output_file.mmh
+
+# Load balancing
+cargo run --release -- compress --gpu-balance auto input_file.txt output_file.mmh
+```
+
+## 🔧 Configuration
+
+### V1.2.0 Configuration
+```toml
+# config.toml
+[compression]
+algorithm = "lz77_huffman"
+block_size = "1mb"
+threads = 8
+memory_limit = "4gb"
+
+[verification]
+hash_algorithm = "sha256"
+merkle_tree = true
+fec_enabled = true
+```
+
+### V2.0 Configuration
+```toml
+# config_v2.toml
+[gpu]
+enabled = true
+cuda = true
+rocm = true
+metal = true
+memory_pool = "8gb"
+multi_gpu = true
+
+[security]
+encryption = "aes256_gcm"
+quantum_safe = true
+key_rotation = "30d"
+
+[directory]
+preserve_metadata = true
+symlink_handling = "preserve"
+cross_platform = true
+```
+
+## 🧪 Testing & Validation
+
+### V1.2.0 Testing
+```bash
+# Run comprehensive tests
+cargo test
+
+# Run benchmarks
+cargo bench
+
+# Smoke test
+cargo run --release -- smoketest test_data/
+
+# Integrity validation
+cargo run --release -- validate-all test_data/
+```
+
+### V2.0 Testing
+```bash
+# GPU compatibility test
+cargo run --release -- gpu-test
+
+# Performance benchmarking
+cargo run --release -- bench-gpu 10gb
+
+# Security validation
+cargo run --release -- security-audit
+
+# Cross-platform validation
+cargo run --release -- cross-platform-test
+```
+
+## 🔍 Troubleshooting
+
+### Common Issues
+
+#### V1.2.0 Issues
+```bash
+# Memory issues
+cargo run --release -- compress --memory-limit 2gb input_file.txt output_file.mmh
+
+# Corrupted file recovery
+cargo run --release -- repair input_file.mmh
+
+# Verification failures
+cargo run --release -- diagnose input_file.mmh
+```
+
+#### V2.0 Issues
+```bash
+# GPU detection issues
+cargo run --release -- gpu-info
+
+# Driver compatibility
+cargo run --release -- gpu-check
+
+# Memory allocation errors
+cargo run --release -- compress --gpu-memory 4gb input_file.txt output_file.mmh
+```
+
+### Error Codes
+- `E001`: File not found
+- `E002`: Insufficient memory
+- `E003`: GPU not available (V2.0)
+- `E004`: Encryption key required
+- `E005`: Directory access denied (V2.0)
+
+## 📊 Performance Monitoring
+
+### V1.2.0 Metrics
+```bash
+# Performance statistics
+cargo run --release -- stats input_file.mmh
+
+# Memory usage
+cargo run --release -- memory-usage
+
+# Compression ratio analysis
+cargo run --release -- analyze input_file.mmh
+```
+
+### V2.0 Metrics
+```bash
+# GPU utilization
+cargo run --release -- gpu-stats
+
+# Performance dashboard
+cargo run --release -- dashboard
+
+# Real-time monitoring
+cargo run --release -- monitor --continuous
+```
+
+## 🔗 Integration Examples
+
+### Python Integration (V2.0)
+```python
+import mmh_rs
+
+# Basic compression
+mmh_rs.compress("input.txt", "output.mmh")
+
+# GPU acceleration
+mmh_rs.compress_gpu("input.txt", "output.mmh", gpu_id=0)
+
+# Directory processing
+mmh_rs.compress_directory("input_dir/", "output.mmh")
+```
+
+### JavaScript Integration (V2.0)
+```javascript
+const mmh = require('mmh-rs');
+
+// Basic compression
+mmh.compress('input.txt', 'output.mmh');
+
+// GPU acceleration
+mmh.compressGPU('input.txt', 'output.mmh', { gpuId: 0 });
+
+// Directory processing
+mmh.compressDirectory('input_dir/', 'output.mmh');
+```
+
+## 📚 Advanced Usage
+
+### Scripting Examples
+```bash
+#!/bin/bash
+# Automated backup script (V2.0)
+
+# Compress with encryption
+cargo run --release -- compress --encrypt --key backup.key \
+    /home/user/documents/ backup_$(date +%Y%m%d).mmh
+
+# Verify backup integrity
+cargo run --release -- verify backup_$(date +%Y%m%d).mmh
+
+# Upload to cloud (V2.1+)
+cargo run --release -- upload --cloud aws backup_$(date +%Y%m%d).mmh
+```
+
+### CI/CD Integration
+```yaml
+# .github/workflows/test.yml
+name: MMH-RS Tests
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - run: cargo test
+      - run: cargo run --release -- smoketest test_data/
+```
+
+## 🤝 Community Support
+
+### Getting Help
+- **GitHub Issues**: Bug reports and feature requests
+- **Discord**: Community discussions and support
+- **Documentation**: Complete guides in Project White Papers
+- **Email**: Direct support at Screwball7605@aol.com
+
+### Contributing
+- **Testing**: Help test V2 features on your hardware
+- **Benchmarking**: Run performance tests and share results
+- **Documentation**: Improve guides and examples
+- **Code**: Submit pull requests for improvements
 
 ---
 
-## 🛠 **TROUBLESHOOTING**
-
-### **✅ COMMON ISSUES & SOLUTIONS**
-
-#### **Memory Issues**
-- **Problem**: "Not enough memory" for large tests
-- **Solution**: Use smaller tiers (1-3) or increase system RAM
-- **Note**: V1.2.0 is CPU-focused, V2 will add GPU acceleration
-
-#### **Windows 11/WSL Compatibility**
-- **Problem**: Memory reporting differences
-- **Solution**: Use Windows native mode for most accurate results
-- **Note**: WSL mode works but may show different memory usage
-
-#### **Performance Expectations**
-- **Problem**: Slower than expected compression
-- **Solution**: V1.2.0 is CPU-only, V2 will add GPU acceleration
-- **Note**: 50-60 MB/s is excellent for CPU-only compression
-
-#### **File Type Limitations**
-- **Problem**: Some files don't compress well
-- **Solution**: This is expected for already-compressed files
-- **Note**: MMH-RS still provides perfect integrity preservation
-
----
-
-## 🎯 **AFTER RUNNING BENCHMARKS**
-
-### **✅ WHAT TO DO WITH YOUR RESULTS**
-
-#### **Save Your Log Files**
-- **Location**: Automatically saved in project directory
-- **Format**: `[SIZE]-test_results_[TIMESTAMP].txt`
-- **Content**: Complete benchmark results and system info
-
-#### **Compare to Gold Standard**
-- **Baseline**: 83/100 on 32GB test (UniversalTruth system)
-- **Your Score**: Compare your results to the baseline
-- **Hardware**: Consider your system specifications
-
-#### **Share Results**
-- **GitHub**: Submit results for community comparison
-- **Documentation**: Help improve performance expectations
-- **Feedback**: Report any issues or improvements
-
----
-
-## 🚧 **ROADMAP PREVIEW**
-
-### **🎯 V2 (Q3 2025): GPU Acceleration**
-- **GPU Support**: NVIDIA, AMD, Apple M-series
-- **Speed Boost**: 10x–50x faster compression/decompression
-- **Directory Support**: Full directory compression
-- **Real-time Monitoring**: Heat/throttle monitoring
-
-### **🎯 V3 (Q4 2025+): AI Integration**
-- **AI Model Folding**: Compress entire AI models
-- **RGIG Integration**: Reality-Grade Intelligence Gauntlet
-- **Quantum Codecs**: Advanced compression algorithms
-- **Universal AI File System**: Complete AI ecosystem
-
----
-
-## 📞 **SUPPORT & CONTACT**
-
-- **Email**: Screwball7605@aol.com
-- **GitHub**: [Bigrob7605/MMH-RS](https://github.com/Bigrob7605/MMH-RS)
-- **Documentation**: Complete technical and user guides available
-
----
-
-**MMH-RS V1.2.0 ELITE TIER - Production-ready with perfect bit-for-bit integrity!** 
+**For detailed technical specifications and implementation details, see [MMH-RS_TECHNICAL_COMPLETE.pdf](MMH-RS_TECHNICAL_COMPLETE.pdf).** 
