@@ -2,6 +2,8 @@
 
 **📚 Full Documentation:** [Master Roadmap](MMH-RS_ROADMAP_COMPLETE.pdf) | [Technical Specification](MMH-RS_TECHNICAL_COMPLETE.pdf) | [Project Status](PROJECT_STATUS.md) | [Development History](DEVELOPMENT_HISTORY.md) | [Changelog](CHANGELOG.md) | [RGIG Integration](RGIG_INTEGRATION_COMPLETE.pdf) | [Kai Core Integration](KAI_CORE_INTEGRATION_COMPLETE.pdf)
 
+## 🚧 V2 GPU/Quantum Features in Active Development—Community Contributors Wanted!
+
 **For the full V2 roadmap and latest development milestones, see [MMH-RS_ROADMAP_COMPLETE.pdf](MMH-RS_ROADMAP_COMPLETE.pdf).**
 
 ## 🚀 Why MMH-RS for AI Storage?
@@ -24,6 +26,24 @@ MMH-RS represents the next evolution in compression technology, designed specifi
 - **Advanced CLI**: Enhanced command-line interface with progress tracking
 
 ## 🚀 Quick Start Guide
+
+### 🟢 Run This First
+
+```bash
+# Windows
+git clone https://github.com/Bigrob7605/MMH-RS
+cd MMH-RS
+cargo build --release
+.\mmh_human.bat
+
+# Linux/macOS
+git clone https://github.com/Bigrob7605/MMH-RS
+cd MMH-RS
+cargo build --release
+./mmh_human.sh
+```
+
+**🟢 You should see:** Interactive MMH-RS menu with compression, verification, and extraction options.
 
 ### Prerequisites
 - **V1.2.0**: Rust 1.70+, 4GB+ RAM, Windows 10+/Ubuntu 20.04+/macOS 11+

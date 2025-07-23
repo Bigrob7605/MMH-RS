@@ -6,6 +6,7 @@
 
 **Current Stable:** V1.2.0  
 **In Progress:** V2.0.0 (GPU, quantum, directories, new CLI)  
+**Security Review:** Pending for V2.0 quantum-secure features  
 **Full roadmap:** [MMH-RS_ROADMAP_COMPLETE.pdf](MMH-RS_ROADMAP_COMPLETE.pdf)
 
 ## [V2.1.0] - 2025-01-XX (Current Development)

@@ -4,6 +4,15 @@
 [![Rust](https://img.shields.io/badge/Rust-1.70+-orange.svg)](https://www.rust-lang.org/)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-blue.svg)](https://github.com/Bigrob7605/MMH-RS)
 
+## 🚧 V2 GPU/Quantum Features in Active Development—Community Contributors Wanted!
+
+**MMH-RS is the open, deterministic, self-healing compression engine for the AI age.**
+
+### 🎯 What's Next
+**Next Up:** GPU Acceleration, Directory Compression, Quantum-Ready Encryption.  
+**ETA:** Q4 2025.  
+**See:** [MMH-RS_ROADMAP_COMPLETE.pdf](Project%20White%20Papers/MMH-RS_ROADMAP_COMPLETE.pdf) for live updates.
+
 ## 🚀 Why MMH-RS for AI Storage?
 
 **Built for the AI age—deterministic, self-healing, quantum-ready, GPU-accelerated, and 100% open. Don't settle for legacy—upgrade your storage and future-proof your data today.**
@@ -157,8 +166,14 @@ mmh.compressDirectory('input_dir/', 'output.mmh');
 
 ## 🎯 Feature Comparison: V1 vs V2 vs V3+
 
-| Feature Category | V1.2.0 (Current) | V2.0-2.1 (Next) | V3+ (Future) |
-|------------------|------------------|------------------|--------------|
+| Feature | V1.2.0 (Current) | V2.0-2.1 (Next) | V3+ (Future) |
+|---------|------------------|------------------|--------------|
+| **CPU Compression** | ✅ | ✅ | ✅ |
+| **GPU Acceleration** | 🚫 | ✅ | ✅ |
+| **Directory Support** | 🚫 | ✅ | ✅ |
+| **Quantum Encryption** | 🚫 | ✅ | ✅ |
+| **AI Model Folding** | 🚫 | 🚫 | ✅ |
+| **Self-Healing FEC** | ✅ | ✅ | ✅ |
 | **Performance** | CPU-only compression | GPU acceleration | AI-optimized |
 | **AI Integration** | None | Kai Core bootstrap | Full neural processing |
 | **File Support** | Single files | Directory support | Full filesystem |
@@ -271,7 +286,7 @@ MMH-RS V1.2.0 is **production-ready** with:
 - **Scalability**: Linear scaling with GPU count
 - **Multi-GPU**: Distributed processing across multiple GPUs
 
-## 🔒 Security
+## 🔒 Security & Audit
 
 ### Current (V1.2.0)
 - SHA-256 + Merkle tree integrity verification
@@ -288,7 +303,12 @@ MMH-RS V1.2.0 is **production-ready** with:
 - Advanced key management system
 - Comprehensive audit logging
 
+### Security Review
+**Full quantum-secure audit log and cryptographic review will be published for V2. Security white paper in progress.**
+
 ## 🤝 Community & Contribution
+
+**Want to help? Star the repo, join the Discord, submit test logs, or open a PR. The future is open-source and AI-powered!**
 
 **We want your feedback—join Discord, open issues, and help shape V2+!**
 

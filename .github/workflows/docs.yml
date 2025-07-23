@@ -1,0 +1,36 @@
+name: Documentation Build
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 3 * * *"  # Nightly at 3 AM UTC
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup LaTeX
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: Project White Papers/MMH-RS_MASTER_DOCUMENT.tex
+          latexmk_use_xelatex: true
+      - name: Build all PDFs
+        run: |
+          cd "Project White Papers"
+          pdflatex -interaction=nonstopmode MMH-RS_MASTER_DOCUMENT.tex
+          pdflatex -interaction=nonstopmode MMH-RS_ROADMAP_COMPLETE.tex
+          pdflatex -interaction=nonstopmode MMH-RS_TECHNICAL_COMPLETE.tex
+          pdflatex -interaction=nonstopmode RGIG_INTEGRATION_COMPLETE.tex
+          pdflatex -interaction=nonstopmode KAI_CORE_INTEGRATION_COMPLETE.tex
+      - name: Clean auxiliary files
+        run: |
+          cd "Project White Papers"
+          rm -f *.aux *.log *.out *.toc *.fdb_latexmk *.fls *.synctex.gz
+      - name: Commit updated PDFs
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add "Project White Papers/*.pdf"
+          git commit -m "docs: auto-regenerate PDFs" || exit 0
+          git push 
