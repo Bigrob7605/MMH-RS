@@ -1,41 +1,69 @@
 % =========================================================
-% RGIG Benchmark – Guidance and Best Practices V4.0
+% RGIG Benchmark – Guidance and Best Practices V5.0
 % =========================================================
-% Updated: July 5, 2025
+% Updated: January 2025 - MMH-RS V1.2.0 Integration
 
 \section*{Introduction}
-The RGIG Benchmark Specification provides a rigorous framework for testing artificial intelligence systems across six major pillars: meta-reasoning, adaptive learning, embodied agency, multimodal synthesis, ethical self-governance, and visual-recursive stability. This guide serves as a companion to the RGIG specification and offers insights, suggestions, and detailed instructions on how to navigate and execute the benchmark successfully.\\
-\textbf{V4.0 Note:} All seeding is vault-random and tamper-proof. All outputs are PDF-only, with embedded audit data and full vault lineage (file, SHA256, section, text) logged in every manifest. No JSON, QR, or manual seed/replay is supported.
+The RGIG Benchmark Specification provides a rigorous framework for testing artificial intelligence systems across seven major pillars: abstract reasoning, adaptive learning, embodied agency, multimodal synthesis, ethical governance, visual stability, and AI model compression testing. This guide serves as a companion to the RGIG specification and offers insights, suggestions, and detailed instructions on how to navigate and execute the benchmark successfully with MMH-RS V1.2.0 integration.\\
+\textbf{V5.0 Note:} All testing now includes MMH-RS deterministic compression, cryptographic verification, and self-healing capabilities. All outputs are PDF-only with embedded audit data and full vault lineage (file, SHA256, section, text) logged in every manifest.
+
+\section*{MMH-RS Integration Overview}
+RGIG V5.0 is fully integrated with MMH-RS V1.2.0, providing:
+
+\textbf{Deterministic Testing:}
+\begin{itemize}
+  \item \textbf{Identical Results:} All RGIG tests produce identical outputs across platforms
+  \item \textbf{Cryptographic Verification:} SHA-256 and Merkle tree integrity for all artifacts
+  \item \textbf{Self-Healing:} Forward error correction (FEC) for corrupted test data
+  \item \textbf{Audit Trails:} Complete cryptographic audit trails with open logs
+\end{itemize}
+
+\textbf{AI Model Testing:}
+\begin{itemize}
+  \item \textbf{Model Compression:} Test AI model compression ratios and accuracy preservation
+  \item \textbf{Cross-Platform Validation:} Verify model compatibility across different systems
+  \item \textbf{Performance Benchmarking:} Measure compression/decompression speeds
+  \item \textbf{Integrity Verification:} Ensure model weights remain intact after compression
+\end{itemize}
 
 \section*{Setting Up the Test Environment}
-Before you begin testing with RGIG, ensure that you have the correct environment set up:
+Before you begin testing with RGIG V5.0, ensure that you have the correct environment set up:
 
 \subsection*{Hardware Requirements}
 \begin{itemize}
   \item For \textbf{text-only} and \textbf{code-enabled} paths, any modern device capable of compiling \LaTeX{} will suffice.
   \item For \textbf{multimodal testing} (Max Path), a high-performance setup is required. A minimum of a 16-core CPU, 32GB RAM, and a high-performance GPU (12GB+ VRAM) are necessary for effective processing.
+  \item \textbf{AI Model Testing:} For testing AI model compression, additional GPU memory (16GB+ VRAM) and storage (100GB+ free space) are recommended.
   \item \textbf{Cloud Path}: Cloud computing (AWS, GCP, Azure) is recommended for large-scale tests and multimodal processing. Using cloud resources will offer scalability and distributed computing power.
 \end{itemize}
 
 \subsection*{Software \& Tooling}
 \begin{itemize}
-  \item Ensure \textbf{Python 3.x} and necessary dependencies are installed (e.g., TensorFlow, PyTorch, or other required AI model execution libraries).
-  \item For \textbf{advanced multimodal tasks} (Max Path), specialized tools such as \textbf{LilyPond} (for music generation), \textbf{WebGL} (for graphics rendering), and \textbf{CUDA} for matrix operations are required.
+  \item \textbf{MMH-RS V1.2.0:} Ensure MMH-RS is installed and configured for compression and verification
+  \item \textbf{Python 3.x:} Required for AI model testing and MMH-RS Python bindings
+  \item \textbf{AI Frameworks:} PyTorch, TensorFlow, or ONNX for model testing
+  \item \textbf{LaTeX:} Required for RGIG test compilation and PDF generation
   \item \textbf{Cloud Setup}: Ensure cloud environments are configured with appropriate permissions (IAM roles or service accounts) and resource allocation (e.g., vCPUs, memory, GPUs).
 \end{itemize}
 
-\subsection*{Cloud Testing}
-Cloud-based testing is a highly efficient method for scaling and managing large benchmarks. Platforms such as AWS, GCP, and Azure are recommended for running RGIG tests in distributed environments:
-\begin{itemize}
-  \item Be mindful of \textbf{cloud resource quotas}, especially when running tests at scale (particularly for Max Path). Set up \textbf{cost tracking} and \textbf{monitoring} with your cloud provider to avoid unexpected charges.
-  \item Use \textbf{Docker containers} with RGIG Harness for easy environment replication, ensuring consistency across tests.
-  \item \textbf{Track cloud-specific metrics} such as compute hours, data bandwidth, and storage usage to monitor and optimize performance.
-\end{itemize}
+\subsection*{MMH-RS Configuration}
+Configure MMH-RS for RGIG testing:
+
+\begin{verbatim}
+# Install MMH-RS
+cargo install mmh-rs
+
+# Configure for RGIG testing
+mmh config --rgig-mode --compression-level 3 --verify-all
+
+# Test MMH-RS integration
+mmh rgig --test-integration
+\end{verbatim}
 
 \section*{Testing Protocols}
 
-\subsection*{Step-by-Step Execution}
-Follow these steps to ensure the successful execution of RGIG tests:
+\subsection*{MMH-RS Enhanced Testing Workflow}
+Follow these steps to ensure the successful execution of RGIG tests with MMH-RS integration:
 
 \begin{enumerate}
   \item \textbf{Choose Your Testing Path:}
@@ -44,14 +72,26 @@ Follow these steps to ensure the successful execution of RGIG tests:
     \item \textbf{Normal Path:} Includes code-enabled tasks for advanced models with medium resource requirements.
     \item \textbf{Advanced Path (Pre-Max):} Suitable for models that require higher processing power and more complex tasks.
     \item \textbf{Max Path:} Full testing suite, including multimodal synthesis, requiring high-end hardware and software setups.
+    \item \textbf{AI Model Path:} Specialized path for testing AI model compression and validation.
     \item \textbf{Cloud Path:} Execute tests in cloud environments to ensure greater scalability. Ensure proper resource allocation.
   \end{itemize}
 
   \item \textbf{Running the Benchmark:}
   \begin{itemize}
     \item Use the provided LaTeX harness, CLI, or GUI to run each field sequentially. All seeding is vault-random and all outputs are PDF-only.
+    \item MMH-RS automatically compresses test results and generates cryptographic verification
     \item Ensure to log \textbf{timestamps}, \textbf{hardware usage}, \textbf{resource consumption}, and \textbf{vault lineage} (file, SHA256, section, text) for performance analysis, audit, and post-run tracking.
     \item Utilize \textbf{automated logging tools} to ensure consistent and thorough data collection for both cloud and local tests.
+  \end{itemize}
+
+  \item \textbf{AI Model Testing:}
+  \begin{itemize}
+    \item Load AI model (PyTorch, TensorFlow, ONNX format)
+    \item Run baseline RGIG tests on uncompressed model
+    \item Compress model using MMH-RS algorithms
+    \item Run validation tests on compressed model
+    \item Compare results and verify accuracy preservation
+    \item Generate compression ratio and performance metrics
   \end{itemize}
 
   \item \textbf{Peer Review:}
@@ -59,6 +99,7 @@ Follow these steps to ensure the successful execution of RGIG tests:
     \item Each test run must undergo \textbf{peer review} by at least three independent reviewers. They will assess the model's performance based on the rubric in the specification.
     \item \textbf{Peer feedback} should be incorporated into the model's self-audit, fostering iterative refinement and transparent improvements.
     \item Reviewers must follow clear \textbf{criteria} to provide constructive feedback and ensure consistency across evaluations.
+    \item Compressed test artifacts are shared for peer review using MMH-RS verification
   \end{itemize}
 \end{enumerate}
 
@@ -67,14 +108,17 @@ Here are common issues that may arise during testing and their corresponding sol
 
 \begin{itemize}
   \item \textbf{Hardware Constraints:} Ensure your system meets the hardware requirements for the path you are testing. If your system does not meet Max Path requirements, consider using the Advanced Path instead.
+  \item \textbf{MMH-RS Integration Issues:} Verify MMH-RS installation and configuration. Use \texttt{mmh doctor} to check for missing dependencies and auto-install them.
+  \item \textbf{AI Model Loading:} Ensure AI models are in supported formats (PyTorch .pth, TensorFlow SavedModel, ONNX). Use MMH-RS model validation tools.
   \item \textbf{Cloud Setup Issues:} Verify your \textbf{IAM roles} and \textbf{service account configurations} when performing cloud-based tests. Ensure that your cloud provider's \textbf{resource quotas} are sufficient to handle the tests.
   \item \textbf{Model Optimization:} If your model consumes excessive resources, optimize its performance by adjusting hyperparameters or reducing complexity in the tasks.
   \item \textbf{Peer Review Conflict:} If reviewers disagree, ensure a clear \textbf{conflict-resolution} process is in place. Provide guidance on addressing discrepancies in feedback and scoring.
   \item \textbf{Vault Lineage/Audit Issues:} If a manifest is missing vault lineage (file, SHA256, section, text), the run is not valid for peer review or audit. Always ensure vault lineage is logged in every PDF output.
+  \item \textbf{Compression Verification:} If MMH-RS verification fails, check for corrupted test data and use self-healing capabilities to recover.
 \end{itemize}
 
 \section*{Scoring and Metrics}
-RGIG uses several key metrics to assess performance:
+RGIG uses several key metrics to assess performance, now enhanced with MMH-RS integration:
 
 \begin{itemize}
   \item \textbf{Accuracy:} Measures how well the model solves the tasks.
@@ -82,27 +126,46 @@ RGIG uses several key metrics to assess performance:
   \item \textbf{Novelty:} Assesses the originality of the solution.
   \item \textbf{Compute Efficiency:} Tracks how efficiently the model uses resources. The "green-score" measures this, and models should minimize resource consumption while maintaining accuracy.
   \item \textbf{Honesty:} Ensures self-reports align with peer-reviewed evaluations, cross-checked through peer reviews for validity.
+  \item \textbf{Compression Ratio:} For AI model testing, measures the compression ratio achieved while preserving accuracy.
+  \item \textbf{Integrity Score:} MMH-RS cryptographic verification score for test artifact integrity.
 \end{itemize}
 
 \section*{Example Workflow}
-Follow these steps to complete the testing process:
+Follow these steps to complete the testing process with MMH-RS integration:
 
 \begin{enumerate}
-  \item \textbf{Select Testing Path:} Choose the path based on model capabilities (Mini, Normal, Max, Cloud).
-  \item \textbf{Set Up Environment:} Ensure that the correct hardware, software, and cloud resources are set up.
-  \item \textbf{Run the Test:} Execute each field's sequence (P1–P6), capturing required metrics and results.
+  \item \textbf{Select Testing Path:} Choose the path based on model capabilities (Mini, Normal, Max, AI Model, Cloud).
+  \item \textbf{Set Up Environment:} Ensure that the correct hardware, software, and cloud resources are set up. Configure MMH-RS for RGIG testing.
+  \item \textbf{Run the Test:} Execute each field's sequence (P1–P6), capturing required metrics and results. MMH-RS automatically compresses and verifies test artifacts.
+  \item \textbf{AI Model Testing (if applicable):} Load, compress, and validate AI models using MMH-RS algorithms.
   \item \textbf{Peer Review and Feedback:} After the test, initiate the peer review process and incorporate feedback into the model's self-assessment.
   \item \textbf{Submit Logs and Results:} Ensure that all logs, metrics, and review data are saved. Push them to your RGIG repository for version control and transparency.
 \end{enumerate}
 
+\section*{MMH-RS V3.0 Preparation}
+RGIG V5.0 is designed to prepare for MMH-RS V3.0's advanced AI model compression capabilities:
+
+\textbf{Current Capabilities (V1.2.0):}
+\begin{itemize}
+  \item Basic RGIG test suite with MMH-RS compression
+  \item Deterministic test result generation
+  \item Cryptographic verification of test artifacts
+  \item Self-healing capabilities for corrupted data
+\end{itemize}
+
+\textbf{Future Capabilities (V3.0):}
+\begin{itemize}
+  \item Neural network weight compression testing
+  \item Model architecture preservation validation
+  \item Cross-platform model deployment verification
+  \item AI framework integration (PyTorch, TensorFlow, ONNX)
+  \item Quantum-resistant cryptography integration
+  \item Advanced entropy coding techniques
+\end{itemize}
+
 \section*{Final Notes}
-RGIG is designed to be modular and scalable, catering to a wide variety of AI systems, from basic models to advanced ASI systems. We encourage testers to provide feedback on the process and share their results to help refine the benchmark. This is an open-source effort, and contributions to improve the benchmark are always welcome.\\
-\textbf{V4.0 Note:} All results, manifests, and seeds are PDF-only and must include full vault lineage for auditability. No JSON, QR, or manual seed/replay is supported.
-
-For additional resources or troubleshooting, visit the RGIG GitHub repository or reach out via the contact information provided in the main.tex.
-
-\textbf{Open-Source License:} RGIG is released under an open license (Apache v2.0 License). You are free to use, adapt, and redistribute. \\
-\textbf{No Warranty:} This specification is provided as-is, with no support obligations.
+RGIG V5.0 is designed to be modular and scalable, catering to a wide variety of AI systems, from basic models to advanced ASI systems. The integration with MMH-RS V1.2.0 ensures deterministic, verifiable, and reproducible testing that will scale to future AI model compression requirements.\\
+\textbf{V5.0 Note:} All results, manifests, and seeds are PDF-only and must include full vault lineage for auditability. MMH-RS compression and verification are mandatory for all test artifacts.
 
 % --- Field F Note ---
 \section*{Field F: Recursive Visual Test}

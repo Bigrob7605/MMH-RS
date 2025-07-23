@@ -1,19 +1,111 @@
 %=========================================================
-%  fieldG.tex — Placeholder for Future Fields (G-Z)
+%  fieldG.tex — AI Model Compression Testing (Field G) V5.0
 %=========================================================
-\section{Field G — [Future Field Title]}
+\section{Field G — AI Model Compression Testing}
 \label{sec:fieldG}
 
 \subsection*{Objective}
-[Describe the objective of the new field.]
+Assess the ability to compress, validate, and verify AI models while preserving accuracy and performance. This field tests MMH-RS V1.2.0's AI model compression capabilities and prepares for V3.0's advanced neural network compression features. Models are evaluated based on compression ratio, accuracy preservation, cross-platform compatibility, and cryptographic integrity verification.
 
 \subsection*{Dynamic Prompt Sequence (P1–P6)}
-[Describe the prompt sequence for the new field.]
+The harness loads AI models and applies MMH-RS compression algorithms to test compression ratios, accuracy preservation, and integrity verification. All operations are deterministic and cryptographically verified.
+\textbf{Note:} Model size limits apply based on available GPU memory; compression ratios and accuracy metrics are logged; compute efficiency is measured for green-scoring.
+
+\begingroup
+  \small
+  \begin{longtable}{@{}p{0.06\linewidth}@{\quad}R{0.9\linewidth}@{}}
+    \textbf{P1} & \textbf{Model Analysis}\\
+                & Analyze the provided AI model architecture, identify compression opportunities, and estimate potential compression ratios (≤200 tokens). \\[4pt]
+    \textbf{P2} & \textbf{Compression Strategy}\\
+                & Design a compression strategy using MMH-RS algorithms, considering weight quantization, pruning, and entropy coding (≤400 tokens).\\[4pt]
+    \textbf{P3} & \textbf{Compression Execution}\\
+                & Execute the compression using MMH-RS V1.2.0, measure compression ratio, and verify model integrity with cryptographic checksums.\\[4pt]
+    \textbf{P4} & \textbf{Accuracy Validation}\\
+                & Test the compressed model on validation data, measure accuracy preservation, and identify any performance degradation (≤300 tokens).\\[4pt]
+    \textbf{P5} & \textbf{Cross-Platform Verification}\\
+                & Verify the compressed model works across different platforms and hardware configurations, ensuring deterministic behavior.\\[4pt]
+    \textbf{P6} & \textbf{Self-Audit YAML}\\
+                & Emit a YAML block with scores for \texttt{compression\_ratio}, \texttt{accuracy\_preservation}, \texttt{integrity}, and \texttt{efficiency} (0–10) plus improvement suggestions and audit token.\\
+  \end{longtable}
+\endgroup
 
 \subsection*{Scoring Rubric}
-[Describe the scoring rubric for the new field.]
+Let $c, a, i, e$ be the peer-verified scores (0–10) for compression ratio, accuracy preservation, integrity, and efficiency; let $h$ be honesty (0–10) measured by Jensen–Shannon divergence between self-audit and peer scores; let $g$ be the green-score (0–1) reflecting normalized compute hours. Then
+\[
+  F_G = 0.30 \cdot c + 0.25 \cdot a + 0.20 \cdot i + 0.15 \cdot e + 0.05 \cdot h + 0.05 \cdot g.
+\]
+Partial credit is awarded for innovative compression techniques and efficient implementations.
+
+\textbf{Exemplar for Compression Ratio:}
+\begin{itemize}
+  \item \emph{Gold}: 70-80\% size reduction with <1\% accuracy loss.
+  \item \emph{Silver}: 50-70\% size reduction with <2\% accuracy loss.
+  \item \emph{Bronze}: 30-50\% size reduction with <5\% accuracy loss.
+\end{itemize}
+
+\subsection*{Supported Model Formats}
+\begin{itemize}
+  \item \textbf{PyTorch:} .pth, .pt files with state dict or full model
+  \item \textbf{TensorFlow:} SavedModel format, .h5 files
+  \item \textbf{ONNX:} .onnx files for cross-platform compatibility
+  \item \textbf{Custom:} User-defined model formats with conversion utilities
+\end{itemize}
+
+\subsection*{MMH-RS Integration Features}
+\begin{itemize}
+  \item \textbf{Deterministic Compression:} Identical compressed models across platforms
+  \item \textbf{Cryptographic Verification:} SHA-256 and Merkle tree integrity checks
+  \item \textbf{Self-Healing:} Forward error correction for corrupted model data
+  \item \textbf{Cross-Platform Validation:} Verify model compatibility across systems
+  \item \textbf{Performance Benchmarking:} Measure compression/decompression speeds
+\end{itemize}
 
 \subsection*{Failure Modes Captured}
-[List failure modes relevant to the new field.]
+\begin{itemize}
+  \item \textbf{Accuracy Degradation:} Excessive compression causing significant performance loss
+  \item \textbf{Platform Incompatibility:} Compressed models failing on different systems
+  \item \textbf{Integrity Violations:} Cryptographic verification failures
+  \item \textbf{Compression Inefficiency:} Poor compression ratios or slow processing
+  \item \textbf{Self-Delusion:} Honesty cross-checked by peer model evaluation
+\end{itemize}
 
-\textbf{Note:} This is a template for future RGIG fields (G-Z). Copy, rename, and expand as needed for new domains (e.g., Embodied Robotics, Social Simulation, Multi-Agent Theory of Mind). 
+\subsection*{Example Test Case (Illustration Only)}
+\textbf{Model:} ResNet-50 (25.6M parameters, 98MB)  
+\textbf{P1 Analysis}: "ResNet-50 has significant redundancy in early layers, potential for 60-70\% compression."  
+\textbf{P2 Strategy}: "Apply weight quantization to 8-bit, prune 30\% of connections, use MMH-RS entropy coding."  
+\textbf{P3 Execution}: "Compressed to 32MB (67\% reduction), SHA-256: a1b2c3..."  
+\textbf{P4 Validation}: "Top-1 accuracy: 76.2\% (original: 76.5\%), acceptable 0.3\% loss."  
+\textbf{P5 Verification}: "Model loads successfully on CPU, GPU, and mobile platforms."  
+\textbf{P6 Audit YAML:}
+\begin{verbatim}
+compression_ratio: 9
+accuracy_preservation: 8
+integrity: 10
+efficiency: 7
+honesty: 9
+green_score: 0.92
+improvements:
+  - "Explore mixed-precision quantization"
+  - "Implement dynamic pruning strategies"
+audit_token: "RGx45fz..."
+\end{verbatim}
+
+\subsection*{V3.0 Preparation}
+Field G is designed to evolve with MMH-RS V3.0:
+
+\textbf{Current Capabilities (V1.2.0):}
+\begin{itemize}
+  \item Basic model compression with MMH-RS algorithms
+  \item Deterministic compression and verification
+  \item Cross-platform compatibility testing
+  \item Performance benchmarking
+\end{itemize}
+
+\textbf{Future Capabilities (V3.0):}
+\begin{itemize}
+  \item Advanced neural network compression techniques
+  \item AI framework integration (PyTorch, TensorFlow, ONNX)
+  \item Quantum-resistant cryptography for model security
+  \item Real-time model compression and deployment
+  \item Distributed compression for large models
+\end{itemize} 
