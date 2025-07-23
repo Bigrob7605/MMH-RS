@@ -72,6 +72,49 @@ MMH-RS represents the next evolution in compression technology, designed specifi
 - Enhanced CLI with progress tracking
 - Multi-GPU support (experimental)
 
+## 🔧 How to Contribute/Test V2
+
+### Copy-Paste V2 Testing Commands
+
+```bash
+# 1. Get V2 development branch
+git clone https://github.com/Bigrob7605/MMH-RS
+cd MMH-RS
+git checkout dev/v2
+
+# 2. Build with all V2 features
+cargo build --release --features "gpu quantum directory"
+
+# 3. Test GPU acceleration
+cargo run --release -- bench-gpu 1gb
+cargo run --release -- bench-gpu 10gb
+
+# 4. Test directory compression
+mkdir test_dir && echo "test data" > test_dir/file.txt
+cargo run --release -- compress-dir test_dir/ test_archive.mmh
+
+# 5. Test quantum encryption
+cargo run --release -- pack --quantum input.txt quantum_secure.mmh
+
+# 6. Run full V2 test suite
+cargo test --features "gpu quantum directory"
+```
+
+### 🎯 Specific Contribution Areas
+
+| Area | Skill Level | What We Need | Contact |
+|------|-------------|--------------|---------|
+| **GPU Testing** | Intermediate | CUDA/ROCm performance testing | Discord #gpu-testing |
+| **CLI Enhancement** | Beginner | User experience improvements | GitHub issues |
+| **Documentation** | Beginner | Tutorials, examples, translations | Discord #docs |
+| **Security Audit** | Expert | Quantum encryption review | Email: security@mmh-rs.dev |
+| **Benchmarking** | Intermediate | Performance testing on various hardware | Discord #benchmarks |
+
+### 📞 Quick Contact Channels
+- **Discord:** [Join our server](#) - #v2-beta, #gpu-testing, #docs
+- **GitHub:** [Create issues](https://github.com/Bigrob7605/MMH-RS/issues) with [V2-Beta] tag
+- **Email:** v2-beta@mmh-rs.dev for direct feedback
+
 ---
 
 ## 🚀 Quick Start Guide
