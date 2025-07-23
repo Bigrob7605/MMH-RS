@@ -1,9 +1,11 @@
 name: Documentation Build
 on:
-  push:
-    branches: [main]
-  schedule:
-    - cron: "0 3 * * *"  # Nightly at 3 AM UTC
+  workflow_dispatch:  # Manual trigger only
+  # Temporarily disabled automatic builds to avoid timeout issues
+  # push:
+  #   branches: [main]
+  # schedule:
+  #   - cron: "0 3 * * *"  # Nightly at 3 AM UTC
 
 jobs:
   build-docs:
@@ -11,10 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Install LaTeX
+      - name: Install LaTeX (Lightweight)
         run: |
           sudo apt-get update
-          sudo apt-get install -y texlive-full texlive-xetex
+          sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-fonts-recommended texlive-fonts-extra texlive-latex-recommended
       
       - name: Build PDFs
         run: |
