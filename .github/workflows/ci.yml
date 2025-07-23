@@ -169,7 +169,7 @@ jobs:
 
     - name: Check documentation files
       run: |
-        required_files=("README.md" "LICENSE" "MMH-RS_V1.2.0_ELITE_TIER_COMPLETE.md" "MMH-RS_V1.2.0_TECHNICAL_SPECIFICATION.md" "MMH-RS_V1.2.0_USER_GUIDE.md")
+        required_files=("README.md" "LICENSE" "Project White Papers/USER_GUIDE.md" "Project White Papers/PROJECT_STATUS.md" "Project White Papers/DEVELOPMENT_HISTORY.md")
         for file in "${required_files[@]}"; do
           if [ ! -f "$file" ]; then
             echo "❌ $file missing"
