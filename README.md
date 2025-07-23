@@ -13,7 +13,7 @@ Perfect integrity, blazing speed, built for the next era of data.
 
 ## 🚀 V2 BETA NOW IN DEVELOPMENT!
 
-**Want to help test GPU/Quantum features?** Join our [Discord](https://discord.gg/mmh-rs), check the `dev/v2` branch, or email v2-beta@mmh-rs.dev!
+**Want to help test GPU/Quantum features?** Join our Discord (coming soon), check the `dev/v2` branch, or email v2-beta@mmh-rs.dev!
 
 ---
 
@@ -133,7 +133,7 @@ Perfect integrity, blazing speed, built for the next era of data.
 **MMH-RS is the open, deterministic, self-healing compression engine for the AI age.**
 
 ### 🎯 What's Next
-**Next Up:** GPU Acceleration, Directory Compression, Quantum-Ready Encryption. **Want to help?** [Join our Discord](https://discord.gg/mmh-rs) or [contribute on GitHub](https://github.com/Bigrob7605/MMH-RS).
+**Next Up:** GPU Acceleration, Directory Compression, Quantum-Ready Encryption. **Want to help?** Join our Discord (coming soon) or [contribute on GitHub](https://github.com/Bigrob7605/MMH-RS).
 
 ## 🏗️ How Everything Fits Together
 
@@ -399,7 +399,7 @@ mmh.compressDirectory('input_dir/', 'output.mmh');
 
 ### 🔄 V1 to V2 Upgrade Path
 **If you're using V1:** V2 maintains full backward compatibility. Your V1 seeds will load transparently into V2+.
-- **Get notified:** Watch this repo or join [Discord](https://discord.gg/mmh-rs) for V2 beta announcements
+- **Get notified:** Watch this repo or join Discord (coming soon) for V2 beta announcements
 - **Join beta testing:** Pull the `dev/v2` branch and test GPU features
 - **Migration guide:** [USER_GUIDE.md](Project%20White%20Papers/USER_GUIDE.md#v2-migration)
 
@@ -544,15 +544,15 @@ MMH-RS V1.2.0 is **production-ready** with:
 
 ## 🤝 Community & Contribution
 
-**Want to help? Star the repo, join the Discord, submit test logs, or open a PR. The future is open-source and AI-powered!**
+**Want to help? Star the repo, join Discord (coming soon), submit test logs, or open a PR. The future is open-source and AI-powered!**
 
-**We want your feedback—join Discord, open issues, and help shape V2+!**
+**We want your feedback—join Discord (coming soon), open issues, and help shape V2+!**
 
 **Help us build MMH-RS V2!**
 
 We need your help to test, review, and contribute to MMH-RS V2:
 
-- **Join our Discord**: Community discussions and support
+- **Join our Discord** (coming soon): Community discussions and support
 - **Submit Issues/PRs**: Bug reports and feature contributions
 - **Review Roadmap**: Feedback on V2 features and priorities
 - **Benchmark Testing**: Performance testing on your hardware
@@ -590,7 +590,7 @@ We need your help to test, review, and contribute to MMH-RS V2:
    - Update documentation if needed
 
 5. **Join the community**
-   - Discord: [Join our server](https://discord.gg/mmh-rs)
+   - Discord: Coming soon!
    - GitHub Issues: Report bugs and request features
    - Discussions: Share ideas and feedback
 
