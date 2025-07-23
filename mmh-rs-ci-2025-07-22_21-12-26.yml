@@ -1,0 +1,60 @@
+# MMH-RS Benchmark CI/CD Integration
+# Generated: 2025-07-22_21-12-26
+
+name: MMH-RS Benchmark
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * 0'  # Weekly on Sunday at 2 AM
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        
+    - name: Install MMH-RS
+      run: |
+        git clone https://github.com/Bigrob7605/MMH-RS
+        cd MMH-RS
+        cargo build --release
+        
+    - name: Run Benchmark
+      run: |
+        cd MMH-RS
+        ./target/release/mmh --benchmark 2  # 2GB test
+        ./target/release/mmh --benchmark 4  # 32GB test
+        
+    - name: Upload Results
+      uses: actions/upload-artifact@v3
+      with:
+        name: benchmark-results
+        path: MMH-RS/*-test_results_*.json
+        
+    - name: Comment Results
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const results = fs.readdirSync('MMH-RS')
+            .filter(f => f.endsWith('.json'))
+            .map(f => JSON.parse(fs.readFileSync(`MMH-RS/${f}`, 'utf8')));
+          
+          const avgScore = results.reduce((sum, r) => sum + r.score, 0) / results.length;
+          
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: `🚀 MMH-RS Benchmark Results: ${avgScore.toFixed(1)}/100`
+          });

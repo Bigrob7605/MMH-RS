@@ -64,7 +64,7 @@ function Show-FullCLIMenu {
         $cmd = Read-Host "mmh> "
         if ($cmd -eq $null -or $exitCmds -contains $cmd.Trim().ToLower()) { break }
         if ($cmd.Trim() -ne "") {
-            & ./target/release/mmh.exe $cmd
+            & ./target/debug/mmh.exe $cmd
         }
     }
     Write-Host "Exited MMH-RS CLI shell. Returning to main menu..."
@@ -84,49 +84,49 @@ while (-not $global:shouldExit) {
                 switch ($benchChoice.Trim().ToUpper()) {
                     "1" {
                         Write-Host "Running 1GB (Warm) benchmark..." -ForegroundColor Yellow
-                        & ./target/release/mmh.exe
+                        & ./target/debug/mmh.exe
                         Write-Host "       Press Enter to return to the menu"
                         Read-Host
                     }
                     "2" {
                         Write-Host "Running 2GB (Toasty) benchmark..." -ForegroundColor Yellow
-                        & ./target/release/mmh.exe
+                        & ./target/debug/mmh.exe
                         Write-Host "       Press Enter to return to the menu"
                         Read-Host
                     }
                     "3" {
                         Write-Host "Running 8GB (Scorched) benchmark..." -ForegroundColor Yellow
-                        & ./target/release/mmh.exe
+                        & ./target/debug/mmh.exe
                         Write-Host "       Press Enter to return to the menu"
                         Read-Host
                     }
                     "4" {
                         Write-Host "Running 32GB (Nuked) benchmark..." -ForegroundColor Yellow
-                        & ./target/release/mmh.exe
+                        & ./target/debug/mmh.exe
                         Write-Host "       Press Enter to return to the menu"
                         Read-Host
                     }
                     "5" {
                         Write-Host "Running 128GB (Total Annihilation) benchmark..." -ForegroundColor Yellow
-                        & ./target/release/mmh.exe
+                        & ./target/debug/mmh.exe
                         Write-Host "       Press Enter to return to the menu"
                         Read-Host
                     }
                     "6" {
                         Write-Host "Running 256GB (Memory Madness) benchmark..." -ForegroundColor Yellow
-                        & ./target/release/mmh.exe
+                        & ./target/debug/mmh.exe
                         Write-Host "       Press Enter to return to the menu"
                         Read-Host
                     }
                     "7" {
                         Write-Host "Running 512GB (Swapocalypse) benchmark..." -ForegroundColor Yellow
-                        & ./target/release/mmh.exe
+                        & ./target/debug/mmh.exe
                         Write-Host "       Press Enter to return to the menu"
                         Read-Host
                     }
                     "8" {
                         Write-Host "Running 1TB (RAMpocalypse) benchmark..." -ForegroundColor Yellow
-                        & ./target/release/mmh.exe
+                        & ./target/debug/mmh.exe
                         Write-Host "       Press Enter to return to the menu"
                         Read-Host
                     }

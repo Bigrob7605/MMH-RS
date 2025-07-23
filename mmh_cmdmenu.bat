@@ -5,10 +5,10 @@ set MMH_BENCH_SIZE_GB=2
 :menu
 cls
 echo ============================
-echo |   MMH-RS V1 RELEASED!    |
-echo |   10GB Proven, Fast!     |
+echo | MMH-RS V1.1.0 ELITE TIER |
+echo |     CPU ONLY SYSTEM      |
 echo ============================
-echo   MMH-RS V1 Main Menu
+echo   MMH-RS V1.1.0 Main Menu
 echo ============================
 echo 1. Generate test data (gentestdir)
 echo 2. MMH-RS Seed Benchmark (Coming Soon)
@@ -36,19 +36,14 @@ if "%choice%"=="2" (
     goto menu
 )
 if "%choice%"=="3" (
-    echo Generating test data...
-    target\release\mmh.exe gen --size 1
+    echo [INFO] Fold a file feature - use the main MMH-RS menu for this
+    echo Run: target\release\mmh.exe
     pause
     goto menu
 )
 if "%choice%"=="4" (
-    if not exist "testdata" (
-        echo [ERROR] 'testdata' directory not found. Please generate test data first (option 3).
-        pause
-        goto menu
-    )
-    echo Running smoketest...
-    target\release\mmh.exe smoketest testdata
+    echo [INFO] Unfold a file feature - use the main MMH-RS menu for this
+    echo Run: target\release\mmh.exe
     pause
     goto menu
 )

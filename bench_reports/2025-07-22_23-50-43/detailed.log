@@ -1,0 +1,15 @@
+MMH-RS V1 Benchmark Report
+Generated: 2025-07-23T03:50:43.977649400+00:00
+Replay Seed: 11929755127455067140
+System Tier: High-End
+OS: Windows
+CPU: 16 cores, 2400 MHz
+RAM: 63.6 GB
+Storage: SSD: 1, HDD: 0
+Score Formula: (2.58×*165.0)/(1+0.0/4+22.7/100)+50
+Overall Score: 812
+
+Warnings:
+- ⚠️  This is a CPU-only benchmark designed to stress test your processor
+-    GPU acceleration will be available in V2, V3 will use both CPU+GPU
+- Decompression speed below 100 MB/s - system may be underpowered

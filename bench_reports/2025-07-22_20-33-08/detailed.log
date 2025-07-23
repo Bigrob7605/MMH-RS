@@ -1,0 +1,13 @@
+MMH-RS V1 Benchmark Report
+Generated: 2025-07-23T00:33:08.550956200+00:00
+Replay Seed: 11482839120338007501
+System Tier: High-End
+OS: Windows
+CPU: 16 cores, 2400 MHz
+RAM: 63.6 GB
+Storage: SSD: 1, HDD: 0
+Score Formula: (1.86×*217.6)/(1+13.1/4+14.6/100)+50
+Overall Score: 132
+
+Warnings:
+- High memory usage detected - consider more RAM for larger datasets

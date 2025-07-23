@@ -12,13 +12,13 @@
 //! impl AgentMission for MyMission { /* ... */ }
 //! ```
 
-use std::process::{Command, Stdio};
+use std::process::Command;
 use std::time::{Duration, Instant};
 use std::thread;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 use std::fs::{File, OpenOptions};
-use std::io::{Write, BufWriter};
+use std::io::Write;
 use std::path::Path;
 
 pub enum MissionStepResult {
@@ -87,16 +87,19 @@ impl TestingAgent {
         // Test 4: Benchmark system (with timeout and abort test)
         results.push(self.test_benchmark_system());
         
-        // Test 5: Stress test (with timeout and abort test)
+        // Test 5: Compact report generation
+        results.push(self.test_compact_reports());
+        
+        // Test 6: Stress test (with timeout and abort test)
         results.push(self.test_stress_system());
         
-        // Test 6: Self-test
+        // Test 7: Self-test
         results.push(self.test_self_test());
         
-        // Test 7: Menu navigation
-        results.push(self.test_menu_navigation());
+        // Test 8: Menu system integration
+        results.push(self.test_menu_integration());
         
-        // Test 8: Abort functionality
+        // Test 9: Abort functionality
         results.push(self.test_abort_functionality());
         
         // Cleanup
@@ -118,15 +121,15 @@ impl TestingAgent {
             .output() {
             Ok(output) => {
                 if output.status.success() {
-                    self.log("✅ Version command works");
+                    self.log("[OK] Version command works");
                     MissionStepResult::Success("CLI version command".to_string())
         } else {
-                    self.log("❌ Version command failed");
+                    self.log("[FAIL] Version command failed");
                     MissionStepResult::Failure("CLI version command".to_string())
                 }
             }
             Err(e) => {
-                self.log(&format!("❌ Version command error: {}", e));
+                self.log(&format!("[FAIL] Version command error: {}", e));
                 MissionStepResult::Failure(format!("CLI version command: {}", e))
             }
         }
@@ -135,12 +138,17 @@ impl TestingAgent {
     fn test_file_operations(&self) -> MissionStepResult {
         self.log("📁 Testing file operations...");
         
+        // Clean up any leftover test files first
+        let _ = std::fs::remove_file("agent_test.txt");
+        let _ = std::fs::remove_file("agent_test.mmh");
+        let _ = std::fs::remove_file("agent_test_restored.txt");
+        
         // Create a test file
         let test_file = "agent_test.txt";
         let test_content = "This is a test file for MMH-RS agent testing.";
         
         if let Err(e) = std::fs::write(test_file, test_content) {
-            self.log(&format!("❌ Failed to create test file: {}", e));
+            self.log(&format!("[FAIL] Failed to create test file: {}", e));
             return MissionStepResult::Failure(format!("File creation: {}", e));
         }
         
@@ -150,7 +158,7 @@ impl TestingAgent {
             .output() {
             Ok(output) => {
                 if output.status.success() {
-                    self.log("✅ File pack operation works");
+                    self.log("[OK] File pack operation works");
                     
                     // Test unpack operation
                     match Command::new("./target/release/mmh.exe")
@@ -158,25 +166,25 @@ impl TestingAgent {
                         .output() {
                         Ok(output) => {
                             if output.status.success() {
-                                self.log("✅ File unpack operation works");
+                                self.log("[OK] File unpack operation works");
                                 MissionStepResult::Success("File operations".to_string())
                             } else {
-                                self.log("❌ File unpack operation failed");
+                                self.log("[FAIL] File unpack operation failed");
                                 MissionStepResult::Failure("File unpack operation".to_string())
                             }
                         }
                         Err(e) => {
-                            self.log(&format!("❌ File unpack error: {}", e));
+                            self.log(&format!("[FAIL] File unpack error: {}", e));
                             MissionStepResult::Failure(format!("File unpack: {}", e))
                         }
                     }
         } else {
-                    self.log("❌ File pack operation failed");
+                    self.log("[FAIL] File pack operation failed");
                     MissionStepResult::Failure("File pack operation".to_string())
                 }
             }
             Err(e) => {
-                self.log(&format!("❌ File pack error: {}", e));
+                self.log(&format!("[FAIL] File pack error: {}", e));
                 MissionStepResult::Failure(format!("File pack: {}", e))
             }
         }
@@ -188,7 +196,7 @@ impl TestingAgent {
         // Create test directory
         let test_dir = "agent_testdir";
         if let Err(e) = std::fs::create_dir_all(test_dir) {
-            self.log(&format!("❌ Failed to create test directory: {}", e));
+            self.log(&format!("[FAIL] Failed to create test directory: {}", e));
             return MissionStepResult::Failure(format!("Directory creation: {}", e));
         }
         
@@ -197,7 +205,7 @@ impl TestingAgent {
             let file_path = format!("{}/tiny_file_{}.txt", test_dir, i);
             let content = format!("Tiny file content {}", i);
             if let Err(e) = std::fs::write(&file_path, content) {
-                self.log(&format!("❌ Failed to create tiny file {}: {}", i, e));
+                self.log(&format!("[FAIL] Failed to create tiny file {}: {}", i, e));
                 return MissionStepResult::Failure(format!("Tiny file creation: {}", e));
             }
         }
@@ -208,15 +216,15 @@ impl TestingAgent {
             .output() {
             Ok(output) => {
                 if output.status.success() {
-                    self.log("✅ Directory pack operation works");
+                    self.log("[OK] Directory pack operation works");
                     MissionStepResult::Success("Directory operations".to_string())
         } else {
-                    self.log("❌ Directory pack operation failed");
+                    self.log("[FAIL] Directory pack operation failed");
                     MissionStepResult::Failure("Directory pack operation".to_string())
                 }
             }
             Err(e) => {
-                self.log(&format!("❌ Directory pack error: {}", e));
+                self.log(&format!("[FAIL] Directory pack error: {}", e));
                 MissionStepResult::Failure(format!("Directory pack: {}", e))
             }
         }
@@ -229,7 +237,7 @@ impl TestingAgent {
         let running = Arc::new(AtomicBool::new(true));
         let running_clone = running.clone();
         
-        let log_message = "⏭️  Benchmark test timeout reached (5 seconds)".to_string();
+        let log_message = "[TIMEOUT] Benchmark test timeout reached (5 seconds)".to_string();
         let handle = thread::spawn(move || {
             let start = Instant::now();
             while running_clone.load(Ordering::SeqCst) && start.elapsed() < Duration::from_secs(5) {
@@ -246,11 +254,11 @@ impl TestingAgent {
         running.store(false, Ordering::SeqCst);
         
         if let Err(e) = handle.join() {
-            self.log(&format!("❌ Benchmark test thread error: {:?}", e));
+            self.log(&format!("[FAIL] Benchmark test thread error: {:?}", e));
             return MissionStepResult::Failure("Benchmark test thread".to_string());
         }
         
-        self.log("✅ Benchmark system test completed");
+        self.log("[OK] Benchmark system test completed");
         MissionStepResult::Success("Benchmark system".to_string())
     }
 
@@ -261,7 +269,7 @@ impl TestingAgent {
         let running = Arc::new(AtomicBool::new(true));
         let running_clone = running.clone();
         
-        let log_message = "⏭️  Stress test timeout reached (5 seconds)".to_string();
+        let log_message = "[TIMEOUT] Stress test timeout reached (5 seconds)".to_string();
         let handle = thread::spawn(move || {
             let start = Instant::now();
             while running_clone.load(Ordering::SeqCst) && start.elapsed() < Duration::from_secs(5) {
@@ -278,56 +286,129 @@ impl TestingAgent {
         running.store(false, Ordering::SeqCst);
         
         if let Err(e) = handle.join() {
-            self.log(&format!("❌ Stress test thread error: {:?}", e));
+            self.log(&format!("[FAIL] Stress test thread error: {:?}", e));
             return MissionStepResult::Failure("Stress test thread".to_string());
         }
         
-        self.log("✅ Stress system test completed");
+        self.log("[OK] Stress system test completed");
         MissionStepResult::Success("Stress system".to_string())
     }
 
     fn test_self_test(&self) -> MissionStepResult {
         self.log("🔍 Running self-test...");
         
-        match Command::new("./target/release/mmh.exe")
+        // Clean up any leftover self-test files first
+        let self_test_files = [
+            "selftest_input.txt",
+            "selftest_packed.mmh",
+            "selftest_unpacked.txt",
+            "detest1.txt",
+            "detest2.txt",
+            "detest.mmh"
+        ];
+        
+        for file in &self_test_files {
+            let _ = std::fs::remove_file(file);
+        }
+        
+        let mmh_exe = if Path::new("./target/release/mmh.exe").exists() {
+            "./target/release/mmh.exe"
+        } else if Path::new("mmh.exe").exists() {
+            "mmh.exe"
+        } else {
+            self.log("[FAIL] Could not find mmh.exe executable");
+            return MissionStepResult::Failure("Executable not found".to_string());
+        };
+        
+        match Command::new(mmh_exe)
             .args(["selftest"])
-            .output() {
-            Ok(output) => {
-                if output.status.success() {
-                    self.log("✅ Self-test passed");
-                    MissionStepResult::Success("Self-test".to_string())
-                    } else {
-                    self.log("❌ Self-test failed");
-                    MissionStepResult::Failure("Self-test".to_string())
+            .stdin(std::process::Stdio::piped())
+            .stdout(std::process::Stdio::piped())
+            .stderr(std::process::Stdio::piped())
+            .spawn() {
+            Ok(mut child) => {
+                // Send "a" (always replace) to handle any prompts
+                if let Some(stdin) = child.stdin.as_mut() {
+                    let _ = stdin.write_all(b"a\n");
+                }
+                
+                match child.wait_with_output() {
+                    Ok(output) => {
+                        if output.status.success() {
+                            self.log("[OK] Self-test passed");
+                            MissionStepResult::Success("Self-test".to_string())
+                        } else {
+                            self.log("[FAIL] Self-test failed");
+                            self.log(&format!("📄 Self-test error output: {}", String::from_utf8_lossy(&output.stderr)));
+                            MissionStepResult::Failure("Self-test".to_string())
+                        }
+                    }
+                    Err(e) => {
+                        self.log(&format!("[FAIL] Self-test error: {}", e));
+                        MissionStepResult::Failure(format!("Self-test: {}", e))
+                    }
                 }
             }
             Err(e) => {
-                self.log(&format!("❌ Self-test error: {}", e));
+                self.log(&format!("[FAIL] Self-test error: {}", e));
                 MissionStepResult::Failure(format!("Self-test: {}", e))
             }
         }
     }
 
-    fn test_menu_navigation(&self) -> MissionStepResult {
-        self.log("🎮 Testing menu navigation...");
+    fn test_compact_reports(&self) -> MissionStepResult {
+        self.log("📊 Testing compact report generation...");
         
-        // Test that the main executable can start without subcommands
-        match Command::new("./target/release/mmh.exe")
-            .args(["--version"])
-            .output() {
+        // Test compact report generation
+        let output = Command::new("target/release/mmh.exe")
+            .args(&["goldbench", "--size", "0", "--format", "compact"])
+            .output();
+            
+        match output {
             Ok(output) => {
                 if output.status.success() {
-                    self.log("✅ Menu system accessible");
-                    MissionStepResult::Success("Menu navigation".to_string())
+                    let output_str = String::from_utf8_lossy(&output.stdout);
+                    if output_str.contains("MMH-RS V1 GOLD BENCH") && 
+                       output_str.contains("Score") && 
+                       output_str.contains("Bottleneck") {
+                        self.log("[OK] Compact report generation test completed");
+                        MissionStepResult::Success("Compact reports working correctly".to_string())
+                    } else {
+                        MissionStepResult::Failure("Compact report format incorrect".to_string())
+                    }
                 } else {
-                    self.log("❌ Menu system inaccessible");
-                    MissionStepResult::Failure("Menu navigation".to_string())
+                    let error = String::from_utf8_lossy(&output.stderr);
+                    MissionStepResult::Failure(format!("Compact report test failed: {}", error))
                 }
             }
-            Err(e) => {
-                self.log(&format!("❌ Menu system error: {}", e));
-                MissionStepResult::Failure(format!("Menu navigation: {}", e))
+            Err(e) => MissionStepResult::Failure(format!("Failed to run compact report test: {}", e))
+        }
+    }
+
+    fn test_menu_integration(&self) -> MissionStepResult {
+        self.log("🎛️  Testing menu system integration...");
+        
+        // Test that the main menu can be accessed
+        let output = Command::new("target/release/mmh.exe")
+            .args(&["--about"])
+            .output();
+            
+        match output {
+            Ok(output) => {
+                if output.status.success() {
+                    let output_str = String::from_utf8_lossy(&output.stdout);
+                    if output_str.contains("MMH-RS") && output_str.contains("V1") {
+                        self.log("[OK] Menu system integration test completed");
+                        MissionStepResult::Success("Menu system working correctly".to_string())
+                    } else {
+                        MissionStepResult::Failure("Menu system output incorrect".to_string())
+                    }
+                } else {
+                    let error = String::from_utf8_lossy(&output.stderr);
+                    MissionStepResult::Failure(format!("Menu integration test failed: {}", error))
+                }
             }
+            Err(e) => MissionStepResult::Failure(format!("Failed to run menu integration test: {}", e))
         }
     }
 
@@ -338,8 +419,8 @@ impl TestingAgent {
         let running = Arc::new(AtomicBool::new(true));
         let running_clone = running.clone();
         
-        let success_msg = "✅ Abort functionality works - operation stopped".to_string();
-        let normal_msg = "⏭️  Abort test completed normally".to_string();
+        let success_msg = "[OK] Abort functionality works - operation stopped".to_string();
+        let normal_msg = "[NORMAL] Abort test completed normally".to_string();
         let handle = thread::spawn(move || {
             let start = Instant::now();
             let mut count = 0;
@@ -361,11 +442,11 @@ impl TestingAgent {
         running.store(false, Ordering::SeqCst);
         
         if let Err(e) = handle.join() {
-            self.log(&format!("❌ Abort test thread error: {:?}", e));
+            self.log(&format!("[FAIL] Abort test thread error: {:?}", e));
             return MissionStepResult::Failure("Abort test thread".to_string());
         }
         
-        self.log("✅ Abort functionality test completed");
+        self.log("[OK] Abort functionality test completed");
         MissionStepResult::Success("Abort functionality".to_string())
     }
 
@@ -400,7 +481,7 @@ impl TestingAgent {
             }
         }
         
-        self.log(&format!("✅ Cleaned up {} test files/directories", cleaned));
+        self.log(&format!("[OK] Cleaned up {} test files/directories", cleaned));
         MissionStepResult::Success(format!("Cleanup: {} files", cleaned))
     }
 
@@ -420,16 +501,16 @@ impl TestingAgent {
         self.log("\n📊 Testing Agent Summary:");
         self.log("==================================================");
         
-        for (i, result) in results.iter().enumerate() {
+        for (_i, result) in results.iter().enumerate() {
             match result {
-                MissionStepResult::Success(msg) => self.log(&format!("✅ {}", msg)),
-                MissionStepResult::Failure(msg) => self.log(&format!("❌ {}", msg)),
-                MissionStepResult::Skipped(msg) => self.log(&format!("⏭️  {}", msg)),
+                MissionStepResult::Success(msg) => self.log(&format!("[OK] {}", msg)),
+                MissionStepResult::Failure(msg) => self.log(&format!("[FAIL] {}", msg)),
+                MissionStepResult::Skipped(msg) => self.log(&format!("[SKIP] {}", msg)),
             }
         }
         
         self.log("==================================================");
-        self.log(&format!("📈 Results: {} ✅ Success, {} ❌ Failure, {} ⏭️  Skipped", 
+        self.log(&format!("📈 Results: {} [OK] Success, {} [FAIL] Failure, {} [SKIP] Skipped", 
                          success_count, failure_count, skipped_count));
         
         if failure_count == 0 {
@@ -472,14 +553,30 @@ impl TestingAgent {
     }
 }
 
-pub fn run_agent() {
+pub fn run_agent(continuous: bool) {
     let agent = TestingAgent::new()
         .with_timeout(Duration::from_secs(5))
         .with_log_file(Some("mmh_agent.log".to_string()));
     
-    let results = agent.run_full_test_suite();
-    
-    // Return appropriate exit code
-    let has_failures = results.iter().any(|r| matches!(r, MissionStepResult::Failure(_)));
-    std::process::exit(if has_failures { 1 } else { 0 });
+    if continuous {
+        // Run in continuous mode
+        loop {
+            let results = agent.run_full_test_suite();
+            let has_failures = results.iter().any(|r| matches!(r, MissionStepResult::Failure(_)));
+            
+            if has_failures {
+                std::process::exit(1);
+            }
+            
+            // Wait before next run
+            thread::sleep(Duration::from_secs(60));
+        }
+    } else {
+        // Run once
+        let results = agent.run_full_test_suite();
+        
+        // Return appropriate exit code
+        let has_failures = results.iter().any(|r| matches!(r, MissionStepResult::Failure(_)));
+        std::process::exit(if has_failures { 1 } else { 0 });
+    }
 } 

@@ -1,0 +1,26 @@
+╔════════════════════════ MMH-RS V1 BENCHMARK REPORT ════════════════════════╗
+║ Test File:         ./testdata/1 GiB deterministic                     ║
+║ File Count:        2028                                               ║
+║ Total Size:        1073741824 bytes (1.0 GB)                          ║
+║ Seed Output Size:  506118286 bytes (0.5 GB)                           ║
+║ Compression Ratio: 2.12x                                              ║
+║ Time to Pack:      5.39 sec                                           ║
+║ Time to Unpack:    5.40 sec                                           ║
+║ Pack Speed:        190.0 MB/s                                         ║
+║ Unpack Speed:      89.4 MB/s                                          ║
+║ Verify Speed:      286.5 MB/s                                         ║
+║ Files/sec:         376.4                                              ║
+║ Max CPU:           28.3%                                              ║
+║ Max RAM:           19674.4 GB                                         ║
+║ Thread Count:      296                                                ║
+║ Integrity:         ✅ SHA256 MATCH                                     ║
+║ Thermal/Resource:  [Thermal Throttling: NO] / [Memory Pressure: LOW]  ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ Overall System Score: 126                                                ║
+║ Performance Tier:     Mainstream                                         ║
+╠═════════════════════════════════ WARNINGS ═════════════════════════════════╣
+║ ⚠️  Decompression speed below 100 MB/s - system may be underpowered        ║
+║ ⚠️  High memory usage detected - consider more RAM for larger datasets     ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ [ALL TESTS PASSED]                                                         ║
+╚════════════════════════════════════════════════════════════════════════════╝

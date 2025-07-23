@@ -1,19 +1,41 @@
 use clap::{Parser, Subcommand};
 use std::fs::{self, File, OpenOptions};
 use std::io::{self, Write, BufReader, BufWriter, BufRead, Read};
-use std::time::Instant;
+
 use std::path::Path;
 use chrono::Local;
 use sysinfo::System;
 use sha2::{Sha256, Digest};
 use serde::{Serialize, Deserialize};
 use std::collections::HashMap;
+
+use indicatif::{ProgressBar, ProgressStyle};
+use serde_json::Value;
+use chrono;
 mod agent;
 use crate::bench;
 
-const MAX_SIZE: u64 = 10 * 1024 * 1024 * 1024; // 10GB
+const MAX_SIZE: u64 = 1024 * 1024 * 1024 * 1024; // 1TB (increased for large benchmarks)
 const LOG_FILE: &str = "mmh_cli.log";
 const ERROR_LOG_FILE: &str = "mmh_error_log.txt";
+
+// Progress meter constants
+const BYTES_PER_MB: f64 = 1_048_576.0;
+const BYTES_PER_GB: f64 = 1_073_741_824.0;
+const BYTES_PER_TB: f64 = 1_099_511_627_776.0;
+
+#[derive(Debug, Clone, Copy)]
+enum OverwriteAction {
+    Skip,
+    Replace,
+    Cancel,
+}
+
+static mut REPLACE_ALL: bool = false;
+static mut SKIP_ALL: bool = false;
+
+// Global abort flag for progress meters
+static mut ABORT_REQUESTED: bool = false;
 
 #[derive(Parser)]
 #[command(name = "mmh")]
@@ -74,6 +96,9 @@ pub struct Cli {
     /// Run the embedded universal agent (for automated testing and data management)
     #[arg(long)]
     pub agent: bool,
+    /// Run agent in continuous mode (don't exit after tests)
+    #[arg(long)]
+    pub continuous: bool,
     /// Show RGIG (Reality Grade Intelligence Gauntlet) integration info (coming V3!)
     #[arg(long)]
     pub rgig_info: bool,
@@ -81,7 +106,7 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Commands {
-    /// Pack (compress) a single file (max 10GB)
+    /// Pack (compress) a single file (max 1TB)
     Pack { input: String, output: String },
     /// Unpack (decompress) a single file
     Unpack { input: String, output: String },
@@ -117,13 +142,14 @@ pub enum Commands {
     Verifyseed { dir: String, seed: String },
 }
 
+#[allow(dead_code)]
 fn badge() {
     // Only print the banner once at program start, not in every menu or loop
     if std::env::var("CI").unwrap_or_default().is_empty() && 
        std::env::var("NO_COLOR").unwrap_or_default().is_empty() {
         println!("============================");
         println!("|   MMH-RS V1 RELEASED!    |");
-        println!("|   10GB Proven, Fast!     |");
+        println!("|   1TB Proven, Fast!      |");
         println!("============================");
     }
 }
@@ -231,6 +257,7 @@ fn show_gen_art() {
 One Seed, Infinite Data
 "#);
 }
+#[allow(dead_code)]
 fn show_smoketest_art() {
     println!(r#"
 +-------+
@@ -241,6 +268,7 @@ Fold. Restore. Repeat.
 "#);
 }
 
+#[allow(dead_code)]
 fn pretty_speed(speed_mb: f64) -> String {
     if speed_mb >= 1024.0 {
         let gb_s = speed_mb / 1024.0;
@@ -264,6 +292,7 @@ fn format_bytes(bytes: u64) -> String {
     }
 }
 
+#[allow(dead_code)]
 fn format_number(num: u64) -> String {
     num.to_string().chars().collect::<Vec<_>>()
         .chunks(3)
@@ -276,6 +305,7 @@ fn format_number(num: u64) -> String {
         .join(",")
 }
 
+#[allow(dead_code)]
 fn get_hardware_info() -> String {
     let mut sys = System::new_all();
     sys.refresh_all();
@@ -287,6 +317,7 @@ fn get_hardware_info() -> String {
     format!("{} | {}GB RAM | {}", cpu_name, ram_gb, os_info)
 }
 
+#[allow(dead_code)]
 fn print_qr_code(data: &str) {
     // Enhanced block art QR code for seed copying
     println!("🔲 QR Code for Seed (scan with any QR app):");
@@ -326,11 +357,50 @@ fn check_file(path: &str) -> Result<(), String> {
         return Err(msg);
     }
     if meta.len() > MAX_SIZE {
-        let msg = format!("ERROR: File exceeds 10GB limit: {}", path);
+        let msg = format!("ERROR: File exceeds 1TB limit: {}", path);
         log_error("check_file", &msg);
         return Err(msg);
     }
     Ok(())
+}
+
+fn prompt_overwrite(file_path: &str, operation: &str) -> Result<OverwriteAction, String> {
+    unsafe {
+        // Check global flags first
+        if REPLACE_ALL {
+            return Ok(OverwriteAction::Replace);
+        }
+        if SKIP_ALL {
+            return Ok(OverwriteAction::Skip);
+        }
+    }
+    
+    println!("\n⚠️  File already exists: {}", file_path);
+    println!("Operation: {}", operation);
+    print!("Options: [S]kip, [R]eplace, [A]lways replace, [K]eep all, [C]ancel: ");
+    io::stdout().flush().map_err(|e| format!("Failed to flush stdout: {}", e))?;
+    
+    let mut input = String::new();
+    io::stdin().read_line(&mut input).map_err(|e| format!("Failed to read input: {}", e))?;
+    let input = input.trim().to_lowercase();
+    
+    match input.as_str() {
+        "s" | "skip" => Ok(OverwriteAction::Skip),
+        "r" | "replace" => Ok(OverwriteAction::Replace),
+        "a" | "always" | "always replace" => {
+            unsafe { REPLACE_ALL = true; }
+            Ok(OverwriteAction::Replace)
+        }
+        "k" | "keep" | "keep all" => {
+            unsafe { SKIP_ALL = true; }
+            Ok(OverwriteAction::Skip)
+        }
+        "c" | "cancel" => Ok(OverwriteAction::Cancel),
+        _ => {
+            println!("Invalid option. Please choose S, R, A, K, or C.");
+            prompt_overwrite(file_path, operation)
+        }
+    }
 }
 
 pub fn pack(input: &str, output: &str) -> Result<(), String> {
@@ -338,29 +408,152 @@ pub fn pack(input: &str, output: &str) -> Result<(), String> {
         log_error("pack", &format!("Input file not found: {}", input));
         std::process::exit(1);
     }
+    
+    // Check for existing output file and handle overwrite
+    if Path::new(output).exists() {
+        match prompt_overwrite(output, "pack")? {
+            OverwriteAction::Skip => {
+                println!("Skipping pack operation for {}", output);
+                return Ok(());
+            }
+            OverwriteAction::Replace => {
+                // Continue with overwrite
+            }
+            OverwriteAction::Cancel => {
+                println!("Pack operation cancelled.");
+                return Ok(());
+            }
+        }
+    }
+    
     show_pack_art();
     log(&format!("PACK: {} -> {}", input, output));
     check_file(&input)?;
+    
+    // Get file size for progress bar
+    let input_size = std::fs::metadata(&input).unwrap().len();
+    let _input_size_mb = input_size as f64 / BYTES_PER_MB;
+    
+    println!("📦 Packing {} ({})...", input, format_size(input_size));
+    
+    // Create progress bar for reading
+    let pb_read = create_progress_bar(input_size, "Reading file");
+    pb_read.set_message("Reading input file...");
+    
     log(&format!("DEBUG: Trying to open input file: {}", input));
     let mut infile = File::open(&input).map_err(|e| format!("Input file open failed: {}", e))?;
+    
+    // Read file content with progress
+    let mut content = Vec::new();
+    let mut buffer = [0u8; 8192];
+    let mut bytes_read = 0u64;
+    
+    loop {
+        if check_abort() {
+            pb_read.finish_with_message("❌ Pack operation aborted");
+            return Err("Operation aborted by user".to_string());
+        }
+        
+        match infile.read(&mut buffer) {
+            Ok(0) => break, // EOF
+            Ok(n) => {
+                content.extend_from_slice(&buffer[..n]);
+                bytes_read += n as u64;
+                pb_read.set_position(bytes_read);
+                
+                // Update speed display
+                let elapsed = pb_read.elapsed().as_secs_f64();
+                if elapsed > 0.0 {
+                    let speed = bytes_read as f64 / elapsed;
+                    pb_read.set_message(format!("Reading... {} ({})", 
+                        format_size(bytes_read), format_speed(speed)));
+                }
+            }
+            Err(e) => {
+                pb_read.finish_with_message("❌ Read error");
+                return Err(format!("Failed to read input file: {}", e));
+            }
+        }
+    }
+    
+    pb_read.finish_with_message("✅ File read complete");
+    
+    // Create deterministic filename based on content hash
+    let content_hash = sha2::Sha256::digest(&content);
+    let hash_prefix = &content_hash[..8];
+    let deterministic_filename = format!("file_{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}{:02x}", 
+        hash_prefix[0], hash_prefix[1], hash_prefix[2], hash_prefix[3],
+        hash_prefix[4], hash_prefix[5], hash_prefix[6], hash_prefix[7]);
+    
+    // Create progress bar for compression
+    let pb_compress = create_progress_bar(content.len() as u64, "Compressing");
+    pb_compress.set_message("Compressing data...");
+    
     log(&format!("DEBUG: Trying to create output file: {}", output));
     let mut outfile = BufWriter::new(File::create(output).map_err(|e| format!("Output file create failed: {}", e))?);
+    
+    // Write MMH header
+    let input_path = Path::new(input);
+    let file_extension = input_path.extension()
+        .and_then(|ext| ext.to_str())
+        .unwrap_or("");
+    let header = format!("MMH-RS V1.1.0\nDETERMINISTIC_ID: {}\nFILE_EXTENSION: {}\n", 
+        deterministic_filename, file_extension);
+    outfile.write_all(header.as_bytes()).map_err(|e| format!("Header write failed: {}", e))?;
+    
+    // Compress with progress tracking
     let mut encoder = zstd::Encoder::new(&mut outfile, 3).map_err(|e| format!("Zstd encoder failed: {}", e))?;
-    io::copy(&mut infile, &mut encoder).map_err(|e| format!("Compression failed: {}", e))?;
+    let mut compressed_bytes = 0u64;
+    let chunk_size = 64 * 1024; // 64KB chunks
+    
+    for chunk in content.chunks(chunk_size) {
+        if check_abort() {
+            pb_compress.finish_with_message("❌ Compression aborted");
+            return Err("Operation aborted by user".to_string());
+        }
+        
+        encoder.write_all(chunk).map_err(|e| format!("Compression failed: {}", e))?;
+        compressed_bytes += chunk.len() as u64;
+        pb_compress.set_position(compressed_bytes);
+        
+        // Update speed display
+        let elapsed = pb_compress.elapsed().as_secs_f64();
+        if elapsed > 0.0 {
+            let speed = compressed_bytes as f64 / elapsed;
+            pb_compress.set_message(format!("Compressing... {} ({})", 
+                format_size(compressed_bytes), format_speed(speed)));
+        }
+    }
+    
     encoder.finish().map_err(|e| format!("Finish failed: {}", e))?;
-    let start = Instant::now();
-    let elapsed = start.elapsed().as_secs_f64();
-    let input_size = std::fs::metadata(&input).unwrap().len() as f64 / (1024.0 * 1024.0); // MB
-    let speed = input_size / elapsed;
-    let msg = format!("Packed {} → {} in {:.2}s [{:.2} MB/s]", input, output, elapsed, speed);
-    println!("{}", msg);
+    pb_compress.finish_with_message("✅ Compression complete");
+    
+    // Calculate final stats
+    let output_size = std::fs::metadata(output).unwrap().len();
+    let ratio = input_size as f64 / output_size as f64;
+    let total_time = pb_read.elapsed().as_secs_f64() + pb_compress.elapsed().as_secs_f64();
+    let avg_speed = input_size as f64 / total_time / BYTES_PER_MB;
+    
+    println!("✅ Packed {} → {} in {:.2}s [{:.2} MB/s avg]", 
+        input, output, total_time, avg_speed);
+        println!("📊 Compression ratio: {:.2}x ({:.1} MB → {:.1} MB)",
+        ratio, _input_size_mb, output_size as f64 / BYTES_PER_MB);
+    
+    // Calculate and display space savings
+    let space_saved = input_size.saturating_sub(output_size);
+    let space_saved_mb = space_saved as f64 / BYTES_PER_MB;
+    let savings_percent = if input_size > 0 { (space_saved as f64 / input_size as f64) * 100.0 } else { 0.0 };
+    
+    if space_saved > 0 {
+        println!("💾 Space saved: {:.1} MB ({:.1}% reduction)", space_saved_mb, savings_percent);
+    } else {
+        println!("💾 Space used: {:.1} MB (expansion due to compression overhead)", -space_saved_mb);
+    }
+    
+    let msg = format!("Packed {} → {} in {:.2}s [{:.2} MB/s avg]", input, output, total_time, avg_speed);
     log(&msg);
     
     // Check if compression was effective
-    let input_size = std::fs::metadata(&input).unwrap().len();
-    let output_size = std::fs::metadata(output).unwrap().len();
-    let ratio = input_size as f64 / output_size as f64;
-    
     if ratio < 1.1 {
         println!("⚠️  Random data detected - expansion is normal and expected. This is not a bug.");
         println!("   High entropy data cannot be compressed due to information theory.");
@@ -374,21 +567,210 @@ pub fn unpack(input: &str, output: &str) -> Result<(), String> {
         log_error("unpack", &format!("Packed file not found: {}", input));
         std::process::exit(1);
     }
+    
+    // Get file size for progress bar
+    let input_size = std::fs::metadata(&input).unwrap().len();
+    let _input_size_mb = input_size as f64 / BYTES_PER_MB;
+    
+    println!("📦 Unpacking {} ({})...", input, format_size(input_size));
+    
+    // Track total time for the operation
+    let start_time = std::time::Instant::now();
+    
     log(&format!("UNPACK: {} -> {}", input, output));
     check_file(&input)?;
     log(&format!("DEBUG: Trying to open packed file: {}", input));
     let mut infile = BufReader::new(File::open(&input).map_err(|e| format!("Packed file open failed: {}", e))?);
-    log(&format!("DEBUG: Trying to create output file: {}", output));
-    let mut decoder = zstd::Decoder::new(&mut infile).map_err(|e| format!("Zstd decoder failed: {}", e))?;
-    let mut outfile = File::create(output).map_err(|e| format!("Output file create failed: {}", e))?;
-    io::copy(&mut decoder, &mut outfile).map_err(|e| format!("Decompression failed: {}", e))?;
-    let start = Instant::now();
-    let elapsed = start.elapsed().as_secs_f64();
-    let packed_size = std::fs::metadata(&input).unwrap().len() as f64 / (1024.0 * 1024.0); // MB
-    let speed = packed_size / elapsed;
-    let msg = format!("Unpacked {} → {} in {:.2}s [{:.2} MB/s]", input, output, elapsed, speed);
-    println!("{}", msg);
+    
+    // Read MMH header to get original filename
+    let mut header_line = String::new();
+    infile.read_line(&mut header_line).map_err(|e| format!("Header read failed: {}", e))?;
+    
+    let final_output = if !header_line.starts_with("MMH-RS V1.1.0") {
+        // Legacy format without header - treat as raw zstd
+        log("WARNING: Legacy format detected, attempting raw zstd decompression");
+        
+        // Check for existing output file and handle overwrite
+        if Path::new(output).exists() {
+            match prompt_overwrite(output, "unpack")? {
+                OverwriteAction::Skip => {
+                    println!("Skipping unpack operation for {}", output);
+                    return Ok(());
+                }
+                OverwriteAction::Replace => {
+                    // Continue with overwrite
+                }
+                OverwriteAction::Cancel => {
+                    println!("Unpack operation cancelled.");
+                    return Ok(());
+                }
+            }
+        }
+        
+        // Create progress bar for decompression - estimate output size as 3x input (typical compression ratio)
+        let estimated_output_size = input_size.saturating_mul(3);
+        let pb_decompress = create_progress_bar(estimated_output_size, "Decompressing");
+        pb_decompress.set_message("Decompressing legacy format...");
+        
+        let mut decoder = zstd::Decoder::new(&mut infile).map_err(|e| format!("Zstd decoder failed: {}", e))?;
+        let mut outfile = File::create(output).map_err(|e| format!("Output file create failed: {}", e))?;
+        
+        // Decompress with progress tracking
+        let mut buffer = [0u8; 8192];
+        let mut bytes_written = 0u64;
+        
+        loop {
+            if check_abort() {
+                pb_decompress.finish_with_message("❌ Unpack operation aborted");
+                return Err("Operation aborted by user".to_string());
+            }
+            
+            match decoder.read(&mut buffer) {
+                Ok(0) => break, // EOF
+                Ok(n) => {
+                    outfile.write_all(&buffer[..n]).map_err(|e| format!("Write failed: {}", e))?;
+                    bytes_written += n as u64;
+                    pb_decompress.set_position(bytes_written);
+                    
+                    // Update speed display
+                    let elapsed = pb_decompress.elapsed().as_secs_f64();
+                    if elapsed > 0.0 {
+                        let speed = bytes_written as f64 / elapsed;
+                        pb_decompress.set_message(format!("Decompressing... {} ({})", 
+                            format_size(bytes_written), format_speed(speed)));
+                    }
+                }
+                Err(e) => {
+                    pb_decompress.finish_with_message("❌ Decompression error");
+                    return Err(format!("Decompression failed: {}", e));
+                }
+            }
+        }
+        
+        pb_decompress.finish_with_message("✅ Decompression complete");
+        output.to_string()
+    } else {
+        // Read deterministic ID from header
+        let mut deterministic_id_line = String::new();
+        infile.read_line(&mut deterministic_id_line).map_err(|e| format!("Deterministic ID read failed: {}", e))?;
+        
+        // Read file extension from header
+        let mut extension_line = String::new();
+        infile.read_line(&mut extension_line).map_err(|e| format!("File extension read failed: {}", e))?;
+        
+        let file_extension = if extension_line.starts_with("FILE_EXTENSION: ") {
+            extension_line.trim_start_matches("FILE_EXTENSION: ").trim()
+        } else {
+            ""
+        };
+        
+        // For deterministic format, use the output filename with proper extension
+        let base_filename = Path::new(output).file_name()
+            .and_then(|n| n.to_str())
+            .unwrap_or("restored_file");
+        
+        // Always add the extension if it exists in the header
+        let original_filename = if !file_extension.is_empty() {
+            format!("{}.{}", base_filename, file_extension)
+        } else {
+            base_filename.to_string()
+        };
+        
+        // Always use the original filename with extension for unpacking
+        let final_output = original_filename.to_string();
+        
+        // Check for existing output file and handle overwrite
+        if Path::new(&final_output).exists() {
+            match prompt_overwrite(&final_output, "unpack")? {
+                OverwriteAction::Skip => {
+                    println!("Skipping unpack operation for {}", final_output);
+                    return Ok(());
+                }
+                OverwriteAction::Replace => {
+                    // Continue with overwrite
+                }
+                OverwriteAction::Cancel => {
+                    println!("Unpack operation cancelled.");
+                    return Ok(());
+                }
+            }
+        }
+        
+        log(&format!("DEBUG: Restoring original filename: {}", original_filename));
+        log(&format!("DEBUG: Trying to create output file: {}", final_output));
+        
+        // Create progress bar for decompression - estimate output size as 3x input (typical compression ratio)
+        let estimated_output_size = input_size.saturating_mul(3);
+        let pb_decompress = create_progress_bar(estimated_output_size, "Decompressing");
+        pb_decompress.set_message("Decompressing MMH format...");
+        
+        let mut decoder = zstd::Decoder::new(&mut infile).map_err(|e| format!("Zstd decoder failed: {}", e))?;
+        let mut outfile = File::create(&final_output).map_err(|e| format!("Output file create failed: {}", e))?;
+        
+        // Decompress with progress tracking
+        let mut buffer = [0u8; 8192];
+        let mut bytes_written = 0u64;
+        
+        loop {
+            if check_abort() {
+                pb_decompress.finish_with_message("❌ Unpack operation aborted");
+                return Err("Operation aborted by user".to_string());
+            }
+            
+            match decoder.read(&mut buffer) {
+                Ok(0) => break, // EOF
+                Ok(n) => {
+                    outfile.write_all(&buffer[..n]).map_err(|e| format!("Write failed: {}", e))?;
+                    bytes_written += n as u64;
+                    pb_decompress.set_position(bytes_written);
+                    
+                    // Update speed display
+                    let elapsed = pb_decompress.elapsed().as_secs_f64();
+                    if elapsed > 0.0 {
+                        let speed = bytes_written as f64 / elapsed;
+                        pb_decompress.set_message(format!("Decompressing... {} ({})", 
+                            format_size(bytes_written), format_speed(speed)));
+                    }
+                }
+                Err(e) => {
+                    pb_decompress.finish_with_message("❌ Decompression error");
+                    return Err(format!("Decompression failed: {}", e));
+                }
+            }
+        }
+        
+        pb_decompress.finish_with_message("✅ Decompression complete");
+        final_output
+    };
+    
+    // Calculate final stats
+    let output_size = std::fs::metadata(&final_output).unwrap().len();
+    let total_time = start_time.elapsed().as_secs_f64();
+    let avg_speed = if total_time > 0.0 {
+        output_size as f64 / total_time / BYTES_PER_MB
+    } else {
+        0.0
+    };
+    
+    println!("✅ Unpacked {} → {} in {:.2}s [{:.2} MB/s avg]", 
+        input, &final_output, total_time, avg_speed);
+    println!("📊 Decompressed size: {} (from {} compressed)", 
+        format_size(output_size), format_size(input_size));
+    
+    // Calculate and display expansion info
+    let expansion = output_size.saturating_sub(input_size);
+    let expansion_mb = expansion as f64 / BYTES_PER_MB;
+    let expansion_percent = if input_size > 0 { (expansion as f64 / input_size as f64) * 100.0 } else { 0.0 };
+    
+    if expansion > 0 {
+        println!("📈 Data expansion: {:.1} MB ({:.1}% increase)", expansion_mb, expansion_percent);
+    } else {
+        println!("📉 Data reduction: {:.1} MB (unusual - may indicate corruption)", -expansion_mb);
+    }
+    
+    let msg = format!("Unpacked {} → {} in {:.2}s [{:.2} MB/s avg]", input, &final_output, total_time, avg_speed);
     log(&msg);
+    
     Ok(())
 }
 
@@ -441,7 +823,7 @@ pub fn gen(output: &str, size: usize) {
     show_gen_art();
     log(&format!("GEN: {} ({} bytes)", output, size));
     if size as u64 > MAX_SIZE {
-        let msg = format!("ERROR: Requested size exceeds 10GB limit: {} bytes", size);
+        let msg = format!("ERROR: Requested size exceeds 1TB limit: {} bytes", size);
         eprintln!("{}", msg);
         log(&msg);
         std::process::exit(1);
@@ -460,8 +842,8 @@ pub fn gen(output: &str, size: usize) {
 pub fn gentestdir(dir: &str, size_gb: u64) {
     // show_smoketest_art(); // Removed for clean output
     log(&format!("GENTESTDIR: {} ({} GB)", dir, size_gb));
-    if size_gb > 10 {
-        let msg = format!("ERROR: gentestdir limit is 10GB for V1");
+    if size_gb > 1024 { // 1TB limit
+        let msg = format!("ERROR: gentestdir limit is 1TB for V1");
         eprintln!("{}", msg);
         log(&msg);
         std::process::exit(1);
@@ -636,12 +1018,13 @@ fn generate_realistic_data_for_cli(rng: &mut rand_chacha::ChaCha20Rng, size: usi
 }
 
 // Update print_and_export_smoketest_summary to accept and display system stats
+#[allow(dead_code)]
 fn print_and_export_smoketest_summary(
-    txt: &str, json: &str, log: &str, replay_seed: String,
+    _txt: &str, _json: &str, _log: &str, _replay_seed: String,
     pack_speed: f64, pack_time: f64,
     unpack_speed: f64, unpack_time: f64,
     verify_speed: f64, verify_time: f64,
-    total: u64, pass: u64, fail: u64,
+    total: u64, _pass: u64, fail: u64,
     max_ram: u64, max_cpu: f32, max_threads: usize
 ) {
     let test_set = format!("{} files", total);
@@ -683,6 +1066,7 @@ fn print_and_export_smoketest_summary(
     std::io::stdin().read_line(&mut _dummy).unwrap();
 }
 
+#[allow(dead_code)]
 fn compute_replay_seed(dir: &str) -> String {
     use std::fs;
     let mut hasher = Sha256::new();
@@ -700,7 +1084,8 @@ fn compute_replay_seed(dir: &str) -> String {
     format!("{:x}", hash)
 }
 
-fn benchmark_menu(size_gb: u64) {
+#[allow(dead_code)]
+fn benchmark_menu(_size_gb: u64) {
     // Show benchmark menu
     loop {
         println!("\n============================");
@@ -749,6 +1134,7 @@ fn benchmark_menu(size_gb: u64) {
     }
 }
 
+#[allow(dead_code)]
 fn run_benchmark(size_gb: u64) {
     let rpt = bench::run(size_gb);
     rpt.save();
@@ -759,7 +1145,8 @@ fn run_benchmark(size_gb: u64) {
     std::io::stdin().read_line(&mut _dummy).unwrap();
 }
 
-fn stressbench(size_gb: u64) {
+#[allow(dead_code)]
+fn stressbench(_size_gb: u64) {
     // Show stress test menu
     loop {
         println!("\n============================");
@@ -808,6 +1195,7 @@ fn stressbench(size_gb: u64) {
     }
 }
 
+#[allow(dead_code)]
 fn run_stress_test(size_gb: u64) {
     let rpt = bench::run(size_gb);
     rpt.save();
@@ -919,8 +1307,7 @@ pub fn selftest() {
     let test_content = "This is a deterministic test file with repeated content. ".repeat(100);
     let detest1 = "detest1.txt";
     let detest2 = "detest2.txt";
-    let detest1_mmh = "detest1.mmh";
-    let detest2_mmh = "detest2.mmh";
+    let detest_mmh = "detest.mmh"; // Use same output filename for both
     
     // Create identical test files
     if let Err(e) = std::fs::write(detest1, &test_content) {
@@ -932,39 +1319,47 @@ pub fn selftest() {
     } else {
         println!("✅ Deterministic test files created");
         
-        // Compress both files
-        let pack1_result = pack(detest1, detest1_mmh);
-        let pack2_result = pack(detest2, detest2_mmh);
+        // Compress first file
+        let pack1_result = pack(detest1, detest_mmh);
         
-        if pack1_result.is_ok() && pack2_result.is_ok() {
-            // Compare compressed files
-            let comp1 = std::fs::read(detest1_mmh);
-            let comp2 = std::fs::read(detest2_mmh);
+        if pack1_result.is_ok() {
+            // Read the first compressed file
+            let comp1 = std::fs::read(detest_mmh);
             
-            match (comp1, comp2) {
-                (Ok(c1), Ok(c2)) => {
-                    if c1 == c2 {
-                        println!("✅ Deterministic compression works");
-                    } else {
-                        println!("❌ Deterministic compression failed - files differ");
+            // Compress second file (will overwrite the first)
+            let pack2_result = pack(detest2, detest_mmh);
+            
+            if pack2_result.is_ok() {
+                // Read the second compressed file
+                let comp2 = std::fs::read(detest_mmh);
+                
+                match (comp1, comp2) {
+                    (Ok(c1), Ok(c2)) => {
+                        if c1 == c2 {
+                            println!("✅ Deterministic compression works");
+                        } else {
+                            println!("❌ Deterministic compression failed - files differ");
+                            all_tests_passed = false;
+                        }
+                    },
+                    _ => {
+                        println!("❌ Failed to read compressed files for comparison");
                         all_tests_passed = false;
                     }
-                },
-                _ => {
-                    println!("❌ Failed to read compressed files for comparison");
-                    all_tests_passed = false;
                 }
+            } else {
+                println!("❌ Failed to compress second deterministic test file");
+                all_tests_passed = false;
             }
         } else {
-            println!("❌ Failed to compress deterministic test files");
+            println!("❌ Failed to compress first deterministic test file");
             all_tests_passed = false;
         }
         
         // Cleanup
         let _ = std::fs::remove_file(detest1);
         let _ = std::fs::remove_file(detest2);
-        let _ = std::fs::remove_file(detest1_mmh);
-        let _ = std::fs::remove_file(detest2_mmh);
+        let _ = std::fs::remove_file(detest_mmh);
     }
     
     // Test 5: Logging system
@@ -1100,6 +1495,7 @@ pub fn cleanup() {
     }
 }
 
+#[allow(dead_code)]
 fn print_exit_banner() {
     // Only print if not running as a subprocess (menu wrapper)
     if std::env::var("MMH_MENU_WRAPPER").is_ok() { return; }
@@ -1112,30 +1508,85 @@ fn print_exit_banner() {
     println!("The compression engine so honest it will roast your files if they're not worth compressing.");
 }
 
-pub fn prompt_save_results(default_txt: &str, default_json: &str, default_log: &str, txt_content: &str, json_content: &str, log_content: &str) {
-    print!("Press S to save results (txt/json/log), or any other key to continue: ");
+pub fn prompt_save_results(_default_txt: &str, _default_json: &str, _default_log: &str, txt_content: &str, json_content: &str, log_content: &str, size_gb: u64) {
+    let timestamp = chrono::Local::now().format("%Y-%m-%d_%H-%M-%S").to_string();
+    
+    // Create size prefix for unique filenames
+    let size_prefix = if size_gb == 0 {
+        "50M".to_string()
+    } else if size_gb == 999 {
+        "BULK".to_string() // Special case for bulk small file test
+    } else if size_gb < 1024 {
+        format!("{}G", size_gb)
+    } else {
+        format!("{}T", size_gb / 1024)
+    };
+    
+    println!("\n============================");
+    println!("|     SAVE TEST RESULTS     |");
+    println!("============================");
+    println!("1. Save all formats (recommended)");
+    println!("2. Save text report only");
+    println!("3. Save JSON report only");
+    println!("4. Save log only");
+    println!("5. Skip saving");
+    print!("Select option: ");
     io::stdout().flush().unwrap();
+    
     let mut choice = String::new();
     io::stdin().read_line(&mut choice).unwrap();
-    if choice.trim().eq_ignore_ascii_case("s") {
-        println!("Save as: [1] txt  [2] json  [3] log");
-        print!("Select format: ");
-        io::stdout().flush().unwrap();
-        let mut fmt = String::new();
-        io::stdin().read_line(&mut fmt).unwrap();
-        let (default_name, content) = match fmt.trim() {
-            "1" => (default_txt, txt_content),
-            "2" => (default_json, json_content),
-            "3" => (default_log, log_content),
-            _ => { println!("Invalid format. Skipping save."); return; }
-        };
-        print!("Filename (default: {}): ", default_name);
-        io::stdout().flush().unwrap();
-        let mut fname = String::new();
-        io::stdin().read_line(&mut fname).unwrap();
-        let fname = if fname.trim().is_empty() { default_name } else { fname.trim() };
-        std::fs::write(fname, content).expect("Failed to write results file");
-        println!("Results saved to {}", fname);
+    
+    match choice.trim() {
+        "1" => {
+            // Save all formats with size prefix and timestamps
+            let txt_name = format!("{}-test_results_{}.txt", size_prefix, timestamp);
+            let json_name = format!("{}-test_results_{}.json", size_prefix, timestamp);
+            let log_name = format!("{}-test_results_{}.log", size_prefix, timestamp);
+            
+            println!("💾 Processing and saving results...");
+            let pb = create_progress_bar(3, "Saving files");
+            
+            pb.set_message("Saving text report...");
+            std::fs::write(&txt_name, txt_content).expect("Failed to write text results");
+            pb.set_position(1);
+            
+            pb.set_message("Saving JSON report...");
+            std::fs::write(&json_name, json_content).expect("Failed to write JSON results");
+            pb.set_position(2);
+            
+            pb.set_message("Saving log report...");
+            std::fs::write(&log_name, log_content).expect("Failed to write log results");
+            pb.set_position(3);
+            
+            pb.finish_with_message("✅ All results saved");
+            println!("   📄 Text: {}", txt_name);
+            println!("   📊 JSON: {}", json_name);
+            println!("   📝 Log: {}", log_name);
+        },
+        "2" => {
+            let txt_name = format!("{}-test_results_{}.txt", size_prefix, timestamp);
+            println!("💾 Saving text report...");
+            std::fs::write(&txt_name, txt_content).expect("Failed to write text results");
+            println!("✅ Text results saved: {}", txt_name);
+        },
+        "3" => {
+            let json_name = format!("{}-test_results_{}.json", size_prefix, timestamp);
+            println!("💾 Saving JSON report...");
+            std::fs::write(&json_name, json_content).expect("Failed to write JSON results");
+            println!("✅ JSON results saved: {}", json_name);
+        },
+        "4" => {
+            let log_name = format!("{}-test_results_{}.log", size_prefix, timestamp);
+            println!("💾 Saving log report...");
+            std::fs::write(&log_name, log_content).expect("Failed to write log results");
+            println!("✅ Log results saved: {}", log_name);
+        },
+        "5" => {
+            println!("Skipping save.");
+        },
+        _ => {
+            println!("Invalid option. Skipping save.");
+        }
     }
 }
 
@@ -1173,6 +1624,7 @@ pub struct BenchmarkReport {
     pub seed_score_formula: String,
 }
 
+#[allow(dead_code)]
 pub fn hash_dir_sha256(dir: &str) -> String {
     use sha2::{Sha256, Digest};
     use std::fs;
@@ -1183,14 +1635,34 @@ pub fn hash_dir_sha256(dir: &str) -> String {
         .filter(|e| e.path().is_file())
         .collect();
     files.sort_by_key(|e| e.file_name());
-    for entry in files {
-        let data = fs::read(entry.path()).expect("Failed to read file for hashing");
-        hasher.update(&data);
+    
+    // Create progress bar for hashing
+    let total_files = files.len();
+    if total_files > 0 {
+        println!("🔍 Computing integrity hash for {} files...", total_files);
+        let pb = create_progress_bar(total_files as u64, "Hashing files");
+        
+        for (i, entry) in files.iter().enumerate() {
+            if check_abort() {
+                pb.finish_with_message("❌ Hash computation aborted");
+                return "aborted".to_string();
+            }
+            
+            let data = fs::read(entry.path()).expect("Failed to read file for hashing");
+            hasher.update(&data);
+            
+            pb.set_position((i + 1) as u64);
+            pb.set_message(format!("Hashing file {}/{}", i + 1, total_files));
+        }
+        
+        pb.finish_with_message("✅ Hash computation complete");
     }
+    
     let hash = hasher.finalize();
     format!("{:x}", hash)
 }
 
+#[allow(dead_code)]
 fn hash_file_sha256(path: &str) -> String {
     use sha2::{Sha256, Digest};
     use std::fs;
@@ -1201,6 +1673,7 @@ fn hash_file_sha256(path: &str) -> String {
     format!("{:x}", hash)
 }
 
+#[allow(dead_code)]
 fn get_file_list(dir: &str) -> Vec<String> {
     use std::fs;
     let mut files: Vec<_> = fs::read_dir(dir)
@@ -1213,26 +1686,81 @@ fn get_file_list(dir: &str) -> Vec<String> {
     files
 }
 
+#[allow(dead_code)]
 fn get_env_info() -> HashMap<String, String> {
     std::env::vars().collect()
 }
 
+#[allow(dead_code)]
 fn get_timestamp() -> String {
     use chrono::prelude::*;
     Utc::now().to_rfc3339()
 }
 
+#[allow(dead_code)]
 fn get_mmh_version() -> String {
     env!("CARGO_PKG_VERSION").to_string()
 }
 
+#[allow(dead_code)]
 fn get_os_info() -> String {
     std::env::consts::OS.to_string()
 }
 
+#[allow(dead_code)]
 fn get_cpu_info() -> String {
     // Placeholder: use sysinfo or similar for real CPU info
     "Generic CPU".to_string()
+}
+
+// Progress meter functions
+fn format_speed(bytes_per_sec: f64) -> String {
+    if bytes_per_sec >= BYTES_PER_TB {
+        format!("{:.2} TB/s", bytes_per_sec / BYTES_PER_TB)
+    } else if bytes_per_sec >= BYTES_PER_GB {
+        format!("{:.2} GB/s", bytes_per_sec / BYTES_PER_GB)
+    } else if bytes_per_sec >= BYTES_PER_MB {
+        format!("{:.2} MB/s", bytes_per_sec / BYTES_PER_MB)
+    } else {
+        format!("{:.2} KB/s", bytes_per_sec / 1024.0)
+    }
+}
+
+fn format_size(bytes: u64) -> String {
+    if bytes >= BYTES_PER_TB as u64 {
+        format!("{:.2} TB", bytes as f64 / BYTES_PER_TB)
+    } else if bytes >= BYTES_PER_GB as u64 {
+        format!("{:.2} GB", bytes as f64 / BYTES_PER_GB)
+    } else if bytes >= BYTES_PER_MB as u64 {
+        format!("{:.2} MB", bytes as f64 / BYTES_PER_MB)
+    } else {
+        format!("{:.2} KB", bytes as f64 / 1024.0)
+    }
+}
+
+fn create_progress_bar(total_size: u64, operation: &str) -> ProgressBar {
+    let pb = ProgressBar::new(total_size);
+    let style = ProgressStyle::default_bar()
+        .template("{spinner:.green} [{elapsed_precise}] [{bar:40.cyan/blue}] {bytes}/{total_bytes} ({bytes_per_sec}) {msg}")
+        .unwrap()
+        .progress_chars("#>-");
+    
+    pb.set_style(style);
+    pb.set_message(format!("{}...", operation));
+    pb
+}
+
+pub fn check_abort() -> bool {
+    unsafe { ABORT_REQUESTED }
+}
+
+#[allow(dead_code)]
+pub fn set_abort_flag() {
+    unsafe { ABORT_REQUESTED = true; }
+}
+
+pub fn clear_abort_flag() {
+    unsafe { ABORT_REQUESTED = false; }
 }
 
 // Additional public functions needed by main.rs
@@ -1243,8 +1771,8 @@ pub fn show_ascii_art(num: u8) {
     }
 }
 
-pub fn run_agent() {
-    agent::run_agent();
+pub fn run_agent(continuous: bool) {
+    agent::run_agent(continuous);
 }
 
 pub fn packdir(dir: &str, output: &str) -> Result<(), String> {
@@ -1439,6 +1967,7 @@ pub fn packdir(dir: &str, output: &str) -> Result<(), String> {
     Ok(())
 }
 
+#[allow(dead_code)]
 pub fn unpackdir(input: &str, output: &str) -> Result<(), String> {
     // Simplified unpackdir for V1 - uses tar fallback
     if !Path::new(input).exists() {
@@ -1470,4 +1999,222 @@ pub fn verify_seed(dir: &str, seed: &str) -> Result<(), String> {
     println!("Seed: {}", seed);
     
     Ok(())
+}
+
+/// Compare two benchmark results and generate a comparison report
+pub fn compare_benchmarks(file1: &str, file2: &str) -> Result<String, Box<dyn std::error::Error>> {
+    let json1 = std::fs::read_to_string(file1)?;
+    let json2 = std::fs::read_to_string(file2)?;
+    
+    let result1: Value = serde_json::from_str(&json1)?;
+    let result2: Value = serde_json::from_str(&json2)?;
+    
+    let mut comparison = String::new();
+    comparison.push_str("## 🔍 **BENCHMARK COMPARISON REPORT**\n\n");
+    
+    // Extract key metrics
+    let score1 = result1["score"].as_f64().unwrap_or(0.0);
+    let score2 = result2["score"].as_f64().unwrap_or(0.0);
+    let pack_speed1 = result1["pack_speed_mbps"].as_f64().unwrap_or(0.0);
+    let pack_speed2 = result2["pack_speed_mbps"].as_f64().unwrap_or(0.0);
+    let compression_ratio1 = result1["compression_ratio"].as_f64().unwrap_or(0.0);
+    let compression_ratio2 = result2["compression_ratio"].as_f64().unwrap_or(0.0);
+    
+    comparison.push_str(&format!("### 📊 **PERFORMANCE COMPARISON**\n\n"));
+    comparison.push_str(&format!("| Metric | {} | {} | Difference |\n", 
+        result1["system_name"].as_str().unwrap_or("System 1"),
+        result2["system_name"].as_str().unwrap_or("System 2")));
+    comparison.push_str("|--------|--------|--------|------------|\n");
+    
+    // Score comparison
+    let score_diff = score2 - score1;
+    let score_icon = if score_diff > 0.0 { "🟢" } else if score_diff < 0.0 { "🔴" } else { "🟡" };
+    comparison.push_str(&format!("| Score | {:.1}/100 | {:.1}/100 | {} {:+.1} |\n", 
+        score1, score2, score_icon, score_diff));
+    
+    // Speed comparison
+    let speed_diff = pack_speed2 - pack_speed1;
+    let speed_icon = if speed_diff > 0.0 { "🟢" } else if speed_diff < 0.0 { "🔴" } else { "🟡" };
+    comparison.push_str(&format!("| Pack Speed | {:.1} MB/s | {:.1} MB/s | {} {:+.1} MB/s |\n", 
+        pack_speed1, pack_speed2, speed_icon, speed_diff));
+    
+    // Compression ratio comparison
+    let ratio_diff = compression_ratio2 - compression_ratio1;
+    let ratio_icon = if ratio_diff > 0.0 { "🟢" } else if ratio_diff < 0.0 { "🔴" } else { "🟡" };
+    comparison.push_str(&format!("| Compression | {:.2}x | {:.2}x | {} {:+.2}x |\n", 
+        compression_ratio1, compression_ratio2, ratio_icon, ratio_diff));
+    
+    comparison.push_str("\n### 🏆 **WINNER ANALYSIS**\n\n");
+    
+    let mut wins1 = 0;
+    let mut wins2 = 0;
+    
+    if score1 > score2 { wins1 += 1; } else if score2 > score1 { wins2 += 1; }
+    if pack_speed1 > pack_speed2 { wins1 += 1; } else if pack_speed2 > pack_speed1 { wins2 += 1; }
+    if compression_ratio1 > compression_ratio2 { wins1 += 1; } else if compression_ratio2 > compression_ratio1 { wins2 += 1; }
+    
+    if wins1 > wins2 {
+        comparison.push_str(&format!("**🏆 {} wins overall!**\n", 
+            result1["system_name"].as_str().unwrap_or("System 1")));
+    } else if wins2 > wins1 {
+        comparison.push_str(&format!("**🏆 {} wins overall!**\n", 
+            result2["system_name"].as_str().unwrap_or("System 2")));
+    } else {
+        comparison.push_str("**🤝 It's a tie!**\n");
+    }
+    
+    comparison.push_str(&format!("- {}: {} wins\n", 
+        result1["system_name"].as_str().unwrap_or("System 1"), wins1));
+    comparison.push_str(&format!("- {}: {} wins\n", 
+        result2["system_name"].as_str().unwrap_or("System 2"), wins2));
+    
+    Ok(comparison)
+}
+
+/// Generate an HTML report from benchmark results
+pub fn generate_html_report(json_file: &str) -> Result<String, Box<dyn std::error::Error>> {
+    let json_content = std::fs::read_to_string(json_file)?;
+    let result: Value = serde_json::from_str(&json_content)?;
+    
+    let html = format!(r#"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MMH-RS Benchmark Report</title>
+    <style>
+        body {{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #333; }}
+        .container {{ max-width: 1200px; margin: 0 auto; background: white; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden; }}
+        .header {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; }}
+        .header h1 {{ margin: 0; font-size: 2.5em; font-weight: 300; }}
+        .header p {{ margin: 10px 0 0 0; opacity: 0.9; }}
+        .content {{ padding: 30px; }}
+        .metric-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin: 30px 0; }}
+        .metric-card {{ background: #f8f9fa; border-radius: 10px; padding: 20px; text-align: center; border-left: 4px solid #667eea; }}
+        .metric-value {{ font-size: 2em; font-weight: bold; color: #667eea; margin: 10px 0; }}
+        .metric-label {{ color: #666; font-size: 0.9em; text-transform: uppercase; letter-spacing: 1px; }}
+        .score-badge {{ display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 20px; border-radius: 25px; font-size: 1.2em; font-weight: bold; }}
+        .system-info {{ background: #f8f9fa; border-radius: 10px; padding: 20px; margin: 20px 0; }}
+        .system-info h3 {{ margin-top: 0; color: #667eea; }}
+        .progress-bar {{ background: #e9ecef; border-radius: 10px; height: 20px; overflow: hidden; margin: 10px 0; }}
+        .progress-fill {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 100%; transition: width 0.3s ease; }}
+        .footer {{ background: #f8f9fa; padding: 20px; text-align: center; color: #666; border-top: 1px solid #e9ecef; }}
+        .share-button {{ background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 1em; margin: 10px; }}
+        .share-button:hover {{ background: #5a6fd8; }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 MMH-RS Benchmark Report</h1>
+            <p>High-Performance Compression Benchmark Results</p>
+        </div>
+        
+        <div class="content">
+            <div style="text-align: center; margin: 30px 0;">
+                <div class="score-badge">
+                    Score: {}/100
+                </div>
+            </div>
+            
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-label">Compression Speed</div>
+                    <div class="metric-value">{:.1} MB/s</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {}%"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-label">Compression Ratio</div>
+                    <div class="metric-value">{:.2}x</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {}%"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-label">Space Saved</div>
+                    <div class="metric-value">{:.1} GB</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {}%"></div>
+                    </div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-label">Total Time</div>
+                    <div class="metric-value">{:.1} min</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {}%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="system-info">
+                <h3>🖥️ System Information</h3>
+                <p><strong>CPU:</strong> {}</p>
+                <p><strong>RAM:</strong> {}</p>
+                <p><strong>GPU:</strong> {}</p>
+                <p><strong>Storage:</strong> {}</p>
+                <p><strong>OS:</strong> {}</p>
+            </div>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <button class="share-button" onclick="shareResults()">📤 Share Results</button>
+                <button class="share-button" onclick="exportPDF()">📄 Export PDF</button>
+                <button class="share-button" onclick="compareResults()">🔍 Compare</button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Generated by MMH-RS V1.1.0 | {} | UniversalTruth</p>
+        </div>
+    </div>
+    
+    <script>
+        function shareResults() {{
+            if (navigator.share) {{
+                navigator.share({{
+                    title: 'MMH-RS Benchmark Results',
+                    text: 'Check out my MMH-RS benchmark results! Score: {}/100',
+                    url: window.location.href
+                }});
+            }} else {{
+                navigator.clipboard.writeText(window.location.href);
+                alert('Link copied to clipboard!');
+            }}
+        }}
+        
+        function exportPDF() {{
+            window.print();
+        }}
+        
+        function compareResults() {{
+            alert('Compare feature coming in V1.2!');
+        }}
+    </script>
+</body>
+</html>
+"#,
+        result["score"].as_f64().unwrap_or(0.0),
+        result["pack_speed_mbps"].as_f64().unwrap_or(0.0),
+        f64::min(result["pack_speed_mbps"].as_f64().unwrap_or(0.0) / 100.0 * 100.0, 100.0),
+        result["compression_ratio"].as_f64().unwrap_or(0.0),
+        f64::min(result["compression_ratio"].as_f64().unwrap_or(0.0) / 3.0 * 100.0, 100.0),
+        result["space_saved_gb"].as_f64().unwrap_or(0.0),
+        f64::min(result["space_saved_gb"].as_f64().unwrap_or(0.0) / 50.0 * 100.0, 100.0),
+        result["total_time"].as_f64().unwrap_or(0.0) / 60.0,
+        f64::min(result["total_time"].as_f64().unwrap_or(0.0) / 3600.0 * 100.0, 100.0),
+        result["cpu_info"].as_str().unwrap_or("Unknown"),
+        result["ram_info"].as_str().unwrap_or("Unknown"),
+        result["gpu_info"].as_str().unwrap_or("Unknown"),
+        result["storage_info"].as_str().unwrap_or("Unknown"),
+        result["os_info"].as_str().unwrap_or("Unknown"),
+        chrono::Local::now().format("%Y-%m-%d %H:%M:%S").to_string(),
+        result["score"].as_f64().unwrap_or(0.0)
+    );
+    
+    Ok(html)
 }

@@ -1,0 +1,30 @@
+╔════════════════════════ MMH-RS V1 BENCHMARK REPORT ════════════════════════╗
+║ Test File:         ./testdata/~50 MiB deterministic                   ║
+║ File Count:        105                                                ║
+║ Total Size:        52428800 bytes (0.0 GB)                            ║
+║ Seed Output Size:  22297524 bytes (0.0 GB)                            ║
+║ Compression Ratio: 2.35x                                              ║
+║ Space Saved:       0.03 GB (57.5%)                                    ║
+║ Time to Pack:      0.93 sec                                           ║
+║ Time to Unpack:    0.32 sec                                           ║
+║ Time to Verify:    0.10 sec                                           ║
+║ Total Time:        1.34 sec                                           ║
+║ Pack Speed:        54.1 MB/s                                          ║
+║ Unpack Speed:      66.0 MB/s                                          ║
+║ Verify Speed:      218.6 MB/s                                         ║
+║ Files/sec:         113.5                                              ║
+║ Max CPU:           43.9%                                              ║
+║ Max RAM:           14.4 GB                                            ║
+║ Thread Count:      243                                                ║
+║ Integrity:         ✅ SHA256 MATCH                                     ║
+║ Thermal/Resource:  [Thermal Throttling: NO] / [Memory Pressure: LOW]  ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ Overall System Score: 602                                                ║
+║ Performance Tier:     Ultra Performance                                  ║
+╠═════════════════════════════════ WARNINGS ═════════════════════════════════╣
+║ ⚠️  ⚠️  This is a CPU-only benchmark designed to stress test your processor ║
+║ ⚠️     GPU acceleration will be available in V2, V3 will use both CPU+GPU  ║
+║ ⚠️  Decompression speed below 100 MB/s - system may be underpowered        ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ [ALL TESTS PASSED]                                                         ║
+╚════════════════════════════════════════════════════════════════════════════╝

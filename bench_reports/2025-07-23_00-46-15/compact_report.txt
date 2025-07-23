@@ -1,0 +1,15 @@
+============================
+|   MMH-RS V1 GOLD BENCH   |
+|   Version: 1.1.1          |
+|   Author: Robert Long     |
+============================
+[Machine] 16 cores, 2400 MHz
+[Data]    0GB, 104 files, avg 492KB/file (AI/user mix)
+[Step 1]  Packing...   201 MB/s  [OK]
+[Step 2]  Unpacking... 83 MB/s  [OK]
+[Step 3]  Verifying... 239 MB/s  [OK]
+[Result]  Ratio: 2.03x  |  SHA-256: PASS
+[System]  Max CPU: 26%  |  Max RAM: 15.4GB | Threads: 252
+[Bottleneck] STORAGE BOUND (recommend faster SSD/NVMe)
+[Score]   622 (Enterprise)
+[Time]    2025-07-23T04:46:15.352166200+00:00

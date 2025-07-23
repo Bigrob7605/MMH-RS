@@ -1,0 +1,29 @@
+╔════════════════════════ MMH-RS V1 BENCHMARK REPORT ════════════════════════╗
+║ Test File:         ./testdata/~50 MiB deterministic                   ║
+║ File Count:        93                                                 ║
+║ Total Size:        52428800 bytes (0.0 GB)                            ║
+║ Seed Output Size:  30276754 bytes (0.0 GB)                            ║
+║ Compression Ratio: 1.73x                                              ║
+║ Space Saved:       0.02 GB (42.3%)                                    ║
+║ Time to Pack:      0.34 sec                                           ║
+║ Time to Unpack:    0.27 sec                                           ║
+║ Time to Verify:    0.11 sec                                           ║
+║ Total Time:        0.72 sec                                           ║
+║ Pack Speed:        148.9 MB/s                                         ║
+║ Unpack Speed:      106.4 MB/s                                         ║
+║ Verify Speed:      267.0 MB/s                                         ║
+║ Files/sec:         277.0                                              ║
+║ Max CPU:           31.9%                                              ║
+║ Max RAM:           17.1 GB                                            ║
+║ Thread Count:      261                                                ║
+║ Integrity:         ✅ SHA256 MATCH                                     ║
+║ Thermal/Resource:  [Thermal Throttling: NO] / [Memory Pressure: LOW]  ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ Overall System Score: 700                                                ║
+║ Performance Tier:     Ultra Performance                                  ║
+╠═════════════════════════════════ WARNINGS ═════════════════════════════════╣
+║ ⚠️  ⚠️  This is a CPU-only benchmark designed to stress test your processor ║
+║ ⚠️     GPU acceleration will be available in V2, V3 will use both CPU+GPU  ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ [ALL TESTS PASSED]                                                         ║
+╚════════════════════════════════════════════════════════════════════════════╝

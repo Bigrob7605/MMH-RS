@@ -1,0 +1,27 @@
+╔════════════════════════ MMH-RS V1 BENCHMARK REPORT ════════════════════════╗
+║ Test File:         ./testdata/8 GiB deterministic                     ║
+║ File Count:        16136                                              ║
+║ Total Size:        8589934592 bytes (8.0 GB)                          ║
+║ Seed Output Size:  3989220494 bytes (3.7 GB)                          ║
+║ Compression Ratio: 2.15x                                              ║
+║ Space Saved:       4.28 GB (53.6%)                                    ║
+║ Time to Pack:      114.85 sec                                         ║
+║ Time to Unpack:    79.04 sec                                          ║
+║ Pack Speed:        71.3 MB/s                                          ║
+║ Unpack Speed:      48.1 MB/s                                          ║
+║ Verify Speed:      134.1 MB/s                                         ║
+║ Files/sec:         140.5                                              ║
+║ Max CPU:           27.6%                                              ║
+║ Max RAM:           23991.0 GB                                         ║
+║ Thread Count:      327                                                ║
+║ Integrity:         ✅ SHA256 MATCH                                     ║
+║ Thermal/Resource:  [Thermal Throttling: NO] / [Memory Pressure: LOW]  ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ Overall System Score: 86                                                 ║
+║ Performance Tier:     Entry Level                                        ║
+╠═════════════════════════════════ WARNINGS ═════════════════════════════════╣
+║ ⚠️  Decompression speed below 100 MB/s - system may be underpowered        ║
+║ ⚠️  High memory usage detected - consider more RAM for larger datasets     ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ [ALL TESTS PASSED]                                                         ║
+╚════════════════════════════════════════════════════════════════════════════╝

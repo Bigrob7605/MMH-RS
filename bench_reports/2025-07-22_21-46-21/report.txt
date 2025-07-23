@@ -1,0 +1,31 @@
+╔════════════════════════ MMH-RS V1 BENCHMARK REPORT ════════════════════════╗
+║ Test File:         ./testdata/~50 MiB deterministic                   ║
+║ File Count:        104                                                ║
+║ Total Size:        52428800 bytes (0.0 GB)                            ║
+║ Seed Output Size:  25645097 bytes (0.0 GB)                            ║
+║ Compression Ratio: 2.04x                                              ║
+║ Space Saved:       0.02 GB (51.1%)                                    ║
+║ Time to Pack:      1.68 sec                                           ║
+║ Time to Unpack:    0.48 sec                                           ║
+║ Time to Verify:    1.50 sec                                           ║
+║ Total Time:        3.66 sec                                           ║
+║ Pack Speed:        29.8 MB/s                                          ║
+║ Unpack Speed:      50.8 MB/s                                          ║
+║ Verify Speed:      16.3 MB/s                                          ║
+║ Files/sec:         62.0                                               ║
+║ Max CPU:           23.7%                                              ║
+║ Max RAM:           14.4 GB                                            ║
+║ Thread Count:      248                                                ║
+║ Integrity:         ✅ SHA256 MATCH                                     ║
+║ Thermal/Resource:  [Thermal Throttling: NO] / [Memory Pressure: LOW]  ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ Overall System Score: 474                                                ║
+║ Performance Tier:     Enterprise                                         ║
+╠═════════════════════════════════ WARNINGS ═════════════════════════════════╣
+║ ⚠️  ⚠️  This is a CPU-only benchmark designed to stress test your processor ║
+║ ⚠️     GPU acceleration will be available in V2, V3 will use both CPU+GPU  ║
+║ ⚠️  Compression speed below 50 MB/s - consider faster storage              ║
+║ ⚠️  Decompression speed below 100 MB/s - system may be underpowered        ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ [ALL TESTS PASSED]                                                         ║
+╚════════════════════════════════════════════════════════════════════════════╝

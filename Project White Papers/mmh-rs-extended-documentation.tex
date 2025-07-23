@@ -111,7 +111,7 @@
 	captionpos=b
 }
 
-\title{MMH-RS: Extended Documentation -- Complete User Guide\\[1ex]\textbf{\large V1.0.2 Extended Edition}}
+\title{MMH-RS: Extended Documentation -- Complete User Guide\\[1ex]\textbf{\large V1.1.0 Extended Edition}}
 \author{Robert Long \\ \texttt{Screwball7605@aol.com} \\ \texttt{https://github.com/Bigrob7605} \\ \texttt{ORCID: 0009-0008-4352-6842}}
 \date{\today}
 
@@ -119,7 +119,7 @@
 	\maketitle
 	\thispagestyle{empty}
 	\begin{abstract}
-		This extended documentation provides comprehensive coverage of MMH-RS V1.0.2, including detailed user guides, technical specifications, ASCII art collection, backup failure analysis, future roadmap, and complete implementation details. This document serves as the complete reference for users, developers, and researchers working with MMH-RS. For the complete technical specification and architecture details, see \texttt{main.pdf}.
+		This extended documentation provides comprehensive coverage of MMH-RS V1.1.0, including detailed user guides, technical specifications, ASCII art collection, backup failure analysis, future roadmap, and complete implementation details. This document serves as the complete reference for users, developers, and researchers working with MMH-RS. For the complete technical specification and architecture details, see \texttt{main.pdf}.
 	\end{abstract}
 
 	% === Extended Documentation Summary ===
@@ -145,7 +145,7 @@
 	\begin{calloutbox}[\textbf{\large \ding{72} Quick Reference -- Extended Edition}]
 	\textbf{Main Technical Specification:} \texttt{main.pdf} (complete architecture and implementation) \\
 	\textbf{Repository:} \url{https://github.com/Bigrob7605/MMH-RS} \\
-	\textbf{V1.0.2 Status:} Production-ready with complete feature set \\
+	\textbf{V1.1.0 Status:} Production-ready with complete feature set \\
 	\textbf{Performance:} 121.59 MB/s compression, 572.20 MB/s decompression \\
 	\textbf{Documentation:} This extended guide + main.pdf technical spec \\
 	\textbf{Future Vision:} The foundation of AI storage revolution (V2-V5 roadmap)
@@ -167,11 +167,11 @@
 		\item \textbf{Git} - For cloning the repository
 	\end{itemize}
 
-	\subsubsection{What V1.0.2 Actually Does}
+	\subsubsection{What V1.1.0 Actually Does}
 	
-	\textbf{MMH-RS V1.0.2 is the foundation release} that establishes the core compression engine with perfect data integrity. Here's what you get and what to expect:
+	\textbf{MMH-RS V1.1.0 is the foundation release} that establishes the core compression engine with perfect data integrity. Here's what you get and what to expect:
 	
-	\paragraph{What V1.0.2 Delivers}
+	\paragraph{What V1.1.0 Delivers}
 	\begin{itemize}
 		\item \textbf{Deterministic Compression}: Same input → Same output, every time
 		\item \textbf{Perfect Data Integrity}: SHA-256 + Merkle tree verification
@@ -188,9 +188,9 @@
 		\item \textbf{"Random Data Detected"}: NOT an error - just math (can't compress already-compressed data)
 	\end{itemize}
 	
-	\paragraph{V1.0.2 is Just the Foundation}
+	\paragraph{V1.1.0 is Just the Foundation}
 	\begin{itemize}
-		\item \textbf{Current (V1.0.2)}: CPU-based compression with perfect integrity
+		\item \textbf{Current (V1.1.0)}: CPU-based compression with perfect integrity
 		\item \textbf{Coming (V2.0)}: GPU acceleration, directory support, encryption
 		\item \textbf{Future (V3.0)}: AI model seeding, intelligent compression
 		\item \textbf{Vision (V4.0+)}: Quantum-ready, distributed storage
@@ -230,7 +230,7 @@
 
 	\subsection{Universal Launcher System}
 
-	MMH-RS V1.0.2 features a comprehensive launcher system designed for maximum user convenience:
+	MMH-RS V1.1.0 features a comprehensive launcher system designed for maximum user convenience:
 
 	\subsubsection{Windows Launchers}
 	\begin{itemize}
@@ -485,11 +485,11 @@
 	\section{Future Roadmap}
 	\label{sec:roadmap}
 
-	\subsection{V1.0.2 COMPLETED - Production Ready!}
+	\subsection{V1.1.0 COMPLETED - Production Ready!}
 
-	MMH-RS V1.0.2 has been successfully completed with all core deliverables:
+	MMH-RS V1.1.0 has been successfully completed with all core deliverables:
 
-	\subsubsection{V1.0.2 Achievements}
+	\subsubsection{V1.1.0 Achievements}
 	\begin{itemize}
 		\item \textbf{Complete Benchmark System} - 9 performance tiers (1MB to 500GB)
 		\item \textbf{10GB MMH File System Demo} - Compression showcase with real-world data
@@ -500,7 +500,7 @@
 		\item \textbf{Production-Ready Code} - Deterministic compression with Zstd integration
 	\end{itemize}
 
-	\subsubsection{V1.0.2 Performance Metrics}
+	\subsubsection{V1.1.0 Performance Metrics}
 	\begin{itemize}
 		\item \textbf{Compression Speed:} 121.59 MB/s (demonstrated)
 		\item \textbf{Decompression Speed:} 572.20 MB/s (demonstrated)
@@ -598,30 +598,37 @@
 		\item \textbf{Technological Evolution} - The next step in human information technology
 	\end{itemize}
 
-	\textbf{This is the future of AI storage. MMH-RS V1.0.2 is just the beginning.}
+	\textbf{This is the future of AI storage. MMH-RS V1.1.0 is just the beginning.}
 
 	% ==== Section 5: Performance Benchmarks ==== %
 	\section{Performance Benchmarks}
 	\label{sec:benchmarks}
 
-	\subsection{Latest 2GB Benchmark Results}
+	\subsection{Latest 32GB Benchmark Results (Gold Standard Baseline)}
 
 	\textbf{System Specifications:}
 	\begin{itemize}
-		\item \textbf{OS:} Windows 11
-		\item \textbf{CPU:} Multi-core processor
-		\item \textbf{RAM:} 64 GB
-		\item \textbf{GPU:} RTX 4070 8GB
-		\item \textbf{Storage:} 4TB SSD
+		\item \textbf{OS:} Windows 11 Home (Version 24H2, Build 26100.4652)
+		\item \textbf{CPU:} 13th Gen Intel Core i7-13620H @ 2.40 GHz (10 cores)
+		\item \textbf{RAM:} 64.0 GB (63.6 GB usable)
+		\item \textbf{GPU:} RTX 4070 (8 GB VRAM) + Multiple GPUs
+		\item \textbf{Storage:} 3.73 TB SSD (2.55 TB used, 1.18 TB free)
+		\item \textbf{Architecture:} 64-bit x64-based processor
+		\item \textbf{WSL:} Windows Subsystem for Linux enabled
+		\item \textbf{Device:} UniversalTruth
 		\item \textbf{Zstd Library:} Available and functional
 	\end{itemize}
 
 	\subsection{Key Performance Metrics}
 	\begin{itemize}
-		\item \textbf{Compression Speed:} 121.59 MB/s
-		\item \textbf{Decompression Speed:} 572.20 MB/s
-		\item \textbf{Compression Ratio:} 2.1-2.3x (realistic AI/user data mix)
+		\item \textbf{Benchmark Score:} 83/100 (High-end gaming laptop tier)
+		\item \textbf{Compression Speed:} 54.0 MB/s (CPU-only V1)
+		\item \textbf{Decompression Speed:} 47.7 MB/s (Consistent performance)
+		\item \textbf{Compression Ratio:} 2.15x (Excellent for CPU-only V1)
+		\item \textbf{Total Time:} 1,234.5 seconds (20.6 minutes)
+		\item \textbf{Space Saved:} 16.53 GB (50.5\% reduction)
 		\item \textbf{Integrity Check:} PASS
+		\item \textbf{Thermal Status:} No throttling detected
 	\end{itemize}
 
 	\subsection{Benchmark Features}
@@ -635,8 +642,10 @@
 
 	\subsection{Benchmark Results Files}
 	\begin{itemize}
-		\item \texttt{benchmarks/agent\_2GB\_result.txt} - AI Agent benchmark results
-		\item \texttt{benchmarks/human\_2GB\_result.txt} - Human benchmark results
+		\item \texttt{32G-test\_results\_2025-07-22\_19-29-49.txt} - 32GB benchmark results
+		\item \texttt{32G-test\_results\_2025-07-22\_19-29-49.json} - JSON format results
+		\item \texttt{32G-test\_results\_2025-07-22\_19-29-49.log} - Detailed operation logs
+		\item \texttt{benchmarks/} - Additional benchmark results
 	\end{itemize}
 
 	% ==== Section 6: Development Guide ==== %
@@ -772,10 +781,10 @@
 	\end{itemize}
 
 	% ==== Section 8: V1 Core Deliverables ==== %
-	\section{V1.0.2 Core Deliverables}
+	\section{V1.1.0 Core Deliverables}
 	\label{sec:deliverables}
 
-	MMH-RS V1.0.2 focuses on 3 core deliverables:
+	MMH-RS V1.1.0 focuses on 3 core deliverables:
 
 	\begin{enumerate}
 		\item \textbf{✅ Benchmark System} - Complete performance testing with 9 tiers
@@ -964,7 +973,7 @@
 	\begin{center}
 	\begin{tikzpicture}
 		\node[draw, rounded corners, minimum width=8cm, minimum height=2cm, align=center] at (0,0) {
-			\textbf{MMH-RS V1.0.2 Extended Documentation} \\
+			\textbf{MMH-RS V1.1.0 Extended Documentation} \\
 			\vspace{0.2cm}
 			\qrcode[height=1.5cm]{https://github.com/Bigrob7605/MMH-RS} \\
 			\vspace{0.1cm}
@@ -986,10 +995,10 @@
 	\end{center}
 
 	% ==== Final Callout ==== %
-	\begin{successbox}[\textbf{\large MMH-RS V1.0.2 - Production Ready!}]
-	\textbf{MMH-RS V1.0.2 is complete and production-ready!}
+	\begin{successbox}[\textbf{\large MMH-RS V1.1.0 - Production Ready!}]
+\textbf{MMH-RS V1.1.0 is complete and production-ready!}
 
-	This extended documentation provides comprehensive coverage of all aspects of MMH-RS V1.0.2, from user guides to technical specifications, ASCII art collection, backup failure analysis, and future roadmap.
+	This extended documentation provides comprehensive coverage of all aspects of MMH-RS V1.1.0, from user guides to technical specifications, ASCII art collection, backup failure analysis, and future roadmap.
 
 	\textbf{Key Achievements:}
 	\begin{itemize}
