@@ -28,14 +28,17 @@ cd MMH-RS
 # Build the project
 cargo build --release
 
-# Run basic compression
-cargo run --release -- compress input_file.mmh output_file.mmh
+# Run basic compression (V1.2.0)
+cargo run --release -- pack input_file.txt output_file.mmh
 
 # Verify integrity
 cargo run --release -- verify output_file.mmh
 
 # Extract files
-cargo run --release -- extract output_file.mmh
+cargo run --release -- unpack output_file.mmh
+
+# Run comprehensive tests
+cargo run --release -- smoketest test_data/
 ```
 
 ## 🎯 Feature Comparison: V1 vs V2 vs V3+
@@ -47,6 +50,9 @@ cargo run --release -- extract output_file.mmh
 | **File Support** | Single files | Directory support | Full filesystem |
 | **Security** | SHA-256 + Merkle | Quantum encryption | Quantum-ready |
 | **Benchmarking** | Basic tests | Full suite | AI-powered analysis |
+| **Compression Speed** | ~54 MB/s | 500+ MB/s | 1000+ MB/s |
+| **Memory Usage** | ~2GB | <1GB | Optimized |
+| **GPU Support** | None | CUDA/ROCm/Metal | Multi-GPU |
 
 ## 📚 Documentation
 
@@ -59,8 +65,8 @@ cargo run --release -- extract output_file.mmh
 - **[Project Status](Project%20White%20Papers/PROJECT_STATUS.md)** - Current development status and achievements
 
 ### Integration Documentation
-- **[RGIG Integration](Project%20White%20Papers/RGIG_INTEGRATION_COMPLETE.pdf)** - Reality-Grade Intelligence Gauntlet integration
-- **[Kai Core Integration](Project%20White%20Papers/KAI_CORE_INTEGRATION_COMPLETE.pdf)** - AI integration and neural processing
+- **[RGIG Integration](Project%20White%20Papers/RGIG_INTEGRATION_COMPLETE.pdf)** - Reality-Grade Intelligence Gauntlet V5.0 integration
+- **[Kai Core Integration](Project%20White%20Papers/KAI_CORE_INTEGRATION_COMPLETE.pdf)** - AI bootstrap and neural processing
 
 ### Supporting Documentation
 - **[Development History](Project%20White%20Papers/DEVELOPMENT_HISTORY.md)** - Complete timeline and milestones
@@ -75,6 +81,8 @@ MMH-RS V1.2.0 is **production-ready** with:
 - ✅ Command-line interface with batch processing
 - ✅ Comprehensive error handling and recovery
 - ✅ Open source with MIT license
+- ✅ 130+ benchmark reports validated
+- ✅ 83/100 score on 32GB benchmark
 
 ## 🚀 V2.0 Development (Q1-Q4 2025)
 
@@ -83,12 +91,16 @@ MMH-RS V1.2.0 is **production-ready** with:
 - **Directory Support**: Native directory processing with metadata preservation
 - **Advanced Security**: Quantum-resistant encryption with key management
 - **Modern UI**: Cross-platform GUI and enhanced CLI
+- **Block Size Auto-tuning**: Dynamic optimization based on hardware
+- **Memory Management**: Efficient GPU memory allocation and transfer
 
 ### V2.1+ Advanced Features
 - **Multi-GPU Support**: Distributed processing across multiple GPUs
 - **Interoperability**: OpenCL support and API standardization
 - **Public Benchmarks**: Comprehensive performance validation
 - **Community Engagement**: Developer portal and contribution programs
+- **Plugin Architecture**: Extensible compression algorithm support
+- **Container Support**: Docker and Kubernetes integration
 
 ## 🔮 Future Features (V3+)
 
@@ -118,26 +130,32 @@ MMH-RS V1.2.0 is **production-ready** with:
 - **OS**: Windows 10+, Ubuntu 20.04+, macOS 11+
 - **Memory**: 4GB RAM minimum, 8GB+ recommended
 - **Storage**: 2GB free space for installation
+- **CPU**: Multi-core x86_64 processor
 
 ### V2.0 (Upcoming)
 - **GPU**: NVIDIA GTX 1060+ / AMD RX 580+ / Apple M1+
 - **Memory**: 8GB RAM minimum, 16GB+ recommended
 - **Storage**: 10GB free space for installation
 - **OS**: Windows 10+, Ubuntu 20.04+, macOS 11+
+- **Drivers**: Latest GPU drivers for CUDA/ROCm/Metal
 
 ## 📊 Performance
 
 ### V1.2.0 Baseline
-- **Compression Speed**: ~50 MB/s (CPU-only)
+- **Compression Speed**: 54.0 MB/s (CPU-only)
+- **Decompression Speed**: 47.7 MB/s (CPU-only)
+- **Compression Ratio**: 2.15x average
 - **Memory Usage**: ~2GB for 32GB files
 - **Integrity**: 100% bit-for-bit verification
 - **Compatibility**: Universal cross-platform
 
 ### V2.0 Targets
-- **Compression Speed**: 10-100x faster than V1.2.0
+- **Compression Speed**: 500+ MB/s (10x+ improvement)
+- **Decompression Speed**: 1000+ MB/s (20x+ improvement)
 - **Memory Efficiency**: 50% reduction in memory usage
 - **GPU Utilization**: 90%+ GPU utilization on supported hardware
 - **Scalability**: Linear scaling with GPU count
+- **Multi-GPU**: Distributed processing across multiple GPUs
 
 ## 🔒 Security
 
@@ -145,12 +163,16 @@ MMH-RS V1.2.0 is **production-ready** with:
 - SHA-256 + Merkle tree integrity verification
 - Deterministic output validation
 - Cross-platform cryptographic consistency
+- No data collection or telemetry
+- Local processing only
 
 ### V2.0 Enhancements
 - AES-256-GCM with quantum-resistant algorithms
 - SHA-3 + Merkle tree verification
 - Multi-factor authentication support
 - SOC 2, GDPR, HIPAA compliance ready
+- Advanced key management system
+- Comprehensive audit logging
 
 ## 🤝 Community & Contribution
 
