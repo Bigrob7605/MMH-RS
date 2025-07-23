@@ -1,8 +1,8 @@
-# 📖 **MMH-RS V1.2.0 ELITE TIER - USER GUIDE**
+# MMH-RS V1.2.0 User Guide
 
-## 🎯 **QUICK START GUIDE**
+## Quick Start Guide
 
-### **🚀 LAUNCHING THE SYSTEM**
+### Launching the System
 ```bash
 # Windows (PowerShell)
 cargo build --release
@@ -19,11 +19,11 @@ cargo build --release
 ./mmh.sh
 ```
 
-### **📊 BENCHMARK MENU OPTIONS**
+### Benchmark Menu Options
 1. **Smoketest** (~50 MiB) - Quick validation
 2. **Toasty** (2 GiB) - Standard testing
 3. **Scorched** (8 GiB) - Performance testing
-4. **Nuked** (32 GiB) - Extended testing ⭐ **GOLD STANDARD**
+4. **Nuked** (32 GiB) - Extended testing (Baseline)
 5. **Total Annihilation** (128 GiB) - Stress testing
 6. **Memory Madness** (256 GiB) - Extreme testing
 7. **Swapocalypse** (512 GiB) - System testing
@@ -31,63 +31,63 @@ cargo build --release
 
 ---
 
-## 🏆 **GOLD STANDARD BASELINE ESTABLISHED**
+## Performance Baseline
 
-### **✅ VALIDATION SYSTEM PERFORMANCE**
-- **System**: UniversalTruth (i7-13620H + RTX 4070 + 64GB RAM)
+### Validation System Performance
+- **System**: Intel i7-13620H + RTX 4070 + 64GB RAM
 - **OS**: Windows 11 Home (24H2) with WSL
-- **32GB Benchmark Score**: 83/100 (High-end gaming laptop tier)
-- **Compression Ratio**: 2.15x (Excellent for CPU-only V1)
-- **Pack Speed**: 54.0 MB/s (Solid CPU performance)
-- **Unpack Speed**: 47.7 MB/s (Consistent performance)
+- **32GB Benchmark Score**: 83/100 (High-end laptop tier)
+- **Compression Ratio**: 2.15x (CPU-only implementation)
+- **Pack Speed**: 54.0 MB/s
+- **Unpack Speed**: 47.7 MB/s
 - **Total Time**: 20.6 minutes for 32GB test
 
-### **✅ PERFORMANCE EXPECTATIONS BY SYSTEM TIER**
+### Performance Expectations by System Tier
 - **Entry Level**: 20-40 MB/s, 1.5-2.0x compression
 - **Mainstream**: 30-50 MB/s, 1.8-2.2x compression
-- **High End**: 45-60 MB/s, 2.0-2.5x compression ⭐ **Your Tier**
+- **High End**: 45-60 MB/s, 2.0-2.5x compression
 - **Enterprise**: 50-80 MB/s, 2.2-3.0x compression
-- **Unfair**: 60+ MB/s, 2.5+ compression (development systems)
+- **Development**: 60+ MB/s, 2.5+ compression
 
 ---
 
-## 🔧 **V1.2.0 ELITE TIER FEATURES**
+## V1.2.0 Features
 
-### **✅ PERFECT DATA INTEGRITY**
+### Data Integrity
 - **Bit-for-bit verification**: SHA-256 + Merkle tree validation
 - **Extension preservation**: Original file extensions perfectly maintained
 - **Deterministic output**: Consistent compression results every time
 - **Self-healing**: RaptorQ FEC corruption recovery
 
-### **✅ REAL-TIME PROGRESS METERS**
+### Real-Time Progress Monitoring
 - **Speed Displays**: MB/s, GB/s, TB/s in real-time
 - **File Count**: Shows files created during generation
 - **Phase Indicators**: Clear status for each operation
 - **Progress Bars**: Visual feedback for all operations
 - **Spinning Indicators**: Continuous visual feedback in menus
 
-### **✅ ABORT FUNCTIONALITY**
+### Abort Functionality
 - **Ctrl+C**: Immediately stops any operation
 - **Phase Awareness**: Knows which phase was aborted
 - **Clean Exit**: No hanging processes
 - **Status Reports**: Proper aborted report generation
 
-### **✅ SIZE-PREFIXED LOGGING**
+### Size-Prefixed Logging
 - **Unique Filenames**: `32G-test_results_2025-07-22_19-29-49.txt`
 - **Multiple Formats**: Text, JSON, and log outputs
 - **Organized Storage**: Easy to find and compare results
 - **Timestamped**: Automatic timestamp generation
 
-### **✅ UNIVERSAL FORMAT**
+### Universal Format
 - **Open CBOR "seed pack" format**: Interoperable and extensible
 - **128-bit "Digital DNA"**: Unique identifier for each compressed file
 - **Cross-platform compatibility**: Windows, Linux, macOS
 
 ---
 
-## 📊 **TESTING PROTOCOL**
+## Testing Protocol
 
-### **🎯 RECOMMENDED TESTING SEQUENCE**
+### Recommended Testing Sequence
 
 #### **Step 1: Smoketest Validation**
 ```bash
