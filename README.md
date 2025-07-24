@@ -13,7 +13,7 @@ Perfect integrity, blazing speed, built for the next era of data.
 
 ## 🚀 V2 BETA NOW IN DEVELOPMENT!
 
-**Want to help test GPU/Quantum features?** Join our Discord (coming soon), check the `dev/v2` branch, or email v2-beta@mmh-rs.dev!
+**Want to help test GPU/Quantum features?** Join our Discord (coming soon), check the `dev/v2` branch, or email screwball7605@aol.com!
 
 ---
 
