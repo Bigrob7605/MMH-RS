@@ -1,3 +1,5 @@
+(Demo files are up ATM, the main 1.2.5 should be online by Sunday night)
+
 # 🚀 MMH-RS - Universal Digital DNA Format
 
 ## 🏛️ **SACRED DOCULOCK SYSTEM - SEALED AND DRIFT PURGED**
