@@ -1,4 +1,4 @@
-(Demo files are up ATM, the main 1.2.5 should be online by Sunday night)
+(Demo files are up ATM, the main 1.2.5 should be online by by next Sunday "08/03/2025" due to nasty weather. Caused a power failure. I need to recover. Ty!)
 
 # 🚀 MMH-RS - Universal Digital DNA Format
 
